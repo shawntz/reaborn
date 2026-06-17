@@ -376,8 +376,9 @@ catplot <- function(data = NULL, x = NULL, y = NULL, hue = NULL, row = NULL,
                     height = 5, aspect = 1, orient = NULL, color = NULL,
                     palette = NULL, legend = "auto", facet_kws = NULL, ...) {
   fun <- switch(kind, strip = stripplot, box = boxplot, bar = barplot,
-                point = pointplot, count = countplot,
-                stop(sprintf("kind must be strip/box/bar/point/count, not '%s'", kind)))
+                point = pointplot, count = countplot, violin = violinplot,
+                boxen = boxenplot, swarm = swarmplot,
+                stop(sprintf("kind must be strip/swarm/box/violin/boxen/point/bar/count, not '%s'", kind)))
   args <- list(data = data, x = x, y = y, hue = hue, order = order,
                hue_order = hue_order, orient = orient, color = color,
                palette = palette, legend = legend, .facet_vars = c(row, col), ...)

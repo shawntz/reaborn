@@ -128,3 +128,67 @@ rb_format_value <- function(x, fmt) {
   if (fmt == "d") return(formatC(round(x), format = "d"))
   format(x)
 }
+
+#' Plot a hierarchically-clustered heatmap
+#'
+#' Port of `seaborn.clustermap`. Reorders rows/columns by hierarchical
+#' clustering and draws dendrograms alongside the heatmap. Returns a patchwork
+#' composition.
+#'
+#' @param data A matrix or data frame.
+#' @param method Linkage method (default `"average"`).
+#' @param metric Distance metric (default `"euclidean"`).
+#' @param z_score Normalize rows (`0`) or columns (`1`) to z-scores.
+#' @param standard_scale Scale rows (`0`) or columns (`1`) to `[0, 1]`.
+#' @param row_cluster,col_cluster Whether to cluster rows / columns.
+#' @param cmap Colormap (default `"rocket"`).
+#' @param dendrogram_ratio Fraction of the figure used by the dendrograms.
+#' @param ... Passed to [heatmap].
+#' @return A `reaborn_plot` (patchwork).
+#' @export
+clustermap <- function(data, method = "average", metric = "euclidean",
+                       z_score = NULL, standard_scale = NULL, row_cluster = TRUE,
+                       col_cluster = TRUE, cmap = NULL, dendrogram_ratio = 0.2, ...) {
+  if (!requireNamespace("patchwork", quietly = TRUE) ||
+      !requireNamespace("ggdendro", quietly = TRUE)) {
+    stop("clustermap() requires the 'patchwork' and 'ggdendro' packages.")
+  }
+  mat <- as.matrix(data)
+  storage.mode(mat) <- "double"
+  if (!is.null(z_score)) {
+    mat <- if (z_score == 0) t(scale(t(mat))) else scale(mat)
+  }
+  if (!is.null(standard_scale)) {
+    rng01 <- function(v) (v - min(v, na.rm = TRUE)) / (max(v, na.rm = TRUE) - min(v, na.rm = TRUE))
+    mat <- if (standard_scale == 0) t(apply(mat, 1, rng01)) else apply(mat, 2, rng01)
+  }
+
+  row_ord <- seq_len(nrow(mat)); col_ord <- seq_len(ncol(mat))
+  row_hc <- col_hc <- NULL
+  if (row_cluster) { row_hc <- stats::hclust(stats::dist(mat, method = metric), method = method); row_ord <- row_hc$order }
+  if (col_cluster) { col_hc <- stats::hclust(stats::dist(t(mat), method = metric), method = method); col_ord <- col_hc$order }
+  mat <- mat[row_ord, col_ord, drop = FALSE]
+
+  hm <- heatmap(mat, cmap = cmap, cbar = FALSE, ...)
+
+  blank <- ggplot2::theme_void()
+  col_dendro <- if (!is.null(col_hc)) {
+    seg <- ggdendro::dendro_data(col_hc)$segments
+    ggplot2::ggplot(seg) +
+      ggplot2::geom_segment(ggplot2::aes(x = .data$x, y = .data$y, xend = .data$xend, yend = .data$yend),
+                            colour = RB_BOX_LINECOLOR, linewidth = .rb_lw(1)) +
+      ggplot2::scale_x_continuous(expand = c(0, 0.5)) + blank
+  } else patchwork::plot_spacer()
+  row_dendro <- if (!is.null(row_hc)) {
+    seg <- ggdendro::dendro_data(row_hc)$segments
+    ggplot2::ggplot(seg) +
+      ggplot2::geom_segment(ggplot2::aes(x = .data$y, y = .data$x, xend = .data$yend, yend = .data$xend),
+                            colour = RB_BOX_LINECOLOR, linewidth = .rb_lw(1)) +
+      ggplot2::scale_x_reverse() + ggplot2::scale_y_continuous(expand = c(0, 0.5)) + blank
+  } else patchwork::plot_spacer()
+
+  r <- dendrogram_ratio
+  layout <- patchwork::plot_spacer() + col_dendro + row_dendro + hm +
+    patchwork::plot_layout(ncol = 2, nrow = 2, widths = c(r, 1 - r), heights = c(r, 1 - r))
+  reaborn_plot(layout, call = match.call())
+}
