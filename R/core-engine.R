@@ -35,9 +35,10 @@ rb_role_col <- function(base, vd, ref, role, internal) {
 
 #' @keywords internal
 rb_finish_plot <- function(p, xlab = NULL, ylab = NULL, legend = "auto",
-                           legend_data = NULL, any_legend = FALSE) {
-  # Continuous axes get matplotlib-style tick locations.
-  if (!is.null(legend_data)) {
+                           legend_data = NULL, any_legend = FALSE, breaks = TRUE) {
+  # Continuous axes get matplotlib-style tick locations (unless the caller has
+  # already added its own scales, e.g. histplot/kdeplot).
+  if (breaks && !is.null(legend_data)) {
     if (is.numeric(legend_data$x)) {
       p <- p + ggplot2::scale_x_continuous(breaks = rb_mpl_breaks())
     }
