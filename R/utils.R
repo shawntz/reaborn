@@ -32,6 +32,29 @@ rb_mpl_breaks <- function(n = 9) {
   }
 }
 
+# Choose the emptiest corner for an inside legend, approximating matplotlib's
+# "best" legend placement. Returns a list(position, inside) for ggplot2 theme().
+rb_best_legend_corner <- function(x, y) {
+  ok <- is.finite(x) & is.finite(y)
+  x <- x[ok]; y <- y[ok]
+  if (!length(x)) return(list(inside = c(0.98, 0.98)))
+  nx <- (x - min(x)) / (diff(range(x)) + 1e-9)
+  ny <- (y - min(y)) / (diff(range(y)) + 1e-9)
+  # Count points falling in each corner's quarter-box.
+  corners <- list(
+    "lower left"  = c(0.02, 0.02), "lower right" = c(0.98, 0.02),
+    "upper left"  = c(0.02, 0.98), "upper right" = c(0.98, 0.98)
+  )
+  counts <- c(
+    "lower left"  = sum(nx < 0.35 & ny < 0.35),
+    "lower right" = sum(nx > 0.65 & ny < 0.35),
+    "upper left"  = sum(nx < 0.35 & ny > 0.65),
+    "upper right" = sum(nx > 0.65 & ny > 0.65)
+  )
+  best <- names(which.min(counts))
+  list(inside = corners[[best]], name = best)
+}
+
 # Null-coalescing operator (also defined in rcmod-theme.R for load ordering; kept
 # here too so utils is self-contained).
 if (!exists("%||%")) {

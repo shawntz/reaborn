@@ -163,7 +163,8 @@ theme_seaborn <- function(style = "darkgrid", context = "notebook",
     legend.title = ggplot2::element_text(size = ctx$legend.title_fontsize, colour = text_col),
     legend.key = ggplot2::element_blank(),
     legend.background = ggplot2::element_blank(),
-    strip.background = ggplot2::element_rect(fill = facecol, colour = NA),
+    # seaborn facet titles are plain text above the panel, with no background box.
+    strip.background = ggplot2::element_blank(),
     strip.text = ggplot2::element_text(size = ctx$axes.labelsize, colour = text_col),
     complete = TRUE
   )
