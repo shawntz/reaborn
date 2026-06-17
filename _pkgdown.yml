@@ -86,7 +86,7 @@ navbar:
       href: articles/agents.html
     github:
       icon: fab fa-github
-      href: https://github.com/shawnschwartz/reaborn
+      href: https://github.com/shawntz/reaborn
       aria-label: GitHub
 
 articles:

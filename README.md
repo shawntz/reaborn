@@ -11,7 +11,7 @@ ggplot2 grammar of graphics — something seaborn can't do.
 
 ```r
 # install.packages("remotes")
-remotes::install_github("shawnschwartz/reaborn")
+remotes::install_github("shawntz/reaborn")
 library(reaborn)
 ```
 
