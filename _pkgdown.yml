@@ -17,6 +17,7 @@ template:
       alt: "reaborn — seaborn for R, built on ggplot2"
   includes:
     in_header: |
+      <script async src="https://cdn.seline.com/seline.js" data-token="f5ea81614dfd243"></script>
       <meta name="description" content="reaborn is seaborn for R: a faithful port of Python's seaborn built on ggplot2. Same API, identical defaults, pixel-matched plots — and every plot is a ggplot.">
       <meta name="keywords" content="seaborn for R, seaborn R package, seaborn in R, R equivalent of seaborn, seaborn ggplot2, ggplot2 seaborn theme, seaborn alternative R, python plots in R, python seaborn in R, seaborn palettes in R, seaborn theme for ggplot2, how to use seaborn in R, recreate seaborn plots in R, sns.scatterplot in R, seaborn vs ggplot2, statistical data visualization R, reaborn">
       <meta name="author" content="Shawn Schwartz">
