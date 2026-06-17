@@ -1,0 +1,12 @@
+# R
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+*.Rproj
+
+# Fidelity harness output (generated PNGs)
+tests/fidelity/out/
+
+# OS
+.DS_Store

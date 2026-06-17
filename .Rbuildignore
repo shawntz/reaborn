@@ -1,0 +1,7 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^data-raw$
+^tests/fidelity$
+^\.github$
+^LICENSE\.md$
+^\.gitignore$
