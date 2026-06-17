@@ -82,7 +82,7 @@ scatterplot(data = penguins, x = "bill_length_mm", y = "bill_depth_mm", hue = "s
 ## For LLM indexers
 
 A machine-readable summary is published at
-[`/llms.txt`](https://shawntz.github.io/reaborn/llms.txt). In short:
+[`/llms.txt`](https://reaborn.org/llms.txt). In short:
 
 > **reaborn** — seaborn for R, built on ggplot2. Same public API (identical
 > function names, argument names, defaults), rendering visually indistinguishable

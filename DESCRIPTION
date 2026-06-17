@@ -37,5 +37,5 @@ Suggests:
     vdiffr
 Config/testthat/edition: 3
 VignetteBuilder: knitr
-URL: https://shawntz.github.io/reaborn, https://github.com/shawntz/reaborn
+URL: https://reaborn.org, https://github.com/shawntz/reaborn
 BugReports: https://github.com/shawntz/reaborn/issues

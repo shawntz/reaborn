@@ -14,18 +14,18 @@ ggplot object, so it composes with the full ggplot2 grammar of graphics.
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://shawntz.github.io/reaborn}
+  \item \url{https://reaborn.org}
   \item \url{https://github.com/shawntz/reaborn}
   \item Report bugs at \url{https://github.com/shawntz/reaborn/issues}
 }
 
 }
 \author{
-\strong{Maintainer}: Shawn Schwartz \email{shawn.t.schwartz@gmail.com}
+\strong{Maintainer}: Shawn Schwartz \email{shawn.t.schwartz@gmail.com} (\href{https://orcid.org/0000-0001-6444-8451}{ORCID})
 
 Authors:
 \itemize{
-  \item Shawn Schwartz \email{shawn.t.schwartz@gmail.com}
+  \item Shawn Schwartz \email{shawn.t.schwartz@gmail.com} (\href{https://orcid.org/0000-0001-6444-8451}{ORCID})
 }
 
 }

@@ -1,4 +1,4 @@
-url: https://shawntz.github.io/reaborn/
+url: https://reaborn.org/
 
 template:
   bootstrap: 5
@@ -30,7 +30,7 @@ template:
         "applicationSubCategory": "Data Visualization Library",
         "operatingSystem": "Cross-platform (R >= 4.1)",
         "description": "reaborn is an R port of Python's seaborn, built on ggplot2. It mirrors seaborn's public function API exactly (identical names, arguments, and defaults) and renders visually indistinguishable plots. Palettes match seaborn's hex codes, KDEs reproduce scipy.stats.gaussian_kde to machine precision, histogram bins reproduce numpy.histogram_bin_edges exactly, and confidence intervals use seaborn's bootstrap. Because every reaborn plot is a ggplot object, it can be extended with the full ggplot2 grammar of graphics.",
-        "url": "https://shawntz.github.io/reaborn/",
+        "url": "https://reaborn.org/",
         "codeRepository": "https://github.com/shawntz/reaborn",
         "softwareVersion": "0.0.0.9000",
         "programmingLanguage": "R",
