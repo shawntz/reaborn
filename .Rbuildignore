@@ -12,3 +12,4 @@
 ^\.lintr$
 ^cran-comments\.md$
 ^CRAN-SUBMISSION$
+^index\.md$

@@ -91,7 +91,8 @@ reaborn implements all ~40 seaborn functions. A few entry points:
 | Multi-plot grids | `pairplot()`, `jointplot()` |
 
 See the [Gallery](gallery.html) for live examples of each, and the
-[function reference](../reference/index.html) for full argument lists.
+[function reference](https://shawntz.github.io/reaborn/reference/) for full
+argument lists.
 
 ## Coming from seaborn?
 
