@@ -30,6 +30,12 @@ horizontal histogram).}
 
 \item{expand_margins}{Reserved for compatibility.}
 
+\item{palette}{Palette for the hue mapping.}
+
+\item{hue_order}{Order of hue levels.}
+
+\item{hue_norm}{Normalization for a numeric hue.}
+
 \item{legend}{Show the legend.}
 
 \item{...}{Passed to the bar geom.}

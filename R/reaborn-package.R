@@ -9,7 +9,6 @@
 #' @import ggplot2
 #' @importFrom grDevices col2rgb rgb colorRamp convertColor
 #' @importFrom stats approx
-#' @rawNamespace exportPattern("^sns\\.")
 "_PACKAGE"
 
 # Internal package environment: holds the active theme/context state so that

@@ -14,8 +14,9 @@ ggplot object, so it composes with the full ggplot2 grammar of graphics.
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/shawnschwartz/reaborn}
-  \item Report bugs at \url{https://github.com/shawnschwartz/reaborn/issues}
+  \item \url{https://shawntz.github.io/reaborn}
+  \item \url{https://github.com/shawntz/reaborn}
+  \item Report bugs at \url{https://github.com/shawntz/reaborn/issues}
 }
 
 }

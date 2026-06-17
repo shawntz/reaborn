@@ -13,3 +13,6 @@ tests/fidelity/out/
 
 # Stray default graphics device output
 Rplots.pdf
+
+# Built pkgdown site (deployed by GitHub Actions)
+docs/

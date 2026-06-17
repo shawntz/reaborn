@@ -51,11 +51,15 @@ barplot(
 
 \item{width, gap}{Box width and gap between dodged boxes.}
 
+\item{dodge}{How to dodge bars by hue (\code{"auto"}, \code{TRUE}, or \code{FALSE}).}
+
 \item{capsize}{Width of the error bar caps.}
 
 \item{err_kws}{Passed to the error bar geom.}
 
 \item{legend}{Legend control.}
+
+\item{.facet_vars}{Internal; facet columns forwarded by the figure-level dispatchers (catplot/displot/relplot). Not intended for direct use.}
 
 \item{...}{Passed to the bar geom.}
 }

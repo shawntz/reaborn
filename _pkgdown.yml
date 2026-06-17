@@ -1,0 +1,131 @@
+url: https://shawntz.github.io/reaborn/
+
+template:
+  bootstrap: 5
+  light-switch: true
+  math-rendering: katex
+  bslib:
+    primary: "#4C72B0"        # seaborn "deep" blue — the brand color
+    border-radius: 0.5rem
+    btn-border-radius: 0.5rem
+    base_font: {google: "Inter"}
+    heading_font: {google: "Inter"}
+    code_font: {google: "JetBrains Mono"}
+  opengraph:
+    image:
+      src: man/figures/card.png
+      alt: "reaborn — seaborn for R, built on ggplot2"
+  includes:
+    in_header: |
+      <meta name="description" content="reaborn is seaborn for R: a faithful port of Python's seaborn built on ggplot2. Same API, identical defaults, pixel-matched plots — and every plot is a ggplot.">
+      <meta name="keywords" content="seaborn for R, seaborn R package, seaborn in R, R equivalent of seaborn, seaborn ggplot2, ggplot2 seaborn theme, seaborn alternative R, python plots in R, python seaborn in R, seaborn palettes in R, seaborn theme for ggplot2, how to use seaborn in R, recreate seaborn plots in R, sns.scatterplot in R, seaborn vs ggplot2, statistical data visualization R, reaborn">
+      <meta name="author" content="Shawn Schwartz">
+      <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "reaborn",
+        "alternateName": "seaborn for R",
+        "applicationCategory": "DeveloperApplication",
+        "applicationSubCategory": "Data Visualization Library",
+        "operatingSystem": "Cross-platform (R >= 4.1)",
+        "description": "reaborn is an R port of Python's seaborn, built on ggplot2. It mirrors seaborn's public function API exactly (identical names, arguments, and defaults) and renders visually indistinguishable plots. Palettes match seaborn's hex codes, KDEs reproduce scipy.stats.gaussian_kde to machine precision, histogram bins reproduce numpy.histogram_bin_edges exactly, and confidence intervals use seaborn's bootstrap. Because every reaborn plot is a ggplot object, it can be extended with the full ggplot2 grammar of graphics.",
+        "url": "https://shawntz.github.io/reaborn/",
+        "codeRepository": "https://github.com/shawntz/reaborn",
+        "softwareVersion": "0.0.0.9000",
+        "programmingLanguage": "R",
+        "runtimePlatform": "R",
+        "license": "https://opensource.org/licenses/BSD-3-Clause",
+        "softwareRequirements": "R (>= 4.1), ggplot2 (>= 4.0.0)",
+        "keywords": "seaborn, R, ggplot2, data visualization, statistical graphics, seaborn for R, python plots in R",
+        "author": {"@type": "Person", "name": "Shawn Schwartz", "email": "shawn.t.schwartz@gmail.com"},
+        "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+      }
+      </script>
+      <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {"@type": "Question", "name": "Is there a seaborn for R?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. reaborn is a faithful R port of Python's seaborn, built on ggplot2. It implements all ~40 seaborn functions (scatterplot, lineplot, histplot, kdeplot, boxplot, violinplot, barplot, heatmap, pairplot, jointplot, and more) with identical names, arguments, and defaults."}},
+          {"@type": "Question", "name": "How do I use seaborn in R?", "acceptedAnswer": {"@type": "Answer", "text": "Install reaborn and call library(reaborn). That sets seaborn's theme and palette globally (like sns.set_theme()) and exposes sns.-prefixed aliases, so sns.scatterplot(data=penguins, x='bill_length_mm', y='bill_depth_mm', hue='species') runs verbatim in R."}},
+          {"@type": "Question", "name": "Can I use seaborn plots with ggplot2?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Every reaborn plot is a real ggplot object, so you can extend it with the full ggplot2 grammar of graphics, e.g. scatterplot(...) + facet_wrap(~g) + scale_x_log10() + theme(...). This is something seaborn itself cannot do."}},
+          {"@type": "Question", "name": "Do reaborn plots look exactly like seaborn?", "acceptedAnswer": {"@type": "Answer", "text": "They are designed to be visually indistinguishable. Palettes match seaborn's hex codes to the digit, KDEs reproduce scipy.stats.gaussian_kde to machine precision, histogram bins match numpy.histogram_bin_edges exactly, and confidence intervals use seaborn's bootstrap rather than ggplot's analytic standard error."}}
+        ]
+      }
+      </script>
+
+development:
+  mode: auto
+
+home:
+  title: reaborn — seaborn, the R way
+  description: >
+    An R port of Python's seaborn. reaborn mirrors seaborn's function API and
+    produces visually indistinguishable plots using ggplot2 — paste seaborn code
+    into R and get the same plot, then extend it with the grammar of graphics.
+  sidebar:
+    structure: [links, license, citation, authors, dev]
+
+navbar:
+  structure:
+    left: [intro, gallery, comparison, agents, reference, news]
+    right: [search, github, lightswitch]
+  components:
+    intro:
+      text: Get started
+      href: articles/reaborn.html
+    gallery:
+      text: Gallery
+      href: articles/gallery.html
+    comparison:
+      text: vs seaborn
+      href: articles/comparison.html
+    agents:
+      text: For AI agents
+      href: articles/agents.html
+    github:
+      icon: fab fa-github
+      href: https://github.com/shawnschwartz/reaborn
+      aria-label: GitHub
+
+articles:
+  - title: Articles
+    navbar: ~
+    contents:
+      - reaborn
+      - gallery
+      - comparison
+      - agents
+
+reference:
+  - title: Relational plots
+    desc: Visualize statistical relationships between numeric variables.
+    contents: [scatterplot, lineplot, relplot]
+  - title: Distribution plots
+    desc: Visualize univariate and bivariate distributions.
+    contents: [histplot, kdeplot, ecdfplot, rugplot, displot]
+  - title: Categorical plots
+    desc: Visualize one numeric and one (or more) categorical variables.
+    contents: [boxplot, violinplot, boxenplot, stripplot, swarmplot, barplot, pointplot, countplot, catplot]
+  - title: Regression plots
+    desc: Visualize linear and other model fits with bootstrap confidence bands.
+    contents: [regplot, residplot, lmplot]
+  - title: Matrix plots
+    desc: Visualize matrices as color-encoded heatmaps and clustered maps.
+    contents: [heatmap, clustermap]
+  - title: Multi-plot grids
+    desc: Compose grids of plots for pairwise and joint relationships.
+    contents: [pairplot, jointplot, FacetGrid]
+  - title: Color palettes
+    desc: Build and use seaborn's color palettes (matched to the hex digit).
+    contents: [color_palette, hls_palette, husl_palette, cubehelix_palette, light_palette, dark_palette, diverging_palette, blend_palette, mpl_palette, set_color_codes]
+  - title: Themes & contexts
+    desc: Control the seaborn look — styles, scaling contexts, and despining.
+    contents: [set_theme, set_style, set_context, axes_style, plotting_context, theme_seaborn, despine, move_legend, reset_defaults, set_palette]
+  - title: Datasets & utilities
+    desc: Load example datasets and manipulate colors.
+    contents: [load_dataset, get_dataset_names, desaturate, saturate, set_hls_values, palplot, dogplot]
+  - title: Python compatibility
+    desc: Helpers that let pasted seaborn Python run unchanged.
+    contents: ["python-literals", "sns-aliases"]

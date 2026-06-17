@@ -54,6 +54,10 @@
 #' @param common_norm Normalize densities across all groups together.
 #' @param inner_kws Passed to the inner annotation geoms.
 #' @return A `reaborn_plot`.
+#' @param dodge How to dodge violins by hue (`"auto"`, `TRUE`, or `FALSE`).
+#' @param linewidth Outline width.
+#' @param linecolor Outline color (`"auto"` for seaborn's gray).
+#' @param .facet_vars Internal; facet columns forwarded by the figure-level dispatchers (catplot/displot/relplot). Not intended for direct use.
 #' @export
 violinplot <- function(data = NULL, x = NULL, y = NULL, hue = NULL, order = NULL,
                        hue_order = NULL, orient = NULL, color = NULL, palette = NULL,
@@ -221,6 +225,9 @@ rb_letter_values <- function(x, k_depth = "tukey", outlier_prop = 0.007, trust_a
 #' @param outlier_prop,trust_alpha Tail-rule parameters.
 #' @param showfliers Draw outlier points.
 #' @return A `reaborn_plot`.
+#' @param linewidth Box outline width.
+#' @param linecolor Box outline color.
+#' @param .facet_vars Internal; facet columns forwarded by the figure-level dispatchers (catplot/displot/relplot). Not intended for direct use.
 #' @export
 boxenplot <- function(data = NULL, x = NULL, y = NULL, hue = NULL, order = NULL,
                       hue_order = NULL, orient = NULL, color = NULL, palette = NULL,
@@ -306,6 +313,9 @@ boxenplot <- function(data = NULL, x = NULL, y = NULL, hue = NULL, order = NULL,
 #' @inheritParams stripplot
 #' @param ... Passed to [ggbeeswarm::geom_beeswarm].
 #' @return A `reaborn_plot`.
+#' @param color Single color override.
+#' @param palette Palette for the hue mapping.
+#' @param .facet_vars Internal; facet columns forwarded by the figure-level dispatchers (catplot/displot/relplot). Not intended for direct use.
 #' @export
 swarmplot <- function(data = NULL, x = NULL, y = NULL, hue = NULL, order = NULL,
                       hue_order = NULL, dodge = FALSE, orient = NULL, color = NULL,

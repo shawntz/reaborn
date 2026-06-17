@@ -54,6 +54,12 @@ violinplot(
 
 \item{width, gap}{Box width and gap between dodged boxes.}
 
+\item{dodge}{How to dodge violins by hue (\code{"auto"}, \code{TRUE}, or \code{FALSE}).}
+
+\item{linewidth}{Outline width.}
+
+\item{linecolor}{Outline color (\code{"auto"} for seaborn's gray).}
+
 \item{cut, gridsize, bw_method, bw_adjust}{KDE controls.}
 
 \item{density_norm}{\code{"area"}, \code{"count"}, or \code{"width"}.}
@@ -63,6 +69,8 @@ violinplot(
 \item{legend}{Legend control.}
 
 \item{inner_kws}{Passed to the inner annotation geoms.}
+
+\item{.facet_vars}{Internal; facet columns forwarded by the figure-level dispatchers (catplot/displot/relplot). Not intended for direct use.}
 
 \item{...}{Passed to \link[ggplot2:geom_boxplot]{ggplot2::geom_boxplot}.}
 }

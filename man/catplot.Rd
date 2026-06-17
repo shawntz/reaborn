@@ -46,11 +46,19 @@ catplot(
 
 \item{estimator, errorbar, n_boot, seed}{Aggregation settings (bar/point).}
 
+\item{units}{Unit grouping for bootstrap (bar/point kinds).}
+
+\item{weights}{Observation weights (bar/point kinds).}
+
 \item{order, hue_order}{Level orderings.}
 
 \item{height, aspect}{Facet sizing (stored as attributes).}
 
 \item{orient}{\code{"v"}, \code{"h"}, or \code{NULL} to infer.}
+
+\item{color}{Single color override.}
+
+\item{palette}{Palette for the hue mapping.}
 
 \item{legend}{Legend control.}
 

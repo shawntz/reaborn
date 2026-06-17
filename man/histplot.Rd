@@ -68,6 +68,8 @@ horizontal histogram).}
 
 \item{legend}{Show the legend.}
 
+\item{.facet_vars}{Internal; facet columns forwarded by the figure-level dispatchers (catplot/displot/relplot). Not intended for direct use.}
+
 \item{...}{Passed to the bar geom.}
 }
 \value{

@@ -41,6 +41,8 @@ boxplot(
 
 \item{color, palette, saturation, fill}{Color controls (saturation default 0.75).}
 
+\item{dodge}{How to dodge boxes by hue (\code{"auto"}, \code{TRUE}, or \code{FALSE}).}
+
 \item{width, gap}{Box width and gap between dodged boxes.}
 
 \item{whis}{Whisker length in IQR units (default 1.5).}
@@ -48,6 +50,8 @@ boxplot(
 \item{linecolor, linewidth, fliersize}{Line and outlier styling.}
 
 \item{legend}{Legend control.}
+
+\item{.facet_vars}{Internal; facet columns forwarded by the figure-level dispatchers (catplot/displot/relplot). Not intended for direct use.}
 
 \item{...}{Passed to \link[ggplot2:geom_boxplot]{ggplot2::geom_boxplot}.}
 }

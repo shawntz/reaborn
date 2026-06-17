@@ -57,6 +57,8 @@ semantics.}
 
 \item{dashes, markers}{Style mapping controls.}
 
+\item{style_order}{Order of style levels.}
+
 \item{legend}{\code{"auto"}, \code{"brief"}, \code{"full"}, or \code{FALSE}.}
 
 \item{kind}{\code{"scatter"} or \code{"line"}.}

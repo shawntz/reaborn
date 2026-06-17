@@ -43,6 +43,10 @@ pointplot(
 
 \item{units, weights}{Bootstrap structure / weights (units reserved).}
 
+\item{color}{Single color override.}
+
+\item{palette}{Palette for the hue mapping.}
+
 \item{markers, linestyles}{Marker and line styling.}
 
 \item{dodge}{Dodge points by hue.}
@@ -54,6 +58,8 @@ pointplot(
 \item{legend}{Legend control.}
 
 \item{err_kws}{Passed to the error bar geom.}
+
+\item{.facet_vars}{Internal; facet columns forwarded by the figure-level dispatchers (catplot/displot/relplot). Not intended for direct use.}
 
 \item{...}{Passed to the bar geom.}
 }

@@ -65,6 +65,8 @@
 #' @param truncate Limit the regression line to the data range.
 #' @param ... Reserved.
 #' @return A `reaborn_plot`.
+#' @param x_jitter Uniform jitter added to x for display only.
+#' @param y_jitter Uniform jitter added to y for display only.
 #' @export
 regplot <- function(data = NULL, x = NULL, y = NULL, order = 1, logistic = FALSE,
                     lowess = FALSE, robust = FALSE, logx = FALSE, ci = 95,
@@ -119,6 +121,7 @@ regplot <- function(data = NULL, x = NULL, y = NULL, order = 1, logistic = FALSE
 #' @inheritParams regplot
 #' @param lowess Add a lowess smooth of the residuals.
 #' @return A `reaborn_plot`.
+#' @param robust Fit a robust regression when computing residuals.
 #' @export
 residplot <- function(data = NULL, x = NULL, y = NULL, lowess = FALSE, order = 1,
                       robust = FALSE, color = NULL, scatter_kws = NULL,

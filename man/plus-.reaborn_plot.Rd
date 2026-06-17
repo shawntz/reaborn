@@ -18,3 +18,4 @@ A reaborn plot.
 Ensures \verb{reaborn_plot + <ggplot component>} stays a \code{reaborn_plot} so the
 composed object keeps printing through reaborn and remains chainable.
 }
+\keyword{internal}

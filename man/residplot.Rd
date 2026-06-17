@@ -26,6 +26,8 @@ residplot(
 
 \item{order}{Polynomial order for the fit (default 1, linear).}
 
+\item{robust}{Fit a robust regression when computing residuals.}
+
 \item{color}{Color for points and line (default the first palette color).}
 
 \item{scatter_kws, line_kws}{Lists of extra args for the point / line layers.}

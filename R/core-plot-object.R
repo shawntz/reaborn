@@ -30,6 +30,7 @@ reaborn_plot <- function(plot, call = NULL) {
 #' @param e1 A reaborn plot.
 #' @param e2 A ggplot component (geom, scale, theme, facet, ...).
 #' @return A reaborn plot.
+#' @keywords internal
 #' @export
 "+.reaborn_plot" <- function(e1, e2) {
   res <- NextMethod()

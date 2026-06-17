@@ -45,6 +45,8 @@ horizontal histogram).}
 
 \item{rug}{Add a marginal rug.}
 
+\item{rug_kws}{Arguments forwarded to the rug layer when \code{rug = TRUE}.}
+
 \item{palette, hue_order, hue_norm, color}{Color controls.}
 
 \item{legend}{Show the legend.}

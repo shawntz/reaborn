@@ -68,7 +68,7 @@ cubehelix_palette(
 
 \item{desat}{Proportion to desaturate each color by.}
 
-\item{as_cmap}{If \code{TRUE}, return a continuous \link{reaborn_cmap}.}
+\item{as_cmap}{If \code{TRUE}, return a continuous colormap (a \code{reaborn_cmap}).}
 
 \item{h, l, s}{Hue, lightness, saturation anchors in \verb{[0, 1]}.}
 

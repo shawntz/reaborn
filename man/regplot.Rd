@@ -51,6 +51,10 @@ regplot(
 
 \item{truncate}{Limit the regression line to the data range.}
 
+\item{x_jitter}{Uniform jitter added to x for display only.}
+
+\item{y_jitter}{Uniform jitter added to y for display only.}
+
 \item{...}{Reserved.}
 }
 \value{

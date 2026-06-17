@@ -36,11 +36,17 @@ swarmplot(
 
 \item{orient}{\code{"v"}, \code{"h"}, or \code{NULL} to infer.}
 
+\item{color}{Single color override.}
+
+\item{palette}{Palette for the hue mapping.}
+
 \item{size}{Marker size (seaborn default 5).}
 
 \item{edgecolor, linewidth}{Marker edge styling.}
 
 \item{legend}{Legend control.}
+
+\item{.facet_vars}{Internal; facet columns forwarded by the figure-level dispatchers (catplot/displot/relplot). Not intended for direct use.}
 
 \item{...}{Passed to \link[ggbeeswarm:geom_beeswarm]{ggbeeswarm::geom_beeswarm}.}
 }

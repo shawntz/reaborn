@@ -1,0 +1,119 @@
+/* reaborn pkgdown custom styling — brand: seaborn "deep" palette */
+
+$rb-blue: #4C72B0;
+$rb-orange: #DD8452;
+$rb-green: #55A868;
+
+/* ---- Hero ---- */
+.rb-hero {
+  text-align: center;
+  padding: 2.5rem 1rem 1.5rem;
+  margin-bottom: 1rem;
+
+  h1 {
+    font-size: clamp(2.4rem, 6vw, 3.6rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    border-bottom: none;
+    background: linear-gradient(90deg, $rb-blue, $rb-green);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+.rb-lead {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  max-width: 760px;
+  margin: 1.2rem auto 1.6rem;
+  color: var(--bs-secondary-color, #555);
+}
+
+.rb-cta {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  .btn { padding: 0.6rem 1.6rem; font-weight: 600; }
+}
+
+.rb-center { text-align: center; margin: 1.5rem 0; }
+
+/* ---- Side-by-side comparison figures ---- */
+.rb-compare {
+  margin: 1.5rem auto 2rem;
+  max-width: 880px;
+  text-align: center;
+
+  img {
+    width: 100%;
+    border-radius: 0.75rem;
+    box-shadow: 0 6px 28px rgba(0, 0, 0, 0.10);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+  }
+  figcaption {
+    margin-top: 0.75rem;
+    font-size: 0.95rem;
+    color: var(--bs-secondary-color, #666);
+  }
+}
+
+/* ---- Feature cards ---- */
+.rb-features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.1rem;
+  margin: 1.5rem 0 2rem;
+}
+
+.rb-card {
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 0.75rem;
+  padding: 1.25rem 1.35rem;
+  background: var(--bs-body-bg);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+  border-top: 3px solid $rb-blue;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(76, 114, 176, 0.14);
+    border-color: rgba(76, 114, 176, 0.4);
+  }
+  h3 {
+    font-size: 1.12rem;
+    font-weight: 700;
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    border-bottom: none;
+  }
+  p { margin-bottom: 0; font-size: 0.96rem; line-height: 1.5; }
+}
+
+/* alternate the accent color across the grid for a seaborn-palette feel */
+.rb-features .rb-card:nth-child(2) { border-top-color: $rb-orange; }
+.rb-features .rb-card:nth-child(3) { border-top-color: $rb-green; }
+.rb-features .rb-card:nth-child(4) { border-top-color: #C44E52; }
+.rb-features .rb-card:nth-child(5) { border-top-color: #8172B3; }
+.rb-features .rb-card:nth-child(6) { border-top-color: #64B5CD; }
+
+/* ---- Gallery grid ---- */
+.rb-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1rem;
+  margin: 1.25rem 0;
+
+  img {
+    width: 100%;
+    border-radius: 0.6rem;
+    box-shadow: 0 3px 16px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    transition: transform 0.15s ease;
+  }
+  a:hover img { transform: scale(1.015); }
+}
+
+/* Comparison label badge used inside articles */
+.rb-badge-reaborn { color: $rb-blue; font-weight: 700; }
+.rb-badge-seaborn { color: #5a5a5a; font-weight: 700; }

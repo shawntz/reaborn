@@ -15,7 +15,6 @@ RoxygenNote: 8.0.0
 Depends:
     R (>= 4.1)
 Imports:
-    farver,
     ggplot2 (>= 4.0.0),
     grDevices,
     grid,
@@ -27,10 +26,14 @@ Suggests:
     ggbeeswarm,
     ggdendro,
     jsonlite,
+    knitr,
     MASS,
     patchwork,
+    ragg,
+    rmarkdown,
     testthat (>= 3.0.0),
     vdiffr
 Config/testthat/edition: 3
-URL: https://github.com/shawnschwartz/reaborn
-BugReports: https://github.com/shawnschwartz/reaborn/issues
+VignetteBuilder: knitr
+URL: https://shawntz.github.io/reaborn, https://github.com/shawntz/reaborn
+BugReports: https://github.com/shawntz/reaborn/issues

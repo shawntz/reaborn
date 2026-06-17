@@ -34,7 +34,15 @@ horizontal histogram).}
 
 \item{complementary}{Plot the complementary ECDF (1 - F).}
 
+\item{palette}{Palette for the hue mapping.}
+
+\item{hue_order}{Order of hue levels.}
+
+\item{hue_norm}{Normalization for a numeric hue.}
+
 \item{legend}{Show the legend.}
+
+\item{.facet_vars}{Internal; facet columns forwarded by the figure-level dispatchers (catplot/displot/relplot). Not intended for direct use.}
 
 \item{...}{Passed to the bar geom.}
 }

@@ -51,6 +51,8 @@ semantics.}
 
 \item{dashes, markers}{Style mapping controls.}
 
+\item{style_order}{Order of style levels.}
+
 \item{estimator}{Aggregation function name or callable (default \code{"mean"};
 \code{NULL} to plot all observations).}
 
@@ -62,6 +64,8 @@ semantics.}
 \item{orient, sort, err_style, err_kws}{See seaborn.}
 
 \item{legend}{\code{"auto"}, \code{"brief"}, \code{"full"}, or \code{FALSE}.}
+
+\item{.facet_vars}{Internal; facet columns forwarded by the figure-level dispatchers (catplot/displot/relplot). Not intended for direct use.}
 
 \item{...}{Passed to \link[ggplot2:geom_line]{ggplot2::geom_line}.}
 }

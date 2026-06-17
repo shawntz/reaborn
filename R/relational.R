@@ -93,6 +93,8 @@ RB_SCATTER_STROKE <- 0.3
 #' @param orient,sort,err_style,err_kws See seaborn.
 #' @param ... Passed to [ggplot2::geom_line].
 #' @return A `reaborn_plot`.
+#' @param style_order Order of style levels.
+#' @param .facet_vars Internal; facet columns forwarded by the figure-level dispatchers (catplot/displot/relplot). Not intended for direct use.
 #' @export
 lineplot <- function(data = NULL, x = NULL, y = NULL, hue = NULL, size = NULL,
                      style = NULL, units = NULL, weights = NULL, palette = NULL,
@@ -234,6 +236,7 @@ rb_line_default_width <- function() .rb_lw(SEABORN_DEFAULTS$linewidth)
 #'   attributes used as defaults when saving).
 #' @param facet_kws Reserved for compatibility.
 #' @return A `reaborn_plot`.
+#' @param style_order Order of style levels.
 #' @export
 relplot <- function(data = NULL, x = NULL, y = NULL, hue = NULL, size = NULL,
                     style = NULL, units = NULL, weights = NULL, row = NULL,

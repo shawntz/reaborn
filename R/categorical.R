@@ -98,6 +98,8 @@ RB_BOX_LINECOLOR <- "#4C4C4C"
 #' @param legend Legend control.
 #' @param ... Passed to [ggplot2::geom_boxplot].
 #' @return A `reaborn_plot`.
+#' @param dodge How to dodge boxes by hue (`"auto"`, `TRUE`, or `FALSE`).
+#' @param .facet_vars Internal; facet columns forwarded by the figure-level dispatchers (catplot/displot/relplot). Not intended for direct use.
 #' @export
 boxplot <- function(data = NULL, x = NULL, y = NULL, hue = NULL, order = NULL,
                     hue_order = NULL, orient = NULL, color = NULL, palette = NULL,
@@ -140,6 +142,8 @@ boxplot <- function(data = NULL, x = NULL, y = NULL, hue = NULL, order = NULL,
 #' @param stat `"count"`, `"percent"`, `"proportion"`, or `"probability"`.
 #' @param ... Passed to the bar geom.
 #' @return A `reaborn_plot`.
+#' @param dodge How to dodge bars by hue (`"auto"`, `TRUE`, or `FALSE`).
+#' @param .facet_vars Internal; facet columns forwarded by the figure-level dispatchers (catplot/displot/relplot). Not intended for direct use.
 #' @export
 countplot <- function(data = NULL, x = NULL, y = NULL, hue = NULL, order = NULL,
                       hue_order = NULL, orient = NULL, color = NULL, palette = NULL,
@@ -214,6 +218,8 @@ rb_cat_aggregate <- function(s, estimator, errorbar, n_boot, seed) {
 #' @param err_kws Passed to the error bar geom.
 #' @param ... Passed to the bar geom.
 #' @return A `reaborn_plot`.
+#' @param dodge How to dodge bars by hue (`"auto"`, `TRUE`, or `FALSE`).
+#' @param .facet_vars Internal; facet columns forwarded by the figure-level dispatchers (catplot/displot/relplot). Not intended for direct use.
 #' @export
 barplot <- function(data = NULL, x = NULL, y = NULL, hue = NULL, order = NULL,
                     hue_order = NULL, estimator = "mean", errorbar = list("ci", 95),
@@ -270,6 +276,9 @@ barplot <- function(data = NULL, x = NULL, y = NULL, hue = NULL, order = NULL,
 #' @param edgecolor,linewidth Marker edge styling.
 #' @param ... Passed to the point geom.
 #' @return A `reaborn_plot`.
+#' @param color Single color override.
+#' @param palette Palette for the hue mapping.
+#' @param .facet_vars Internal; facet columns forwarded by the figure-level dispatchers (catplot/displot/relplot). Not intended for direct use.
 #' @export
 stripplot <- function(data = NULL, x = NULL, y = NULL, hue = NULL, order = NULL,
                       hue_order = NULL, jitter = TRUE, dodge = FALSE, orient = NULL,
@@ -308,6 +317,9 @@ stripplot <- function(data = NULL, x = NULL, y = NULL, hue = NULL, order = NULL,
 #' @param markers,linestyles Marker and line styling.
 #' @param dodge Dodge points by hue.
 #' @return A `reaborn_plot`.
+#' @param color Single color override.
+#' @param palette Palette for the hue mapping.
+#' @param .facet_vars Internal; facet columns forwarded by the figure-level dispatchers (catplot/displot/relplot). Not intended for direct use.
 #' @export
 pointplot <- function(data = NULL, x = NULL, y = NULL, hue = NULL, order = NULL,
                       hue_order = NULL, estimator = "mean", errorbar = list("ci", 95),
@@ -367,6 +379,10 @@ pointplot <- function(data = NULL, x = NULL, y = NULL, hue = NULL, order = NULL,
 #' @param facet_kws Reserved for compatibility.
 #' @param ... Passed to the underlying plotter.
 #' @return A `reaborn_plot`.
+#' @param units Unit grouping for bootstrap (bar/point kinds).
+#' @param weights Observation weights (bar/point kinds).
+#' @param color Single color override.
+#' @param palette Palette for the hue mapping.
 #' @export
 catplot <- function(data = NULL, x = NULL, y = NULL, hue = NULL, row = NULL,
                     col = NULL, kind = "strip", estimator = "mean",

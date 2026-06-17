@@ -176,7 +176,7 @@ set_hls_values <- function(color, h = NULL, l = NULL, s = NULL) {
 #' @param palette `NULL`, a string, or a sequence of colors.
 #' @param n_colors Number of colors. If `NULL`, depends on `palette`.
 #' @param desat Proportion to desaturate each color by.
-#' @param as_cmap If `TRUE`, return a continuous [reaborn_cmap].
+#' @param as_cmap If `TRUE`, return a continuous colormap (a `reaborn_cmap`).
 #' @return A character vector of hex colors, or a `reaborn_cmap`.
 #' @export
 color_palette <- function(palette = NULL, n_colors = NULL, desat = NULL, as_cmap = FALSE) {

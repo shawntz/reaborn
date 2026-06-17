@@ -45,6 +45,10 @@ boxenplot(
 
 \item{width, gap}{Box width and gap between dodged boxes.}
 
+\item{linewidth}{Box outline width.}
+
+\item{linecolor}{Box outline color.}
+
 \item{width_method}{\code{"exponential"}, \code{"linear"}, or \code{"area"}.}
 
 \item{k_depth}{\code{"tukey"}, \code{"proportion"}, \code{"trustworthy"}, \code{"full"}, or an int.}
@@ -54,6 +58,8 @@ boxenplot(
 \item{showfliers}{Draw outlier points.}
 
 \item{legend}{Legend control.}
+
+\item{.facet_vars}{Internal; facet columns forwarded by the figure-level dispatchers (catplot/displot/relplot). Not intended for direct use.}
 
 \item{...}{Passed to \link[ggplot2:geom_boxplot]{ggplot2::geom_boxplot}.}
 }

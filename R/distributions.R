@@ -52,6 +52,7 @@
 #' @param legend Show the legend.
 #' @param ... Passed to the bar geom.
 #' @return A `reaborn_plot`.
+#' @param .facet_vars Internal; facet columns forwarded by the figure-level dispatchers (catplot/displot/relplot). Not intended for direct use.
 #' @export
 histplot <- function(data = NULL, x = NULL, y = NULL, hue = NULL, weights = NULL,
                      stat = "count", bins = "auto", binwidth = NULL, binrange = NULL,
@@ -266,6 +267,8 @@ rb_add_kde_overlay <- function(p, vals, groups, levels, colors, stat, horizontal
 #' @param gridsize,cut,clip KDE grid controls.
 #' @param levels,thresh Bivariate contour levels and density threshold.
 #' @return A `reaborn_plot`.
+#' @param log_scale Reserved for compatibility.
+#' @param .facet_vars Internal; facet columns forwarded by the figure-level dispatchers (catplot/displot/relplot). Not intended for direct use.
 #' @export
 kdeplot <- function(data = NULL, x = NULL, y = NULL, hue = NULL, weights = NULL,
                     palette = NULL, hue_order = NULL, hue_norm = NULL, color = NULL,
@@ -458,6 +461,10 @@ rb_iso_proportion_levels <- function(z, levels, thresh = 0.05) {
 #' @param stat `"proportion"`, `"count"`, or `"percent"`.
 #' @param complementary Plot the complementary ECDF (1 - F).
 #' @return A `reaborn_plot`.
+#' @param palette Palette for the hue mapping.
+#' @param hue_order Order of hue levels.
+#' @param hue_norm Normalization for a numeric hue.
+#' @param .facet_vars Internal; facet columns forwarded by the figure-level dispatchers (catplot/displot/relplot). Not intended for direct use.
 #' @export
 ecdfplot <- function(data = NULL, x = NULL, y = NULL, hue = NULL, weights = NULL,
                      stat = "proportion", complementary = FALSE, palette = NULL,
@@ -533,6 +540,9 @@ ecdfplot <- function(data = NULL, x = NULL, y = NULL, hue = NULL, weights = NULL
 #' @param height Tick height as a fraction of the axis (default `0.025`).
 #' @param expand_margins Reserved for compatibility.
 #' @return A `reaborn_plot`.
+#' @param palette Palette for the hue mapping.
+#' @param hue_order Order of hue levels.
+#' @param hue_norm Normalization for a numeric hue.
 #' @export
 rugplot <- function(data = NULL, x = NULL, y = NULL, hue = NULL, height = 0.025,
                     expand_margins = TRUE, palette = NULL, hue_order = NULL,
@@ -576,6 +586,7 @@ rugplot <- function(data = NULL, x = NULL, y = NULL, hue = NULL, height = 0.025,
 #' @param height,aspect Facet size controls (stored as attributes).
 #' @param facet_kws Reserved for compatibility.
 #' @return A `reaborn_plot`.
+#' @param rug_kws Arguments forwarded to the rug layer when `rug = TRUE`.
 #' @export
 displot <- function(data = NULL, x = NULL, y = NULL, hue = NULL, row = NULL,
                     col = NULL, weights = NULL, kind = "hist", rug = FALSE,
