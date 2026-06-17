@@ -59,6 +59,10 @@ template:
 development:
   mode: auto
 
+authors:
+  Shawn Schwartz:
+    href: https://shawnschwartz.com
+
 home:
   title: reaborn — seaborn, the R way
   description: >
