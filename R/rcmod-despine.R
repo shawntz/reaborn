@@ -76,8 +76,10 @@ move_legend <- function(obj = NULL, loc = "best", ...) {
   # in matplotlib, but they must be a finite pair.
   if (is.numeric(loc)) {
     if (length(loc) != 2L || !all(is.finite(loc))) {
-      stop("`loc` must be a length-2 numeric vector of relative coordinates ",
-           "(e.g. c(0.5, 0.5)) or a matplotlib location string.")
+      stop(
+        "`loc` must be a length-2 numeric vector of relative coordinates ",
+        "(e.g. c(0.5, 0.5)) or a matplotlib location string."
+      )
     }
     return(list(position = loc, justification = c(0, 0)))
   }
