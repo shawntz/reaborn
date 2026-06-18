@@ -129,7 +129,9 @@ save_panel(
 mat <- tapply(fl$passengers, list(fl$month, fl$year), function(x) x[1])
 save_panel(
   heatmap(mat, annot = TRUE, fmt = "d", linewidths = 0.5),
-  "reaborn_heatmap.png", 8, 6
+  "reaborn_heatmap.png",
+  8,
+  6
 )
 
 cat("DONE\n")
