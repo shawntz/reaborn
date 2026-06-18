@@ -55,12 +55,17 @@ rb_finish_plot <- function(p, xlab = NULL, ylab = NULL, legend = "auto",
   } else if (any_legend && !is.null(legend_data) &&
              is.numeric(legend_data$x) && is.numeric(legend_data$y)) {
     corner <- rb_best_legend_corner(legend_data$x, legend_data$y)
+    # Match seaborn: the legend frame inherits the active style's axes facecolor
+    # (gray in darkgrid, white otherwise), not a hardcoded white box. The key
+    # stays transparent so that frame shows through behind each glyph.
+    st <- axes_style()
+    ctx <- plotting_context()
     p <- p + ggplot2::theme(
       legend.position = "inside",
       legend.position.inside = corner$inside,
       legend.justification.inside = corner$inside,
-      legend.background = ggplot2::element_rect(fill = "white", colour = NA),
-      legend.key = ggplot2::element_rect(fill = "white", colour = NA)
+      legend.background = .rb_legend_bg(.rb_col(st$facecolor), ctx$patch.linewidth),
+      legend.key = ggplot2::element_blank()
     )
   }
   p

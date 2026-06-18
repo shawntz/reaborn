@@ -19,6 +19,21 @@ RB_PT <- 72.27 / 25.4
   rb_rgb_to_hex(rb_color_to_rgb(x))
 }
 
+# The legend frame element seaborn inherits from matplotlib's untouched legend
+# rcParams: the fill comes from the axes facecolor (legend.facecolor =
+# "inherit") and the edge from legend.edgecolor = .8, both at legend.framealpha
+# = 0.8. So the legend background tracks the panel colour (#EAEAF2 in darkgrid,
+# white otherwise) instead of being transparent. `facecol` is a resolved hex
+# colour; `patch_lw` is the context's patch.linewidth (in points). Shared by
+# theme_seaborn() and rb_finish_plot() so both stay in sync.
+.rb_legend_bg <- function(facecol, patch_lw) {
+  ggplot2::element_rect(
+    fill = grDevices::adjustcolor(facecol, alpha.f = 0.8),
+    colour = grDevices::adjustcolor(.rb_col(".8"), alpha.f = 0.8),
+    linewidth = .rb_lw(patch_lw)
+  )
+}
+
 # ---- style definitions (verbatim from seaborn axes_style) -------------------
 .RB_STYLES <- list(
   darkgrid  = list(facecolor = "#EAEAF2", edgecolor = "white", grid = TRUE,
@@ -124,15 +139,6 @@ theme_seaborn <- function(style = "darkgrid", context = "notebook",
   grid_lw <- .rb_lw(ctx$grid.linewidth)
   axes_lw <- .rb_lw(ctx$axes.linewidth)
 
-  # seaborn leaves matplotlib's legend rcParams untouched, so the legend frame
-  # inherits axes.facecolor (legend.facecolor = "inherit") with a light-gray
-  # edge (legend.edgecolor = .8) at legend.framealpha = 0.8. That is why the
-  # legend background tracks the panel colour (#EAEAF2 in darkgrid, white
-  # otherwise) instead of being transparent.
-  legend_fill <- grDevices::adjustcolor(facecol, alpha.f = 0.8)
-  legend_edge <- grDevices::adjustcolor(.rb_col(".8"), alpha.f = 0.8)
-  legend_lw <- .rb_lw(ctx$patch.linewidth)
-
   grid_elem <- if (st$grid) {
     ggplot2::element_line(colour = gridcol, linewidth = grid_lw, linetype = "solid")
   } else {
@@ -171,9 +177,7 @@ theme_seaborn <- function(style = "darkgrid", context = "notebook",
     legend.text = ggplot2::element_text(size = ctx$legend.fontsize, colour = text_col),
     legend.title = ggplot2::element_text(size = ctx$legend.title_fontsize, colour = text_col),
     legend.key = ggplot2::element_blank(),
-    legend.background = ggplot2::element_rect(
-      fill = legend_fill, colour = legend_edge, linewidth = legend_lw
-    ),
+    legend.background = .rb_legend_bg(facecol, ctx$patch.linewidth),
     # seaborn facet titles are plain text above the panel, with no background box.
     strip.background = ggplot2::element_blank(),
     strip.text = ggplot2::element_text(size = ctx$axes.labelsize, colour = text_col),
