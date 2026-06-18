@@ -79,10 +79,7 @@ save_panel(
 
 # 4. heatmap (flights passengers, month x year) --------------------------------
 mat <- tapply(fl$passengers, list(fl$month, fl$year), function(x) x[1])
-save_panel(
-  heatmap(mat),
-  "reaborn_heatmap.png"
-)
+save_panel(heatmap(mat), "reaborn_heatmap.png")
 
 # 5. line (hue) ----------------------------------------------------------------
 save_panel(
