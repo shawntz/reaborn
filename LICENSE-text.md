@@ -1,0 +1,5 @@
+# License
+
+    YEAR: 2026
+    COPYRIGHT HOLDER: Shawn Schwartz
+    ORGANIZATION: Shawn Schwartz
