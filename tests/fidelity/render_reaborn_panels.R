@@ -70,8 +70,11 @@ save_panel(
 save_panel(
   relplot(
     fmri,
-    x = "timepoint", y = "signal", hue = "event",
-    col = "region", kind = "line"
+    x = "timepoint",
+    y = "signal",
+    hue = "event",
+    col = "region",
+    kind = "line"
   ),
   "reaborn_relplot_line.png", 8, 4
 )
