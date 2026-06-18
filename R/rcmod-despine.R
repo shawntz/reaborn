@@ -86,9 +86,23 @@ move_legend <- function(obj = NULL, loc = "best", ...) {
   inside <- list(
     "upper right" = list(position = c(0.98, 0.98), justification = c(1, 1)),
     "lower right" = list(position = c(0.98, 0.02), justification = c(1, 0)),
-    "upper left"  = list(position = c(0.02, 0.98), justification = c(0, 1)),
-    "lower left"  = list(position = c(0.02, 0.02), justification = c(0, 0)),
-    "center"      = list(position = c(0.5, 0.5),   justification = c(0.5, 0.5))
+    "upper left" = list(position = c(0.02, 0.98), justification = c(0, 1)),
+    "lower left" = list(position = c(0.02, 0.02), justification = c(0, 0)),
+    "center" = list(position = c(0.5, 0.5), justification = c(0.5, 0.5))
+  )
+  if (loc %in% names(inside)) {
+    return(inside[[loc]])
+  }
+  switch(
+    loc,
+    "best" = "right",
+    "right" = "right",
+    "center right" = "right",
+    "left" = "left",
+    "center left" = "left",
+    "upper center" = "top",
+    "lower center" = "bottom",
+    "right"
   )
   if (loc %in% names(inside)) return(inside[[loc]])
   switch(loc,
