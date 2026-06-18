@@ -112,7 +112,9 @@ save_panel(
 )
 save_panel(
   boxenplot(pen, x = "species", y = "body_mass_g"),
-  "reaborn_boxen.png", 6, 5
+  "reaborn_boxen.png",
+  6,
+  5
 )
 save_panel(
   violinplot(tips, x = "day", y = "total_bill"),
