@@ -116,7 +116,9 @@ save_panel(
 )
 save_panel(
   violinplot(tips, x = "day", y = "total_bill"),
-  "reaborn_violin.png", 6, 5
+  "reaborn_violin.png",
+  6,
+  5
 )
 
 # --- Regression -------------------------------------------------------------
