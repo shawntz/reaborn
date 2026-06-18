@@ -33,8 +33,12 @@ PNG_DEVICE <- if (requireNamespace("ragg", quietly = TRUE)) {
 
 save_panel <- function(p, file, width = 6.5, height = 5) {
   ggplot2::ggsave(
-    file.path(OUT, file), p,
-    width = width, height = height, dpi = 100, bg = "white",
+    file.path(OUT, file),
+    p,
+    width = width,
+    height = height,
+    dpi = 100,
+    bg = "white",
     device = PNG_DEVICE
   )
   cat("wrote", file, "\n")
