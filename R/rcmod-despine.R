@@ -51,29 +51,34 @@ despine <- function(fig = NULL, ax = NULL, top = TRUE, right = TRUE,
 #' @return A ggplot2 theme object to add to a plot.
 #' @export
 move_legend <- function(obj = NULL, loc = "best", ...) {
-  pos <- .rb_legend_loc(loc)
-  if (is.numeric(pos)) {
-    ggplot2::theme(legend.position = "inside", legend.position.inside = pos)
+  spec <- .rb_legend_loc(loc)
+  if (is.list(spec)) {
+    # Inside the panel: anchor the legend's matching corner (justification) to a
+    # point near that corner of the panel (position), the way matplotlib/seaborn
+    # place "lower left" etc. ggplot2's default justification is the legend
+    # CENTRE, which would push the box half off the panel edge.
+    ggplot2::theme(
+      legend.position = "inside",
+      legend.position.inside = spec$position,
+      legend.justification.inside = spec$justification
+    )
   } else {
-    ggplot2::theme(legend.position = pos)
+    ggplot2::theme(legend.position = spec)
   }
 }
 
-# Translate a matplotlib legend location into ggplot2 terms.
+# Translate a matplotlib legend location into ggplot2 terms. Returns a character
+# keyword for outside placements, or a list(position, justification) for the
+# inside placements that ggplot2 anchors by corner.
 .rb_legend_loc <- function(loc) {
-  if (is.numeric(loc)) return(loc)
-  map <- c(
-    "best" = "right", "right" = "right", "center right" = "right",
-    "left" = "left", "center left" = "left",
-    "upper center" = "top", "lower center" = "bottom",
-    "upper right" = c(0.98, 0.98), "lower right" = c(0.98, 0.02),
-    "upper left" = c(0.02, 0.98), "lower left" = c(0.02, 0.02),
-    "center" = c(0.5, 0.5)
-  )
+  # matplotlib: a numeric 2-tuple anchors the legend's lower-left corner there.
+  if (is.numeric(loc)) return(list(position = loc, justification = c(0, 0)))
   inside <- list(
-    "upper right" = c(0.98, 0.98), "lower right" = c(0.98, 0.02),
-    "upper left" = c(0.02, 0.98), "lower left" = c(0.02, 0.02),
-    "center" = c(0.5, 0.5)
+    "upper right" = list(position = c(0.98, 0.98), justification = c(1, 1)),
+    "lower right" = list(position = c(0.98, 0.02), justification = c(1, 0)),
+    "upper left"  = list(position = c(0.02, 0.98), justification = c(0, 1)),
+    "lower left"  = list(position = c(0.02, 0.02), justification = c(0, 0)),
+    "center"      = list(position = c(0.5, 0.5),   justification = c(0.5, 0.5))
   )
   if (loc %in% names(inside)) return(inside[[loc]])
   switch(loc,
