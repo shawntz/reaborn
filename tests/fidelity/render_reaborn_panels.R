@@ -108,7 +108,9 @@ save_panel(
 )
 save_panel(
   boxplot(tips, x = "day", y = "total_bill", hue = "smoker"),
-  "reaborn_box_hue.png", 6.5, 5
+  "reaborn_box_hue.png",
+  6.5,
+  5
 )
 save_panel(
   boxenplot(pen, x = "species", y = "body_mass_g"),
