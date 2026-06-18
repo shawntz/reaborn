@@ -33,25 +33,41 @@ rb_mpl_breaks <- function(n = 9) {
 }
 
 # Choose the emptiest corner for an inside legend, approximating matplotlib's
-# "best" legend placement. Returns a list(position, inside) for ggplot2 theme().
+# "best" legend placement (which minimizes the overlap area between the legend
+# box and the plotted artists). Returns a list(inside, name) for ggplot2 theme().
 rb_best_legend_corner <- function(x, y) {
+  corners <- list(
+    "upper right" = c(0.98, 0.98), "upper left"  = c(0.02, 0.98),
+    "lower left"  = c(0.02, 0.02), "lower right" = c(0.98, 0.02)
+  )
   ok <- is.finite(x) & is.finite(y)
   x <- x[ok]; y <- y[ok]
-  if (!length(x)) return(list(inside = c(0.98, 0.98)))
-  nx <- (x - min(x)) / (diff(range(x)) + 1e-9)
-  ny <- (y - min(y)) / (diff(range(y)) + 1e-9)
-  # Count points falling in each corner's quarter-box.
-  corners <- list(
-    "lower left"  = c(0.02, 0.02), "lower right" = c(0.98, 0.02),
-    "upper left"  = c(0.02, 0.98), "upper right" = c(0.98, 0.98)
+  if (length(x) < 2 || diff(range(x)) == 0 || diff(range(y)) == 0) {
+    return(list(inside = corners[["upper right"]], name = "upper right"))
+  }
+  nx <- (x - min(x)) / diff(range(x))
+  ny <- (y - min(y)) / diff(range(y))
+  # Rasterize the data onto a coarse grid and score each corner by how many
+  # occupied cells fall under a legend-sized footprint there. Counting occupied
+  # CELLS rather than raw samples keeps a tall, narrow peak (few samples, big
+  # visual footprint) from being under-weighted the way a point count would --
+  # that is what makes this track matplotlib's "best" on density/line plots.
+  ng <- 12L; fx <- 0.45; fy <- 0.45
+  gx <- pmin(ng, floor(nx * ng) + 1L)
+  gy <- pmin(ng, floor(ny * ng) + 1L)
+  occ <- matrix(FALSE, ng, ng)
+  occ[cbind(gx, gy)] <- TRUE
+  kx <- ceiling(fx * ng); ky <- ceiling(fy * ng)
+  lo_x <- seq_len(kx);          hi_x <- (ng - kx + 1L):ng
+  lo_y <- seq_len(ky);          hi_y <- (ng - ky + 1L):ng
+  # Order matches matplotlib's candidate iteration so ties resolve to "best".
+  cost <- c(
+    "upper right" = sum(occ[hi_x, hi_y]),
+    "upper left"  = sum(occ[lo_x, hi_y]),
+    "lower left"  = sum(occ[lo_x, lo_y]),
+    "lower right" = sum(occ[hi_x, lo_y])
   )
-  counts <- c(
-    "lower left"  = sum(nx < 0.35 & ny < 0.35),
-    "lower right" = sum(nx > 0.65 & ny < 0.35),
-    "upper left"  = sum(nx < 0.35 & ny > 0.65),
-    "upper right" = sum(nx > 0.65 & ny > 0.65)
-  )
-  best <- names(which.min(counts))
+  best <- names(which.min(cost))
   list(inside = corners[[best]], name = best)
 }
 
