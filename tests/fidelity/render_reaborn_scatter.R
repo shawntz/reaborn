@@ -17,7 +17,11 @@ p <- ggplot2::ggplot(
   move_legend(loc = "lower left")
 
 ggplot2::ggsave(
-  "tests/fidelity/out/reaborn_scatter.png", p,
-  width = 6, height = 5, dpi = 100, bg = "white"
+  "tests/fidelity/out/reaborn_scatter.png",
+  p,
+  width = 6,
+  height = 5,
+  dpi = 100,
+  bg = "white"
 )
 cat("reaborn PNG saved\n")

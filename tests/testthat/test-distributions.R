@@ -6,7 +6,8 @@ test_that("Gaussian KDE matches scipy.stats.gaussian_kde to machine precision", 
   kd <- fx$kde
   x <- as.numeric(kd$data)
   # evaluate our KDE at scipy's exact grid points with the same bandwidth
-  n <- length(x); bw <- n^(-1 / 5) * sqrt(stats::var(x))
+  n <- length(x)
+  bw <- n^(-1 / 5) * sqrt(stats::var(x))
   gx <- as.numeric(kd$grid_x)
   got <- vapply(gx, function(g) mean(stats::dnorm(g, x, bw)), numeric(1))
   expect_equal(got, as.numeric(kd$grid_density), tolerance = 1e-12)
@@ -15,7 +16,8 @@ test_that("Gaussian KDE matches scipy.stats.gaussian_kde to machine precision", 
 })
 
 test_that("histogram bin edges match numpy.histogram_bin_edges exactly", {
-  h <- fx$hist; x <- as.numeric(h$data)
+  h <- fx$hist
+  x <- as.numeric(h$data)
   for (rule in c("auto", "fd", "sturges", "scott", "sqrt", "rice", "doane")) {
     want <- as.numeric(h[[paste0(rule, "_edges")]])
     got <- rb_hist_bins(x, rule)
@@ -40,7 +42,12 @@ test_that("histplot bin counts are correct and stat normalizations are consisten
 test_that("histplot builds for all multiple/stat options", {
   pen <- load_dataset("penguins")
   for (m in c("layer", "stack", "fill", "dodge")) {
-    p <- histplot(data = pen, x = "flipper_length_mm", hue = "species", multiple = m)
+    p <- histplot(
+      data = pen,
+      x = "flipper_length_mm",
+      hue = "species",
+      multiple = m
+    )
     expect_no_error(ggplot2::ggplot_build(p))
   }
   for (s in c("count", "density", "probability", "percent", "frequency")) {
@@ -54,8 +61,17 @@ test_that("kdeplot density integrates to ~1 and builds", {
   est <- rb_gaussian_kde(pen$flipper_length_mm[!is.na(pen$flipper_length_mm)])
   area <- sum((est$y[-1] + est$y[-length(est$y)]) / 2 * diff(est$x))
   expect_equal(area, 1, tolerance = 0.01)
-  expect_no_error(ggplot2::ggplot_build(kdeplot(data = pen, x = "flipper_length_mm", hue = "species", fill = TRUE)))
-  expect_no_error(ggplot2::ggplot_build(kdeplot(data = pen, x = "bill_length_mm", y = "bill_depth_mm")))
+  expect_no_error(ggplot2::ggplot_build(kdeplot(
+    data = pen,
+    x = "flipper_length_mm",
+    hue = "species",
+    fill = TRUE
+  )))
+  expect_no_error(ggplot2::ggplot_build(kdeplot(
+    data = pen,
+    x = "bill_length_mm",
+    y = "bill_depth_mm"
+  )))
 })
 
 test_that("ecdfplot is monotonic from 0 to 1", {
@@ -70,10 +86,22 @@ test_that("ecdfplot is monotonic from 0 to 1", {
 
 test_that("rugplot and displot build", {
   pen <- load_dataset("penguins")
-  expect_no_error(ggplot2::ggplot_build(rugplot(data = pen, x = "bill_length_mm")))
-  expect_no_error(ggplot2::ggplot_build(displot(data = pen, x = "flipper_length_mm", col = "species")))
-  expect_no_error(ggplot2::ggplot_build(displot(data = pen, x = "flipper_length_mm",
-                                                hue = "species", kind = "kde", col = "island")))
+  expect_no_error(ggplot2::ggplot_build(rugplot(
+    data = pen,
+    x = "bill_length_mm"
+  )))
+  expect_no_error(ggplot2::ggplot_build(displot(
+    data = pen,
+    x = "flipper_length_mm",
+    col = "species"
+  )))
+  expect_no_error(ggplot2::ggplot_build(displot(
+    data = pen,
+    x = "flipper_length_mm",
+    hue = "species",
+    kind = "kde",
+    col = "island"
+  )))
 })
 
 test_that("sns.* aliases exist for distribution functions", {

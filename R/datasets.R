@@ -24,16 +24,27 @@ load_dataset <- function(name, cache = TRUE, data_home = NULL, ...) {
     path <- bundled
   } else {
     cache_dir <- data_home %||% .rb_data_home()
-    if (!dir.exists(cache_dir)) dir.create(cache_dir, recursive = TRUE)
+    if (!dir.exists(cache_dir)) {
+      dir.create(cache_dir, recursive = TRUE)
+    }
     cached <- file.path(cache_dir, paste0(name, ".csv"))
     if (cache && file.exists(cached)) {
       path <- cached
     } else {
       url <- paste0(SEABORN_DATA_URL, "/", name, ".csv")
-      ok <- tryCatch({
-        utils::download.file(url, cached, quiet = TRUE, mode = "wb"); TRUE
-      }, error = function(e) FALSE)
-      if (!ok) stop(sprintf("Could not load dataset '%s' (offline and not bundled)", name))
+      ok <- tryCatch(
+        {
+          utils::download.file(url, cached, quiet = TRUE, mode = "wb")
+          TRUE
+        },
+        error = function(e) FALSE
+      )
+      if (!ok) {
+        stop(sprintf(
+          "Could not load dataset '%s' (offline and not bundled)",
+          name
+        ))
+      }
       path <- cached
     }
   }
@@ -45,21 +56,49 @@ load_dataset <- function(name, cache = TRUE, data_home = NULL, ...) {
 #' @return For `get_dataset_names`, a character vector of available dataset names.
 #' @export
 get_dataset_names <- function() {
-  bundled <- sub("\\.csv$", "",
-                 list.files(system.file("extdata", package = "reaborn"),
-                            pattern = "\\.csv$"))
-  fixtures <- tryCatch(names(.reaborn_fixtures$rc_style), error = function(e) NULL)
-  unique(c(bundled,
-           c("anagrams", "anscombe", "attention", "brain_networks", "car_crashes",
-             "diamonds", "dots", "dowjones", "exercise", "flights", "fmri",
-             "geyser", "glue", "healthexp", "iris", "mpg", "penguins", "planets",
-             "seaice", "taxis", "tips", "titanic")))
+  bundled <- sub(
+    "\\.csv$",
+    "",
+    list.files(system.file("extdata", package = "reaborn"), pattern = "\\.csv$")
+  )
+  fixtures <- tryCatch(names(.reaborn_fixtures$rc_style), error = function(e) {
+    NULL
+  })
+  unique(c(
+    bundled,
+    c(
+      "anagrams",
+      "anscombe",
+      "attention",
+      "brain_networks",
+      "car_crashes",
+      "diamonds",
+      "dots",
+      "dowjones",
+      "exercise",
+      "flights",
+      "fmri",
+      "geyser",
+      "glue",
+      "healthexp",
+      "iris",
+      "mpg",
+      "penguins",
+      "planets",
+      "seaice",
+      "taxis",
+      "tips",
+      "titanic"
+    )
+  ))
 }
 
 # Restore seaborn's categorical dtypes / orderings for known datasets.
 .rb_apply_dataset_dtypes <- function(df, name) {
   orders <- tryCatch(.reaborn_dataset_orders[[name]], error = function(e) NULL)
-  if (is.null(orders)) return(df)
+  if (is.null(orders)) {
+    return(df)
+  }
   for (col in names(orders)) {
     lv <- orders[[col]]
     if (!is.null(lv) && col %in% names(df)) {
@@ -70,6 +109,8 @@ get_dataset_names <- function() {
 }
 
 .rb_data_home <- function() {
-  Sys.getenv("SEABORN_DATA",
-             unset = file.path(tools::R_user_dir("reaborn", "cache"), "seaborn-data"))
+  Sys.getenv(
+    "SEABORN_DATA",
+    unset = file.path(tools::R_user_dir("reaborn", "cache"), "seaborn-data")
+  )
 }

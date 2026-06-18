@@ -5,11 +5,20 @@
 
 # Resolve the categorical vs value axis, orientation, ordering, and hue. Returns
 # a tidy frame plus metadata used by all categorical plotters.
-rb_cat_setup <- function(data, x = NULL, y = NULL, hue = NULL, order = NULL,
-                         hue_order = NULL, orient = NULL, facet_vars = NULL) {
+rb_cat_setup <- function(
+  data,
+  x = NULL,
+  y = NULL,
+  hue = NULL,
+  order = NULL,
+  hue_order = NULL,
+  orient = NULL,
+  facet_vars = NULL
+) {
   v <- rb_assign_variables(data, x = x, y = y, hue = hue)
   vd <- v$data
-  has_x <- "x" %in% names(vd); has_y <- "y" %in% names(vd)
+  has_x <- "x" %in% names(vd)
+  has_y <- "y" %in% names(vd)
 
   # Determine which axis is categorical.
   if (is.null(orient)) {
@@ -27,30 +36,56 @@ rb_cat_setup <- function(data, x = NULL, y = NULL, hue = NULL, order = NULL,
   cat_vals <- vd[[cat_role]]
   val_vals <- if (val_role %in% names(vd)) vd[[val_role]] else NULL
 
-  cat_levels <- if (!is.null(cat_vals)) rb_categorical_order(cat_vals, order) else NULL
-  cat_fac <- if (!is.null(cat_vals)) factor(as.character(cat_vals), levels = cat_levels) else NULL
+  cat_levels <- if (!is.null(cat_vals)) {
+    rb_categorical_order(cat_vals, order)
+  } else {
+    NULL
+  }
+  cat_fac <- if (!is.null(cat_vals)) {
+    factor(as.character(cat_vals), levels = cat_levels)
+  } else {
+    NULL
+  }
 
-  hue_fac <- NULL; hue_levels <- NULL
+  hue_fac <- NULL
+  hue_levels <- NULL
   if ("hue" %in% names(vd)) {
     hue_levels <- rb_categorical_order(vd$hue, hue_order)
     hue_fac <- factor(as.character(vd$hue), levels = hue_levels)
   }
 
-  df <- data.frame(.cat = cat_fac %||% factor(rep("", length(val_vals))),
-                   .val = val_vals %||% NA_real_, stringsAsFactors = FALSE)
-  if (!is.null(hue_fac)) df$.hue <- hue_fac
+  df <- data.frame(
+    .cat = cat_fac %||% factor(rep("", length(val_vals))),
+    .val = val_vals %||% NA_real_,
+    stringsAsFactors = FALSE
+  )
+  if (!is.null(hue_fac)) {
+    df$.hue <- hue_fac
+  }
   # Carry facet columns (for catplot) so faceting works after aggregation.
   fvars <- intersect(facet_vars %||% character(0), names(data))
-  for (fv in fvars) df[[fv]] <- data[[fv]]
+  for (fv in fvars) {
+    df[[fv]] <- data[[fv]]
+  }
 
-  list(df = df, orient = orient, cat_levels = cat_levels, hue_levels = hue_levels,
-       cat_name = v$names[[cat_role]], val_name = v$names[[val_role]],
-       hue_name = v$names$hue, has_hue = !is.null(hue_fac), facet_vars = fvars)
+  list(
+    df = df,
+    orient = orient,
+    cat_levels = cat_levels,
+    hue_levels = hue_levels,
+    cat_name = v$names[[cat_role]],
+    val_name = v$names[[val_role]],
+    hue_name = v$names$hue,
+    has_hue = !is.null(hue_fac),
+    facet_vars = fvars
+  )
 }
 
 # Desaturate a set of colors to `saturation` (seaborn categorical default 0.75).
 rb_desat_colors <- function(colors, saturation) {
-  if (saturation >= 1) return(colors)
+  if (saturation >= 1) {
+    return(colors)
+  }
   vapply(colors, desaturate, character(1), prop = saturation)
 }
 
@@ -69,13 +104,22 @@ rb_cat_colors <- function(setup, palette, color, saturation) {
 # Apply matplotlib-style breaks to the value axis and finish a categorical plot.
 rb_cat_finish <- function(p, setup, legend = "auto") {
   val_break <- ggplot2::scale_y_continuous
-  if (setup$orient == "h") val_break <- ggplot2::scale_x_continuous
+  if (setup$orient == "h") {
+    val_break <- ggplot2::scale_x_continuous
+  }
   p <- p + val_break(breaks = rb_mpl_breaks())
   xlab <- if (setup$orient == "v") setup$cat_name else setup$val_name
   ylab <- if (setup$orient == "v") setup$val_name else setup$cat_name
-  p <- rb_finish_plot(p, xlab = xlab, ylab = ylab,
-                      legend = if (isFALSE(legend)) FALSE else "auto", breaks = FALSE)
-  if (setup$has_hue && !isFALSE(legend)) p <- p + rb_legend_right()
+  p <- rb_finish_plot(
+    p,
+    xlab = xlab,
+    ylab = ylab,
+    legend = if (isFALSE(legend)) FALSE else "auto",
+    breaks = FALSE
+  )
+  if (setup$has_hue && !isFALSE(legend)) {
+    p <- p + rb_legend_right()
+  }
   p
 }
 
@@ -101,11 +145,29 @@ RB_BOX_LINECOLOR <- "#4C4C4C"
 #' @param dodge How to dodge boxes by hue (`"auto"`, `TRUE`, or `FALSE`).
 #' @param .facet_vars Internal; facet columns forwarded by the figure-level dispatchers (catplot/displot/relplot). Not intended for direct use.
 #' @export
-boxplot <- function(data = NULL, x = NULL, y = NULL, hue = NULL, order = NULL,
-                    hue_order = NULL, orient = NULL, color = NULL, palette = NULL,
-                    saturation = 0.75, fill = TRUE, dodge = "auto", width = 0.8,
-                    gap = 0, whis = 1.5, linecolor = "auto", linewidth = NULL,
-                    fliersize = NULL, legend = "auto", .facet_vars = NULL, ...) {
+boxplot <- function(
+  data = NULL,
+  x = NULL,
+  y = NULL,
+  hue = NULL,
+  order = NULL,
+  hue_order = NULL,
+  orient = NULL,
+  color = NULL,
+  palette = NULL,
+  saturation = 0.75,
+  fill = TRUE,
+  dodge = "auto",
+  width = 0.8,
+  gap = 0,
+  whis = 1.5,
+  linecolor = "auto",
+  linewidth = NULL,
+  fliersize = NULL,
+  legend = "auto",
+  .facet_vars = NULL,
+  ...
+) {
   s <- rb_cat_setup(data, x, y, hue, order, hue_order, orient, .facet_vars)
   colors <- rb_cat_colors(s, palette, color, saturation)
   lc <- if (identical(linecolor, "auto")) RB_BOX_LINECOLOR else linecolor
@@ -117,14 +179,26 @@ boxplot <- function(data = NULL, x = NULL, y = NULL, hue = NULL, order = NULL,
   } else {
     ggplot2::aes(x = .data$.val, y = .data$.cat)
   }
-  if (s$has_hue) mapping$fill <- rlang::sym(".hue")
+  if (s$has_hue) {
+    mapping$fill <- rlang::sym(".hue")
+  }
 
   # seaborn fliers are open circles (shape 1) in the line color; no whisker caps.
-  box_args <- list(mapping = mapping, width = width, colour = lc, linewidth = lw,
-                   outlier.shape = 1, outlier.size = flier / 2,
-                   outlier.colour = lc, outlier.stroke = .rb_lw(1),
-                   staplewidth = 0, ...)
-  if (!s$has_hue) box_args$fill <- colors
+  box_args <- list(
+    mapping = mapping,
+    width = width,
+    colour = lc,
+    linewidth = lw,
+    outlier.shape = 1,
+    outlier.size = flier / 2,
+    outlier.colour = lc,
+    outlier.stroke = .rb_lw(1),
+    staplewidth = 0,
+    ...
+  )
+  if (!s$has_hue) {
+    box_args$fill <- colors
+  }
 
   p <- ggplot2::ggplot(s$df) + do.call(ggplot2::geom_boxplot, box_args)
   if (s$has_hue) {
@@ -145,10 +219,26 @@ boxplot <- function(data = NULL, x = NULL, y = NULL, hue = NULL, order = NULL,
 #' @param dodge How to dodge bars by hue (`"auto"`, `TRUE`, or `FALSE`).
 #' @param .facet_vars Internal; facet columns forwarded by the figure-level dispatchers (catplot/displot/relplot). Not intended for direct use.
 #' @export
-countplot <- function(data = NULL, x = NULL, y = NULL, hue = NULL, order = NULL,
-                      hue_order = NULL, orient = NULL, color = NULL, palette = NULL,
-                      saturation = 0.75, fill = TRUE, stat = "count", width = 0.8,
-                      dodge = "auto", gap = 0, legend = "auto", .facet_vars = NULL, ...) {
+countplot <- function(
+  data = NULL,
+  x = NULL,
+  y = NULL,
+  hue = NULL,
+  order = NULL,
+  hue_order = NULL,
+  orient = NULL,
+  color = NULL,
+  palette = NULL,
+  saturation = 0.75,
+  fill = TRUE,
+  stat = "count",
+  width = 0.8,
+  dodge = "auto",
+  gap = 0,
+  legend = "auto",
+  .facet_vars = NULL,
+  ...
+) {
   s <- rb_cat_setup(data, x, y, hue, order, hue_order, orient, .facet_vars)
   colors <- rb_cat_colors(s, palette, color, saturation)
 
@@ -157,52 +247,103 @@ countplot <- function(data = NULL, x = NULL, y = NULL, hue = NULL, order = NULL,
   counts <- as.data.frame(table(s$df[grpcols]), stringsAsFactors = FALSE)
   names(counts)[seq_along(grpcols)] <- grpcols
   counts$.cat <- factor(counts$.cat, levels = s$cat_levels)
-  if (s$has_hue) counts$.hue <- factor(counts$.hue, levels = s$hue_levels)
+  if (s$has_hue) {
+    counts$.hue <- factor(counts$.hue, levels = s$hue_levels)
+  }
   total <- sum(counts$Freq)
-  counts$value <- switch(stat,
+  counts$value <- switch(
+    stat,
     count = counts$Freq,
-    proportion = , probability = counts$Freq / total,
-    percent = counts$Freq / total * 100, counts$Freq)
+    proportion = ,
+    probability = counts$Freq / total,
+    percent = counts$Freq / total * 100,
+    counts$Freq
+  )
 
-  position <- if (s$has_hue) ggplot2::position_dodge2(preserve = "single") else "stack"
+  position <- if (s$has_hue) {
+    ggplot2::position_dodge2(preserve = "single")
+  } else {
+    "stack"
+  }
   mapping <- if (s$orient == "v") {
     ggplot2::aes(x = .data$.cat, y = .data$value)
   } else {
     ggplot2::aes(x = .data$value, y = .data$.cat)
   }
-  if (s$has_hue) mapping$fill <- rlang::sym(".hue")
-  bar_args <- list(mapping = mapping, width = width, colour = "white",
-                   linewidth = .rb_lw(1), position = position, stat = "identity", ...)
-  if (!s$has_hue) bar_args$fill <- colors
+  if (s$has_hue) {
+    mapping$fill <- rlang::sym(".hue")
+  }
+  bar_args <- list(
+    mapping = mapping,
+    width = width,
+    colour = "white",
+    linewidth = .rb_lw(1),
+    position = position,
+    stat = "identity",
+    ...
+  )
+  if (!s$has_hue) {
+    bar_args$fill <- colors
+  }
   p <- ggplot2::ggplot(counts) + do.call(ggplot2::geom_bar, bar_args)
-  if (s$has_hue) p <- p + ggplot2::scale_fill_manual(values = colors, name = s$hue_name)
+  if (s$has_hue) {
+    p <- p + ggplot2::scale_fill_manual(values = colors, name = s$hue_name)
+  }
 
-  s$val_name <- switch(stat, count = "Count", percent = "Percent",
-                       proportion = , probability = "Proportion", "Count")
+  s$val_name <- switch(
+    stat,
+    count = "Count",
+    percent = "Percent",
+    proportion = ,
+    probability = "Proportion",
+    "Count"
+  )
   # countplot value axis starts at 0.
   if (s$orient == "v") {
-    p <- p + ggplot2::scale_y_continuous(breaks = rb_mpl_breaks(),
-                                         expand = ggplot2::expansion(mult = c(0, 0.05)))
+    p <- p +
+      ggplot2::scale_y_continuous(
+        breaks = rb_mpl_breaks(),
+        expand = ggplot2::expansion(mult = c(0, 0.05))
+      )
   } else {
-    p <- p + ggplot2::scale_x_continuous(breaks = rb_mpl_breaks(),
-                                         expand = ggplot2::expansion(mult = c(0, 0.05)))
+    p <- p +
+      ggplot2::scale_x_continuous(
+        breaks = rb_mpl_breaks(),
+        expand = ggplot2::expansion(mult = c(0, 0.05))
+      )
   }
   xlab <- if (s$orient == "v") s$cat_name else s$val_name
   ylab <- if (s$orient == "v") s$val_name else s$cat_name
-  p <- rb_finish_plot(p, xlab = xlab, ylab = ylab,
-                      legend = if (isFALSE(legend)) FALSE else "auto", breaks = FALSE)
-  if (s$has_hue && !isFALSE(legend)) p <- p + rb_legend_right()
+  p <- rb_finish_plot(
+    p,
+    xlab = xlab,
+    ylab = ylab,
+    legend = if (isFALSE(legend)) FALSE else "auto",
+    breaks = FALSE
+  )
+  if (s$has_hue && !isFALSE(legend)) {
+    p <- p + rb_legend_right()
+  }
   reaborn_plot(p, call = match.call())
 }
 
 # Aggregate a categorical setup's value by (cat, hue, facets) into est/ymin/ymax.
 rb_cat_aggregate <- function(s, estimator, errorbar, n_boot, seed) {
   grp <- c(if (s$has_hue) ".hue", s$facet_vars)
-  agg <- rb_aggregate(s$df, pos_col = ".cat", value_col = ".val", group_cols = grp,
-                      estimator = estimator, errorbar = errorbar, n_boot = n_boot,
-                      seed = seed)
+  agg <- rb_aggregate(
+    s$df,
+    pos_col = ".cat",
+    value_col = ".val",
+    group_cols = grp,
+    estimator = estimator,
+    errorbar = errorbar,
+    n_boot = n_boot,
+    seed = seed
+  )
   agg$.cat <- factor(as.character(agg$.cat), levels = s$cat_levels)
-  if (s$has_hue) agg$.hue <- factor(as.character(agg$.hue), levels = s$hue_levels)
+  if (s$has_hue) {
+    agg$.hue <- factor(as.character(agg$.hue), levels = s$hue_levels)
+  }
   agg
 }
 
@@ -221,48 +362,117 @@ rb_cat_aggregate <- function(s, estimator, errorbar, n_boot, seed) {
 #' @param dodge How to dodge bars by hue (`"auto"`, `TRUE`, or `FALSE`).
 #' @param .facet_vars Internal; facet columns forwarded by the figure-level dispatchers (catplot/displot/relplot). Not intended for direct use.
 #' @export
-barplot <- function(data = NULL, x = NULL, y = NULL, hue = NULL, order = NULL,
-                    hue_order = NULL, estimator = "mean", errorbar = list("ci", 95),
-                    n_boot = 1000, seed = NULL, units = NULL, weights = NULL,
-                    orient = NULL, color = NULL, palette = NULL, saturation = 0.75,
-                    fill = TRUE, width = 0.8, dodge = "auto", gap = 0,
-                    capsize = 0, err_kws = NULL, legend = "auto", .facet_vars = NULL, ...) {
+barplot <- function(
+  data = NULL,
+  x = NULL,
+  y = NULL,
+  hue = NULL,
+  order = NULL,
+  hue_order = NULL,
+  estimator = "mean",
+  errorbar = list("ci", 95),
+  n_boot = 1000,
+  seed = NULL,
+  units = NULL,
+  weights = NULL,
+  orient = NULL,
+  color = NULL,
+  palette = NULL,
+  saturation = 0.75,
+  fill = TRUE,
+  width = 0.8,
+  dodge = "auto",
+  gap = 0,
+  capsize = 0,
+  err_kws = NULL,
+  legend = "auto",
+  .facet_vars = NULL,
+  ...
+) {
   s <- rb_cat_setup(data, x, y, hue, order, hue_order, orient, .facet_vars)
   colors <- rb_cat_colors(s, palette, color, saturation)
   agg <- rb_cat_aggregate(s, estimator, errorbar, n_boot, seed)
 
   vert <- s$orient == "v"
-  dodge_w <- if (s$has_hue) ggplot2::position_dodge(width = width) else "identity"
-  bar_aes <- if (vert) ggplot2::aes(x = .data$.cat, y = .data$estimate)
-             else ggplot2::aes(x = .data$estimate, y = .data$.cat)
-  if (s$has_hue) bar_aes$fill <- rlang::sym(".hue")
-  bar_args <- list(mapping = bar_aes, width = width, colour = "white",
-                   linewidth = .rb_lw(1), stat = "identity", position = dodge_w, ...)
-  if (!s$has_hue) bar_args$fill <- colors
+  dodge_w <- if (s$has_hue) {
+    ggplot2::position_dodge(width = width)
+  } else {
+    "identity"
+  }
+  bar_aes <- if (vert) {
+    ggplot2::aes(x = .data$.cat, y = .data$estimate)
+  } else {
+    ggplot2::aes(x = .data$estimate, y = .data$.cat)
+  }
+  if (s$has_hue) {
+    bar_aes$fill <- rlang::sym(".hue")
+  }
+  bar_args <- list(
+    mapping = bar_aes,
+    width = width,
+    colour = "white",
+    linewidth = .rb_lw(1),
+    stat = "identity",
+    position = dodge_w,
+    ...
+  )
+  if (!s$has_hue) {
+    bar_args$fill <- colors
+  }
   p <- ggplot2::ggplot(agg) + do.call(ggplot2::geom_col, bar_args)
 
   # Error bars (bootstrap CI).
   ek <- err_kws %||% list()
-  err_aes <- if (vert) ggplot2::aes(x = .data$.cat, ymin = .data$ymin, ymax = .data$ymax,
-                                    group = if (s$has_hue) .data$.hue else NULL)
-             else ggplot2::aes(y = .data$.cat, xmin = .data$ymin, xmax = .data$ymax,
-                               group = if (s$has_hue) .data$.hue else NULL)
+  err_aes <- if (vert) {
+    ggplot2::aes(
+      x = .data$.cat,
+      ymin = .data$ymin,
+      ymax = .data$ymax,
+      group = if (s$has_hue) .data$.hue else NULL
+    )
+  } else {
+    ggplot2::aes(
+      y = .data$.cat,
+      xmin = .data$ymin,
+      xmax = .data$ymax,
+      group = if (s$has_hue) .data$.hue else NULL
+    )
+  }
   err_fun <- if (vert) ggplot2::geom_errorbar else ggplot2::geom_errorbarh
   # seaborn barplot sets err_kws["linewidth"] = 1.5 * lines.linewidth (points).
-  p <- p + err_fun(err_aes, position = dodge_w, width = capsize,
-                   colour = ek$color %||% RB_BOX_LINECOLOR,
-                   linewidth = .rb_lw(ek$linewidth %||% (1.5 * SEABORN_DEFAULTS$linewidth)))
+  p <- p +
+    err_fun(
+      err_aes,
+      position = dodge_w,
+      width = capsize,
+      colour = ek$color %||% RB_BOX_LINECOLOR,
+      linewidth = .rb_lw(ek$linewidth %||% (1.5 * SEABORN_DEFAULTS$linewidth))
+    )
 
-  if (s$has_hue) p <- p + ggplot2::scale_fill_manual(values = colors, name = s$hue_name)
+  if (s$has_hue) {
+    p <- p + ggplot2::scale_fill_manual(values = colors, name = s$hue_name)
+  }
   # Bars start at 0.
   exp0 <- ggplot2::expansion(mult = c(0, 0.05))
-  if (vert) p <- p + ggplot2::scale_y_continuous(breaks = rb_mpl_breaks(), expand = exp0)
-  else p <- p + ggplot2::scale_x_continuous(breaks = rb_mpl_breaks(), expand = exp0)
+  if (vert) {
+    p <- p +
+      ggplot2::scale_y_continuous(breaks = rb_mpl_breaks(), expand = exp0)
+  } else {
+    p <- p +
+      ggplot2::scale_x_continuous(breaks = rb_mpl_breaks(), expand = exp0)
+  }
   xlab <- if (vert) s$cat_name else s$val_name
   ylab <- if (vert) s$val_name else s$cat_name
-  p <- rb_finish_plot(p, xlab = xlab, ylab = ylab,
-                      legend = if (isFALSE(legend)) FALSE else "auto", breaks = FALSE)
-  if (s$has_hue && !isFALSE(legend)) p <- p + rb_legend_right()
+  p <- rb_finish_plot(
+    p,
+    xlab = xlab,
+    ylab = ylab,
+    legend = if (isFALSE(legend)) FALSE else "auto",
+    breaks = FALSE
+  )
+  if (s$has_hue && !isFALSE(legend)) {
+    p <- p + rb_legend_right()
+  }
   reaborn_plot(p, call = match.call())
 }
 
@@ -281,31 +491,72 @@ barplot <- function(data = NULL, x = NULL, y = NULL, hue = NULL, order = NULL,
 #' @param palette Palette for the hue mapping.
 #' @param .facet_vars Internal; facet columns forwarded by the figure-level dispatchers (catplot/displot/relplot). Not intended for direct use.
 #' @export
-stripplot <- function(data = NULL, x = NULL, y = NULL, hue = NULL, order = NULL,
-                      hue_order = NULL, jitter = TRUE, dodge = FALSE, orient = NULL,
-                      color = NULL, palette = NULL, size = 5, edgecolor = "gray",
-                      linewidth = 0, legend = "auto", .facet_vars = NULL, ...) {
+stripplot <- function(
+  data = NULL,
+  x = NULL,
+  y = NULL,
+  hue = NULL,
+  order = NULL,
+  hue_order = NULL,
+  jitter = TRUE,
+  dodge = FALSE,
+  orient = NULL,
+  color = NULL,
+  palette = NULL,
+  size = 5,
+  edgecolor = "gray",
+  linewidth = 0,
+  legend = "auto",
+  .facet_vars = NULL,
+  ...
+) {
   s <- rb_cat_setup(data, x, y, hue, order, hue_order, orient, .facet_vars)
   vert <- s$orient == "v"
   if (s$has_hue) {
-    colors <- stats::setNames(rb_categorical_colors(length(s$hue_levels), palette), s$hue_levels)
+    colors <- stats::setNames(
+      rb_categorical_colors(length(s$hue_levels), palette),
+      s$hue_levels
+    )
   } else {
     colors <- color %||% color_palette(.reaborn_get("palette", "deep"), 1)
   }
-  jit <- if (isTRUE(jitter)) 0.1 else if (is.numeric(jitter)) jitter else 0
+  jit <- if (isTRUE(jitter)) {
+    0.1
+  } else if (is.numeric(jitter)) {
+    jitter
+  } else {
+    0
+  }
   position <- if (isTRUE(dodge) && s$has_hue) {
     ggplot2::position_jitterdodge(jitter.width = jit, dodge.width = 0.8)
   } else {
-    ggplot2::position_jitter(width = if (vert) jit else 0, height = if (vert) 0 else jit)
+    ggplot2::position_jitter(
+      width = if (vert) jit else 0,
+      height = if (vert) 0 else jit
+    )
   }
-  pt_aes <- if (vert) ggplot2::aes(x = .data$.cat, y = .data$.val)
-            else ggplot2::aes(x = .data$.val, y = .data$.cat)
-  if (s$has_hue) pt_aes$colour <- rlang::sym(".hue")
-  pt_args <- list(pt_aes, position = position, size = rb_area_to_size(size^2),
-                  stroke = linewidth, ...)
-  if (!s$has_hue) pt_args$colour <- colors
+  pt_aes <- if (vert) {
+    ggplot2::aes(x = .data$.cat, y = .data$.val)
+  } else {
+    ggplot2::aes(x = .data$.val, y = .data$.cat)
+  }
+  if (s$has_hue) {
+    pt_aes$colour <- rlang::sym(".hue")
+  }
+  pt_args <- list(
+    pt_aes,
+    position = position,
+    size = rb_area_to_size(size^2),
+    stroke = linewidth,
+    ...
+  )
+  if (!s$has_hue) {
+    pt_args$colour <- colors
+  }
   p <- ggplot2::ggplot(s$df) + do.call(ggplot2::geom_point, pt_args)
-  if (s$has_hue) p <- p + ggplot2::scale_colour_manual(values = colors, name = s$hue_name)
+  if (s$has_hue) {
+    p <- p + ggplot2::scale_colour_manual(values = colors, name = s$hue_name)
+  }
   p <- rb_cat_finish(p, s, legend)
   reaborn_plot(p, call = match.call())
 }
@@ -322,39 +573,85 @@ stripplot <- function(data = NULL, x = NULL, y = NULL, hue = NULL, order = NULL,
 #' @param palette Palette for the hue mapping.
 #' @param .facet_vars Internal; facet columns forwarded by the figure-level dispatchers (catplot/displot/relplot). Not intended for direct use.
 #' @export
-pointplot <- function(data = NULL, x = NULL, y = NULL, hue = NULL, order = NULL,
-                      hue_order = NULL, estimator = "mean", errorbar = list("ci", 95),
-                      n_boot = 1000, seed = NULL, units = NULL, weights = NULL,
-                      color = NULL, palette = NULL, markers = "o", linestyles = "-",
-                      dodge = FALSE, orient = NULL, capsize = 0, legend = "auto",
-                      err_kws = NULL, .facet_vars = NULL, ...) {
+pointplot <- function(
+  data = NULL,
+  x = NULL,
+  y = NULL,
+  hue = NULL,
+  order = NULL,
+  hue_order = NULL,
+  estimator = "mean",
+  errorbar = list("ci", 95),
+  n_boot = 1000,
+  seed = NULL,
+  units = NULL,
+  weights = NULL,
+  color = NULL,
+  palette = NULL,
+  markers = "o",
+  linestyles = "-",
+  dodge = FALSE,
+  orient = NULL,
+  capsize = 0,
+  legend = "auto",
+  err_kws = NULL,
+  .facet_vars = NULL,
+  ...
+) {
   s <- rb_cat_setup(data, x, y, hue, order, hue_order, orient, .facet_vars)
   agg <- rb_cat_aggregate(s, estimator, errorbar, n_boot, seed)
   vert <- s$orient == "v"
   if (s$has_hue) {
-    colors <- stats::setNames(rb_categorical_colors(length(s$hue_levels), palette), s$hue_levels)
+    colors <- stats::setNames(
+      rb_categorical_colors(length(s$hue_levels), palette),
+      s$hue_levels
+    )
   } else {
     colors <- color %||% color_palette(.reaborn_get("palette", "deep"), 1)
   }
-  dw <- if (isTRUE(dodge)) 0.4 else if (is.numeric(dodge)) dodge else 0
+  dw <- if (isTRUE(dodge)) {
+    0.4
+  } else if (is.numeric(dodge)) {
+    dodge
+  } else {
+    0
+  }
   pos <- if (dw > 0) ggplot2::position_dodge(width = dw) else "identity"
 
-  pt_aes <- if (vert) ggplot2::aes(x = .data$.cat, y = .data$estimate)
-            else ggplot2::aes(x = .data$estimate, y = .data$.cat)
-  err_aes <- if (vert) ggplot2::aes(x = .data$.cat, ymin = .data$ymin, ymax = .data$ymax)
-             else ggplot2::aes(y = .data$.cat, xmin = .data$ymin, xmax = .data$ymax)
+  pt_aes <- if (vert) {
+    ggplot2::aes(x = .data$.cat, y = .data$estimate)
+  } else {
+    ggplot2::aes(x = .data$estimate, y = .data$.cat)
+  }
+  err_aes <- if (vert) {
+    ggplot2::aes(x = .data$.cat, ymin = .data$ymin, ymax = .data$ymax)
+  } else {
+    ggplot2::aes(y = .data$.cat, xmin = .data$ymin, xmax = .data$ymax)
+  }
   if (s$has_hue) {
-    pt_aes$colour <- rlang::sym(".hue"); pt_aes$group <- rlang::sym(".hue")
-    err_aes$colour <- rlang::sym(".hue"); err_aes$group <- rlang::sym(".hue")
+    pt_aes$colour <- rlang::sym(".hue")
+    pt_aes$group <- rlang::sym(".hue")
+    err_aes$colour <- rlang::sym(".hue")
+    err_aes$group <- rlang::sym(".hue")
   }
   err_fun <- if (vert) ggplot2::geom_errorbar else ggplot2::geom_errorbarh
   line_args <- list(pt_aes, position = pos, linewidth = rb_line_default_width())
   pt_args <- list(pt_aes, position = pos, size = rb_area_to_size(36))
-  if (!s$has_hue) { line_args$colour <- colors; pt_args$colour <- colors }
+  if (!s$has_hue) {
+    line_args$colour <- colors
+    pt_args$colour <- colors
+  }
 
-  err_args <- list(err_aes, position = pos, width = capsize,
-                   linewidth = .rb_lw(1.5), show.legend = FALSE)
-  if (!s$has_hue) err_args$colour <- colors
+  err_args <- list(
+    err_aes,
+    position = pos,
+    width = capsize,
+    linewidth = .rb_lw(1.5),
+    show.legend = FALSE
+  )
+  if (!s$has_hue) {
+    err_args$colour <- colors
+  }
   p <- ggplot2::ggplot(agg) +
     do.call(err_fun, err_args) +
     do.call(ggplot2::geom_line, line_args) +
@@ -385,27 +682,74 @@ pointplot <- function(data = NULL, x = NULL, y = NULL, hue = NULL, order = NULL,
 #' @param color Single color override.
 #' @param palette Palette for the hue mapping.
 #' @export
-catplot <- function(data = NULL, x = NULL, y = NULL, hue = NULL, row = NULL,
-                    col = NULL, kind = "strip", estimator = "mean",
-                    errorbar = list("ci", 95), n_boot = 1000, seed = NULL,
-                    units = NULL, weights = NULL, order = NULL, hue_order = NULL,
-                    row_order = NULL, col_order = NULL, col_wrap = NULL,
-                    height = 5, aspect = 1, orient = NULL, color = NULL,
-                    palette = NULL, legend = "auto", facet_kws = NULL, ...) {
-  fun <- switch(kind, strip = stripplot, box = boxplot, bar = barplot,
-                point = pointplot, count = countplot, violin = violinplot,
-                boxen = boxenplot, swarm = swarmplot,
-                stop(sprintf("kind must be strip/swarm/box/violin/boxen/point/bar/count, not '%s'", kind)))
-  args <- list(data = data, x = x, y = y, hue = hue, order = order,
-               hue_order = hue_order, orient = orient, color = color,
-               palette = palette, legend = legend, .facet_vars = c(row, col), ...)
+catplot <- function(
+  data = NULL,
+  x = NULL,
+  y = NULL,
+  hue = NULL,
+  row = NULL,
+  col = NULL,
+  kind = "strip",
+  estimator = "mean",
+  errorbar = list("ci", 95),
+  n_boot = 1000,
+  seed = NULL,
+  units = NULL,
+  weights = NULL,
+  order = NULL,
+  hue_order = NULL,
+  row_order = NULL,
+  col_order = NULL,
+  col_wrap = NULL,
+  height = 5,
+  aspect = 1,
+  orient = NULL,
+  color = NULL,
+  palette = NULL,
+  legend = "auto",
+  facet_kws = NULL,
+  ...
+) {
+  fun <- switch(
+    kind,
+    strip = stripplot,
+    box = boxplot,
+    bar = barplot,
+    point = pointplot,
+    count = countplot,
+    violin = violinplot,
+    boxen = boxenplot,
+    swarm = swarmplot,
+    stop(sprintf(
+      "kind must be strip/swarm/box/violin/boxen/point/bar/count, not '%s'",
+      kind
+    ))
+  )
+  args <- list(
+    data = data,
+    x = x,
+    y = y,
+    hue = hue,
+    order = order,
+    hue_order = hue_order,
+    orient = orient,
+    color = color,
+    palette = palette,
+    legend = legend,
+    .facet_vars = c(row, col),
+    ...
+  )
   if (kind %in% c("bar", "point")) {
-    args$estimator <- estimator; args$errorbar <- errorbar
-    args$n_boot <- n_boot; args$seed <- seed
+    args$estimator <- estimator
+    args$errorbar <- errorbar
+    args$n_boot <- n_boot
+    args$seed <- seed
   }
   p <- do.call(fun, args)
   p <- rb_facet(p, data, row, col, col_wrap, row_order, col_order)
-  if (!is.null(row) || !is.null(col)) p <- p + rb_legend_right()
+  if (!is.null(row) || !is.null(col)) {
+    p <- p + rb_legend_right()
+  }
   attr(p, "rb_height") <- height
   attr(p, "rb_aspect") <- aspect
   reaborn_plot(p, call = match.call())

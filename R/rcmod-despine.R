@@ -15,12 +15,21 @@
 #'   a one-time message. Present for signature compatibility.
 #' @return A ggplot2 theme object to add to a plot.
 #' @export
-despine <- function(fig = NULL, ax = NULL, top = TRUE, right = TRUE,
-                    left = FALSE, bottom = FALSE, offset = NULL, trim = FALSE) {
+despine <- function(
+  fig = NULL,
+  ax = NULL,
+  top = TRUE,
+  right = TRUE,
+  left = FALSE,
+  bottom = FALSE,
+  offset = NULL,
+  trim = FALSE
+) {
   if (!is.null(offset) || !isFALSE(trim)) {
     rlang::warn(
       "despine(offset=, trim=) is not supported by ggplot2 and is ignored in this version.",
-      .frequency = "once", .frequency_id = "reaborn_despine_offset_trim"
+      .frequency = "once",
+      .frequency_id = "reaborn_despine_offset_trim"
     )
   }
   text_col <- .rb_col(DARK_GRAY)
@@ -33,9 +42,9 @@ despine <- function(fig = NULL, ax = NULL, top = TRUE, right = TRUE,
   ggplot2::theme(
     panel.border = ggplot2::element_blank(),
     axis.line.x.bottom = if (bottom) ggplot2::element_blank() else keep_line,
-    axis.line.x.top    = if (top)    ggplot2::element_blank() else keep_line,
-    axis.line.y.left   = if (left)   ggplot2::element_blank() else keep_line,
-    axis.line.y.right  = if (right)  ggplot2::element_blank() else keep_line
+    axis.line.x.top = if (top) ggplot2::element_blank() else keep_line,
+    axis.line.y.left = if (left) ggplot2::element_blank() else keep_line,
+    axis.line.y.right = if (right) ggplot2::element_blank() else keep_line
   )
 }
 
@@ -104,10 +113,18 @@ move_legend <- function(obj = NULL, loc = "best", ...) {
     "lower center" = "bottom",
     "right"
   )
-  if (loc %in% names(inside)) return(inside[[loc]])
-  switch(loc,
-    "best" = "right", "right" = "right", "center right" = "right",
-    "left" = "left", "center left" = "left",
-    "upper center" = "top", "lower center" = "bottom",
-    "right")
+  if (loc %in% names(inside)) {
+    return(inside[[loc]])
+  }
+  switch(
+    loc,
+    "best" = "right",
+    "right" = "right",
+    "center right" = "right",
+    "left" = "left",
+    "center left" = "left",
+    "upper center" = "top",
+    "lower center" = "bottom",
+    "right"
+  )
 }

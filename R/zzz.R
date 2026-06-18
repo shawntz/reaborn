@@ -9,7 +9,8 @@
 
 .onAttach <- function(libname, pkgname) {
   packageStartupMessage(
-    "reaborn ", utils::packageVersion("reaborn"),
+    "reaborn ",
+    utils::packageVersion("reaborn"),
     " - seaborn, the R way. Plots are ggplots; extend them with +."
   )
 }

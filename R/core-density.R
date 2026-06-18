@@ -5,7 +5,9 @@
 
 # scipy gaussian_kde bandwidth factor. d = number of dimensions.
 .rb_kde_factor <- function(n, d = 1, method = "scott") {
-  if (is.numeric(method)) return(method)
+  if (is.numeric(method)) {
+    return(method)
+  }
   if (identical(method, "silverman")) {
     return((n * (d + 2) / 4)^(-1 / (d + 4)))
   }
@@ -25,14 +27,22 @@
 #' @param cumulative Return the cumulative distribution instead of the density.
 #' @return A list with `x` (grid) and `y` (density) vectors.
 #' @keywords internal
-rb_gaussian_kde <- function(x, bw_method = "scott", bw_adjust = 1, gridsize = 200,
-                            cut = 3, clip = NULL, weights = NULL, cumulative = FALSE) {
+rb_gaussian_kde <- function(
+  x,
+  bw_method = "scott",
+  bw_adjust = 1,
+  gridsize = 200,
+  cut = 3,
+  clip = NULL,
+  weights = NULL,
+  cumulative = FALSE
+) {
   x <- x[!is.na(x)]
   n <- length(x)
   w <- if (is.null(weights)) rep(1 / n, n) else weights / sum(weights)
   # scipy uses the (weighted) sample covariance with bias correction.
   if (is.null(weights)) {
-    data_var <- stats::var(x)                      # ddof = 1
+    data_var <- stats::var(x) # ddof = 1
   } else {
     mu <- sum(w * x)
     neff <- 1 / sum(w^2)
@@ -45,7 +55,9 @@ rb_gaussian_kde <- function(x, bw_method = "scott", bw_adjust = 1, gridsize = 20
   lo <- min(x) - bw * cut
   hi <- max(x) + bw * cut
   if (!is.null(clip)) {
-    if (is.finite(clip[1])) lo <- max(lo, clip[1])
+    if (is.finite(clip[1])) {
+      lo <- max(lo, clip[1])
+    }
     if (is.finite(clip[2])) hi <- min(hi, clip[2])
   }
   grid <- seq(lo, hi, length.out = gridsize)
@@ -55,7 +67,11 @@ rb_gaussian_kde <- function(x, bw_method = "scott", bw_adjust = 1, gridsize = 20
 
   if (cumulative) {
     # Cumulative via analytic normal CDF mixture (matches integrate_box_1d).
-    dens <- vapply(grid, function(g) sum(w * stats::pnorm(g, x, bw)), numeric(1))
+    dens <- vapply(
+      grid,
+      function(g) sum(w * stats::pnorm(g, x, bw)),
+      numeric(1)
+    )
   }
   list(x = grid, y = dens, bw = bw)
 }
@@ -63,7 +79,7 @@ rb_gaussian_kde <- function(x, bw_method = "scott", bw_adjust = 1, gridsize = 20
 # ---- numpy.histogram_bin_edges port ----------------------------------------
 
 .rb_iqr <- function(x) {
-  qs <- stats::quantile(x, c(0.75, 0.25), names = FALSE, type = 7)  # numpy linear
+  qs <- stats::quantile(x, c(0.75, 0.25), names = FALSE, type = 7) # numpy linear
   qs[1] - qs[2]
 }
 
@@ -71,17 +87,26 @@ rb_gaussian_kde <- function(x, bw_method = "scott", bw_adjust = 1, gridsize = 20
 .rb_bin_width <- function(x, rule) {
   n <- length(x)
   ptp <- max(x) - min(x)
-  switch(rule,
+  switch(
+    rule,
     sturges = ptp / (log2(n) + 1),
-    rice    = ptp / (2 * n^(1 / 3)),
-    sqrt    = ptp / sqrt(n),
-    scott   = (24 * sqrt(pi) / n)^(1 / 3) * stats::sd(x),
-    fd      = { iqr <- .rb_iqr(x); 2 * iqr / n^(1 / 3) },
-    doane   = {
-      if (n <= 2) return(0)
+    rice = ptp / (2 * n^(1 / 3)),
+    sqrt = ptp / sqrt(n),
+    scott = (24 * sqrt(pi) / n)^(1 / 3) * stats::sd(x),
+    fd = {
+      iqr <- .rb_iqr(x)
+      2 * iqr / n^(1 / 3)
+    },
+    doane = {
+      if (n <= 2) {
+        return(0)
+      }
       sg1 <- sqrt(6 * (n - 2) / ((n + 1) * (n + 3)))
-      mu <- mean(x); sigma <- sqrt(mean((x - mu)^2))
-      if (sigma == 0) return(0)
+      mu <- mean(x)
+      sigma <- sqrt(mean((x - mu)^2))
+      if (sigma == 0) {
+        return(0)
+      }
       g1 <- mean(((x - mu) / sigma)^3)
       ptp / (1 + log2(n) + log2(1 + abs(g1) / sg1))
     },
@@ -105,20 +130,30 @@ rb_gaussian_kde <- function(x, bw_method = "scott", bw_adjust = 1, gridsize = 20
 #' @param discrete If `TRUE`, place bins on integer centers.
 #' @return A numeric vector of bin edges.
 #' @keywords internal
-rb_hist_bins <- function(x, bins = "auto", binrange = NULL, binwidth = NULL,
-                         discrete = FALSE) {
+rb_hist_bins <- function(
+  x,
+  bins = "auto",
+  binrange = NULL,
+  binwidth = NULL,
+  discrete = FALSE
+) {
   x <- x[!is.na(x)]
   rng <- binrange %||% c(min(x), max(x))
-  first <- rng[1]; last <- rng[2]
+  first <- rng[1]
+  last <- rng[2]
   if (discrete) {
     return(seq(first - 0.5, last + 0.5, by = 1))
   }
   if (!is.null(binwidth)) {
     edges <- seq(first, last + binwidth, by = binwidth)
-    if (max(edges) < last || length(edges) < 2) edges <- c(edges, max(edges) + binwidth)
+    if (max(edges) < last || length(edges) < 2) {
+      edges <- c(edges, max(edges) + binwidth)
+    }
     return(edges)
   }
-  if (length(bins) > 1) return(bins)                 # explicit edges
+  if (length(bins) > 1) {
+    return(bins)
+  } # explicit edges
   if (is.numeric(bins)) {
     return(seq(first, last, length.out = as.integer(bins) + 1))
   }

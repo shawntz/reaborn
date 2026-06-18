@@ -16,59 +16,129 @@
 #' @param ... Passed to [ggplot2::geom_point].
 #' @return A `reaborn_plot`.
 #' @export
-scatterplot <- function(data = NULL, x = NULL, y = NULL, hue = NULL, size = NULL,
-                        style = NULL, palette = NULL, hue_order = NULL,
-                        hue_norm = NULL, sizes = NULL, size_order = NULL,
-                        size_norm = NULL, markers = TRUE, style_order = NULL,
-                        legend = "auto", ...) {
-  v <- rb_assign_variables(data, x = x, y = y, hue = hue, size = size, style = style)
+scatterplot <- function(
+  data = NULL,
+  x = NULL,
+  y = NULL,
+  hue = NULL,
+  size = NULL,
+  style = NULL,
+  palette = NULL,
+  hue_order = NULL,
+  hue_norm = NULL,
+  sizes = NULL,
+  size_order = NULL,
+  size_norm = NULL,
+  markers = TRUE,
+  style_order = NULL,
+  legend = "auto",
+  ...
+) {
+  v <- rb_assign_variables(
+    data,
+    x = x,
+    y = y,
+    hue = hue,
+    size = size,
+    style = style
+  )
   mb <- rb_make_base(data, v, c("x", "y", "hue", "size", "style"))
-  base <- mb$base; vd <- mb$vd
+  base <- mb$base
+  vd <- mb$vd
 
-  hue_m <- rb_resolve_hue(vd[["hue"]], v$names$hue %||% "hue", v$types$hue %||% "categorical",
-                          palette, hue_order, hue_norm, aes = "fill")
-  size_m <- rb_resolve_size(vd[["size"]], v$names$size %||% "size", v$types$size %||% "categorical",
-                            sizes, size_order, size_norm, default_range = c(18, 72))
-  style_m <- rb_resolve_style(vd[["style"]], v$names$style %||% "style", style_order,
-                              markers = markers, dashes = FALSE)
+  hue_m <- rb_resolve_hue(
+    vd[["hue"]],
+    v$names$hue %||% "hue",
+    v$types$hue %||% "categorical",
+    palette,
+    hue_order,
+    hue_norm,
+    aes = "fill"
+  )
+  size_m <- rb_resolve_size(
+    vd[["size"]],
+    v$names$size %||% "size",
+    v$types$size %||% "categorical",
+    sizes,
+    size_order,
+    size_norm,
+    default_range = c(18, 72)
+  )
+  style_m <- rb_resolve_style(
+    vd[["style"]],
+    v$names$style %||% "style",
+    style_order,
+    markers = markers,
+    dashes = FALSE
+  )
 
   # Map x/y to their original columns (retaining other columns for faceting).
-  rx <- rb_role_col(base, vd, x, "x", "__x"); base <- rx$base
-  ry <- rb_role_col(base, vd, y, "y", "__y"); base <- ry$base
+  rx <- rb_role_col(base, vd, x, "x", "__x")
+  base <- rx$base
+  ry <- rb_role_col(base, vd, y, "y", "__y")
+  base <- ry$base
   mapping <- ggplot2::aes(x = .data[[rx$col]], y = .data[[ry$col]])
-  if (isTRUE(hue_m$mapped))  { base$`__hue`  <- hue_m$column;  mapping$fill  <- rlang::sym("__hue") }
-  if (isTRUE(size_m$mapped)) { base$`__size` <- size_m$column; mapping$size  <- rlang::sym("__size") }
-  if (isTRUE(style_m$mapped)){ base$`__style`<- style_m$column; mapping$shape <- rlang::sym("__style") }
+  if (isTRUE(hue_m$mapped)) {
+    base$`__hue` <- hue_m$column
+    mapping$fill <- rlang::sym("__hue")
+  }
+  if (isTRUE(size_m$mapped)) {
+    base$`__size` <- size_m$column
+    mapping$size <- rlang::sym("__size")
+  }
+  if (isTRUE(style_m$mapped)) {
+    base$`__style` <- style_m$column
+    mapping$shape <- rlang::sym("__style")
+  }
   pdf <- base
 
   # Constant geom defaults (seaborn: filled marker, white edge, auto stroke).
   geom_args <- list(...)
   if (!isTRUE(size_m$mapped) && is.null(geom_args$size)) {
-    geom_args$size <- rb_area_to_size(36)            # default s = 36 points^2
+    geom_args$size <- rb_area_to_size(36) # default s = 36 points^2
   }
-  if (!isTRUE(style_m$mapped) && is.null(geom_args$shape)) geom_args$shape <- 21
-  if (is.null(geom_args$colour)) geom_args$colour <- "white"   # marker edge
-  if (is.null(geom_args$stroke)) geom_args$stroke <- RB_SCATTER_STROKE
+  if (!isTRUE(style_m$mapped) && is.null(geom_args$shape)) {
+    geom_args$shape <- 21
+  }
+  if (is.null(geom_args$colour)) {
+    geom_args$colour <- "white"
+  } # marker edge
+  if (is.null(geom_args$stroke)) {
+    geom_args$stroke <- RB_SCATTER_STROKE
+  }
   if (!isTRUE(hue_m$mapped) && is.null(geom_args$fill)) {
     geom_args$fill <- color_palette(.reaborn_get("palette", "deep"), 1)
   }
 
-  p <- ggplot2::ggplot(pdf, mapping) +
-    do.call(ggplot2::geom_point, geom_args)
+  p <- ggplot2::ggplot(pdf, mapping) + do.call(ggplot2::geom_point, geom_args)
 
   # Scales for the active semantics. For fill, use fillable shapes (21-25).
-  if (isTRUE(hue_m$mapped))  p <- p + hue_m$scale
-  if (isTRUE(size_m$mapped)) p <- p + size_m$scale
+  if (isTRUE(hue_m$mapped)) {
+    p <- p + hue_m$scale
+  }
+  if (isTRUE(size_m$mapped)) {
+    p <- p + size_m$scale
+  }
   if (isTRUE(style_m$mapped) && !is.null(style_m$shape_scale)) {
     fillable <- c(21, 22, 24, 23, 25)
-    p <- p + ggplot2::scale_shape_manual(
-      values = stats::setNames(fillable[seq_along(style_m$levels)], style_m$levels),
-      name = style_m$name)
+    p <- p +
+      ggplot2::scale_shape_manual(
+        values = stats::setNames(
+          fillable[seq_along(style_m$levels)],
+          style_m$levels
+        ),
+        name = style_m$name
+      )
   }
 
-  p <- rb_finish_plot(p, xlab = v$names$x, ylab = v$names$y,
-                      legend = legend, legend_data = list(x = vd[["x"]], y = vd[["y"]]),
-                      any_legend = any(hue_m$mapped, size_m$mapped, style_m$mapped))
+  p <- rb_finish_plot(
+    p,
+    xlab = v$names$x,
+    ylab = v$names$y,
+    legend = legend,
+    legend_data = list(x = vd[["x"]], y = vd[["y"]]),
+    any_legend = any(hue_m$mapped, size_m$mapped, style_m$mapped)
+  )
   reaborn_plot(p, call = match.call())
 }
 
@@ -96,48 +166,114 @@ RB_SCATTER_STROKE <- 0.3
 #' @param style_order Order of style levels.
 #' @param .facet_vars Internal; facet columns forwarded by the figure-level dispatchers (catplot/displot/relplot). Not intended for direct use.
 #' @export
-lineplot <- function(data = NULL, x = NULL, y = NULL, hue = NULL, size = NULL,
-                     style = NULL, units = NULL, weights = NULL, palette = NULL,
-                     hue_order = NULL, hue_norm = NULL, sizes = NULL,
-                     size_order = NULL, size_norm = NULL, dashes = TRUE,
-                     markers = NULL, style_order = NULL, estimator = "mean",
-                     errorbar = list("ci", 95), n_boot = 1000, seed = NULL,
-                     orient = "x", sort = TRUE, err_style = "band",
-                     err_kws = NULL, legend = "auto", .facet_vars = NULL, ...) {
-  v <- rb_assign_variables(data, x = x, y = y, hue = hue, size = size,
-                           style = style, units = units)
+lineplot <- function(
+  data = NULL,
+  x = NULL,
+  y = NULL,
+  hue = NULL,
+  size = NULL,
+  style = NULL,
+  units = NULL,
+  weights = NULL,
+  palette = NULL,
+  hue_order = NULL,
+  hue_norm = NULL,
+  sizes = NULL,
+  size_order = NULL,
+  size_norm = NULL,
+  dashes = TRUE,
+  markers = NULL,
+  style_order = NULL,
+  estimator = "mean",
+  errorbar = list("ci", 95),
+  n_boot = 1000,
+  seed = NULL,
+  orient = "x",
+  sort = TRUE,
+  err_style = "band",
+  err_kws = NULL,
+  legend = "auto",
+  .facet_vars = NULL,
+  ...
+) {
+  v <- rb_assign_variables(
+    data,
+    x = x,
+    y = y,
+    hue = hue,
+    size = size,
+    style = style,
+    units = units
+  )
   mb <- rb_make_base(data, v, c("x", "y", "hue", "size", "style", "units"))
   vd <- mb$vd
 
-  hue_m <- rb_resolve_hue(vd[["hue"]], v$names$hue %||% "hue",
-                          v$types$hue %||% "categorical", palette, hue_order,
-                          hue_norm, aes = "colour")
-  size_m <- rb_resolve_size(vd[["size"]], v$names$size %||% "size",
-                            v$types$size %||% "categorical", sizes, size_order,
-                            size_norm, default_range = rb_line_size_range(),
-                            aes = "linewidth")
-  style_m <- rb_resolve_style(vd[["style"]], v$names$style %||% "style",
-                              style_order, markers = markers %||% FALSE,
-                              dashes = dashes)
+  hue_m <- rb_resolve_hue(
+    vd[["hue"]],
+    v$names$hue %||% "hue",
+    v$types$hue %||% "categorical",
+    palette,
+    hue_order,
+    hue_norm,
+    aes = "colour"
+  )
+  size_m <- rb_resolve_size(
+    vd[["size"]],
+    v$names$size %||% "size",
+    v$types$size %||% "categorical",
+    sizes,
+    size_order,
+    size_norm,
+    default_range = rb_line_size_range(),
+    aes = "linewidth"
+  )
+  style_m <- rb_resolve_style(
+    vd[["style"]],
+    v$names$style %||% "style",
+    style_order,
+    markers = markers %||% FALSE,
+    dashes = dashes
+  )
 
   # Assemble an aggregation/plot frame keyed by role.
   adf <- data.frame(.x = vd[["x"]], .y = vd[["y"]])
   grp_cols <- character(0)
-  if (isTRUE(hue_m$mapped))   { adf$.hue   <- hue_m$column;   grp_cols <- c(grp_cols, ".hue") }
-  if (isTRUE(size_m$mapped))  { adf$.size  <- size_m$column;  grp_cols <- c(grp_cols, ".size") }
-  if (isTRUE(style_m$mapped)) { adf$.style <- style_m$column; grp_cols <- c(grp_cols, ".style") }
+  if (isTRUE(hue_m$mapped)) {
+    adf$.hue <- hue_m$column
+    grp_cols <- c(grp_cols, ".hue")
+  }
+  if (isTRUE(size_m$mapped)) {
+    adf$.size <- size_m$column
+    grp_cols <- c(grp_cols, ".size")
+  }
+  if (isTRUE(style_m$mapped)) {
+    adf$.style <- style_m$column
+    grp_cols <- c(grp_cols, ".style")
+  }
   has_units <- "units" %in% names(vd)
-  if (has_units) adf$.units <- factor(as.character(vd[["units"]]))
+  if (has_units) {
+    adf$.units <- factor(as.character(vd[["units"]]))
+  }
   # Facet columns (passed by relplot for kind="line"): retained for faceting and
   # used as aggregation grouping so each facet aggregates independently.
   facet_vars <- intersect(.facet_vars %||% character(0), names(mb$base))
-  for (fv in facet_vars) { adf[[fv]] <- mb$base[[fv]]; grp_cols <- c(grp_cols, fv) }
+  for (fv in facet_vars) {
+    adf[[fv]] <- mb$base[[fv]]
+    grp_cols <- c(grp_cols, fv)
+  }
 
   aggregate <- !is.null(estimator) && !has_units
   if (aggregate) {
-    plotdf <- rb_aggregate(adf, pos_col = ".x", value_col = ".y",
-                           group_cols = grp_cols, estimator = estimator,
-                           errorbar = errorbar, n_boot = n_boot, seed = seed)
+    plotdf <- rb_aggregate(
+      adf,
+      pos_col = ".x",
+      value_col = ".y",
+      group_cols = grp_cols,
+      estimator = estimator,
+      errorbar = errorbar,
+      n_boot = n_boot,
+      seed = seed
+    )
     ycol <- "estimate"
   } else {
     plotdf <- adf
@@ -150,20 +286,30 @@ lineplot <- function(data = NULL, x = NULL, y = NULL, hue = NULL, size = NULL,
   } else {
     factor(1)
   }
-  if (isTRUE(sort)) plotdf <- plotdf[order(plotdf$.grp, plotdf$.x), , drop = FALSE]
+  if (isTRUE(sort)) {
+    plotdf <- plotdf[order(plotdf$.grp, plotdf$.x), , drop = FALSE]
+  }
 
   # Aesthetic mapping.
   mapping <- ggplot2::aes(x = .data$.x, y = .data[[ycol]], group = .data$.grp)
-  if (isTRUE(hue_m$mapped))   mapping$colour    <- rlang::sym(".hue")
-  if (isTRUE(size_m$mapped))  mapping$linewidth <- rlang::sym(".size")
-  if (isTRUE(style_m$mapped) && isTRUE(dashes)) mapping$linetype <- rlang::sym(".style")
+  if (isTRUE(hue_m$mapped)) {
+    mapping$colour <- rlang::sym(".hue")
+  }
+  if (isTRUE(size_m$mapped)) {
+    mapping$linewidth <- rlang::sym(".size")
+  }
+  if (isTRUE(style_m$mapped) && isTRUE(dashes)) {
+    mapping$linetype <- rlang::sym(".style")
+  }
 
   default_color <- color_palette(.reaborn_get("palette", "deep"), 1)
   line_args <- list(...)
   if (!isTRUE(size_m$mapped) && is.null(line_args$linewidth)) {
     line_args$linewidth <- rb_line_default_width()
   }
-  if (!isTRUE(hue_m$mapped) && is.null(line_args$colour)) line_args$colour <- default_color
+  if (!isTRUE(hue_m$mapped) && is.null(line_args$colour)) {
+    line_args$colour <- default_color
+  }
 
   p <- ggplot2::ggplot(plotdf, mapping)
 
@@ -171,19 +317,43 @@ lineplot <- function(data = NULL, x = NULL, y = NULL, hue = NULL, size = NULL,
   band_alpha <- (err_kws %||% list())$alpha %||% 0.2
   if (aggregate && !is.null(errorbar) && any(is.finite(plotdf$ymin))) {
     if (identical(err_style, "band")) {
-      band_map <- ggplot2::aes(x = .data$.x, ymin = .data$ymin, ymax = .data$ymax,
-                               group = .data$.grp)
-      if (isTRUE(hue_m$mapped)) band_map$fill <- rlang::sym(".hue")
-      band_args <- list(mapping = band_map, alpha = band_alpha, colour = NA,
-                        show.legend = FALSE, inherit.aes = FALSE)
-      if (!isTRUE(hue_m$mapped)) band_args$fill <- default_color
+      band_map <- ggplot2::aes(
+        x = .data$.x,
+        ymin = .data$ymin,
+        ymax = .data$ymax,
+        group = .data$.grp
+      )
+      if (isTRUE(hue_m$mapped)) {
+        band_map$fill <- rlang::sym(".hue")
+      }
+      band_args <- list(
+        mapping = band_map,
+        alpha = band_alpha,
+        colour = NA,
+        show.legend = FALSE,
+        inherit.aes = FALSE
+      )
+      if (!isTRUE(hue_m$mapped)) {
+        band_args$fill <- default_color
+      }
       p <- p + do.call(ggplot2::geom_ribbon, band_args)
     } else if (identical(err_style, "bars")) {
-      eb_map <- ggplot2::aes(x = .data$.x, ymin = .data$ymin, ymax = .data$ymax,
-                             group = .data$.grp)
-      if (isTRUE(hue_m$mapped)) eb_map$colour <- rlang::sym(".hue")
-      p <- p + ggplot2::geom_errorbar(eb_map, width = 0, show.legend = FALSE,
-                                      inherit.aes = FALSE)
+      eb_map <- ggplot2::aes(
+        x = .data$.x,
+        ymin = .data$ymin,
+        ymax = .data$ymax,
+        group = .data$.grp
+      )
+      if (isTRUE(hue_m$mapped)) {
+        eb_map$colour <- rlang::sym(".hue")
+      }
+      p <- p +
+        ggplot2::geom_errorbar(
+          eb_map,
+          width = 0,
+          show.legend = FALSE,
+          inherit.aes = FALSE
+        )
     }
   }
 
@@ -197,18 +367,34 @@ lineplot <- function(data = NULL, x = NULL, y = NULL, hue = NULL, size = NULL,
   # Scales.
   if (isTRUE(hue_m$mapped)) {
     p <- p + hue_m$scale
-    if (hue_m$type == "categorical" && aggregate && identical(err_style, "band")) {
-      p <- p + ggplot2::scale_fill_manual(values = stats::setNames(
-        rb_categorical_colors(length(hue_m$levels), palette), hue_m$levels),
-        guide = "none")
+    if (
+      hue_m$type == "categorical" && aggregate && identical(err_style, "band")
+    ) {
+      p <- p +
+        ggplot2::scale_fill_manual(
+          values = stats::setNames(
+            rb_categorical_colors(length(hue_m$levels), palette),
+            hue_m$levels
+          ),
+          guide = "none"
+        )
     }
   }
-  if (isTRUE(size_m$mapped))  p <- p + size_m$scale
-  if (isTRUE(style_m$mapped) && !is.null(style_m$linetype_scale)) p <- p + style_m$linetype_scale
+  if (isTRUE(size_m$mapped)) {
+    p <- p + size_m$scale
+  }
+  if (isTRUE(style_m$mapped) && !is.null(style_m$linetype_scale)) {
+    p <- p + style_m$linetype_scale
+  }
 
-  p <- rb_finish_plot(p, xlab = v$names$x, ylab = v$names$y, legend = legend,
-                      legend_data = list(x = plotdf$.x, y = plotdf[[ycol]]),
-                      any_legend = any(hue_m$mapped, size_m$mapped, style_m$mapped))
+  p <- rb_finish_plot(
+    p,
+    xlab = v$names$x,
+    ylab = v$names$y,
+    legend = legend,
+    legend_data = list(x = plotdf$.x, y = plotdf[[ycol]]),
+    any_legend = any(hue_m$mapped, size_m$mapped, style_m$mapped)
+  )
   reaborn_plot(p, call = match.call())
 }
 
@@ -238,18 +424,53 @@ rb_line_default_width <- function() .rb_lw(SEABORN_DEFAULTS$linewidth)
 #' @return A `reaborn_plot`.
 #' @param style_order Order of style levels.
 #' @export
-relplot <- function(data = NULL, x = NULL, y = NULL, hue = NULL, size = NULL,
-                    style = NULL, units = NULL, weights = NULL, row = NULL,
-                    col = NULL, col_wrap = NULL, row_order = NULL, col_order = NULL,
-                    palette = NULL, hue_order = NULL, hue_norm = NULL, sizes = NULL,
-                    size_order = NULL, size_norm = NULL, markers = NULL,
-                    dashes = NULL, style_order = NULL, legend = "auto",
-                    kind = "scatter", height = 5, aspect = 1, facet_kws = NULL,
-                    ...) {
-  common <- list(data = data, x = x, y = y, hue = hue, size = size, style = style,
-                 palette = palette, hue_order = hue_order, hue_norm = hue_norm,
-                 sizes = sizes, size_order = size_order, size_norm = size_norm,
-                 style_order = style_order, legend = legend, ...)
+relplot <- function(
+  data = NULL,
+  x = NULL,
+  y = NULL,
+  hue = NULL,
+  size = NULL,
+  style = NULL,
+  units = NULL,
+  weights = NULL,
+  row = NULL,
+  col = NULL,
+  col_wrap = NULL,
+  row_order = NULL,
+  col_order = NULL,
+  palette = NULL,
+  hue_order = NULL,
+  hue_norm = NULL,
+  sizes = NULL,
+  size_order = NULL,
+  size_norm = NULL,
+  markers = NULL,
+  dashes = NULL,
+  style_order = NULL,
+  legend = "auto",
+  kind = "scatter",
+  height = 5,
+  aspect = 1,
+  facet_kws = NULL,
+  ...
+) {
+  common <- list(
+    data = data,
+    x = x,
+    y = y,
+    hue = hue,
+    size = size,
+    style = style,
+    palette = palette,
+    hue_order = hue_order,
+    hue_norm = hue_norm,
+    sizes = sizes,
+    size_order = size_order,
+    size_norm = size_norm,
+    style_order = style_order,
+    legend = legend,
+    ...
+  )
   if (kind == "line") {
     common$units <- units
     common$markers <- markers %||% FALSE
@@ -275,13 +496,24 @@ relplot <- function(data = NULL, x = NULL, y = NULL, hue = NULL, size = NULL,
 
 # Add facet_wrap / facet_grid to a plot from string row/col column names, using
 # the "var = value" strip labels seaborn shows, and honoring facet orderings.
-rb_facet <- function(p, data, row = NULL, col = NULL, col_wrap = NULL,
-                     row_order = NULL, col_order = NULL) {
-  if (is.null(row) && is.null(col)) return(p)
+rb_facet <- function(
+  p,
+  data,
+  row = NULL,
+  col = NULL,
+  col_wrap = NULL,
+  row_order = NULL,
+  col_order = NULL
+) {
+  if (is.null(row) && is.null(col)) {
+    return(p)
+  }
   if (is.data.frame(data)) {
     # Re-level facet columns so facets appear in seaborn's categorical order.
     relevel <- function(p, var, order) {
-      if (is.null(var)) return(p)
+      if (is.null(var)) {
+        return(p)
+      }
       lv <- rb_categorical_order(data[[var]], order)
       p$data[[var]] <- factor(as.character(p$data[[var]]), levels = lv)
       p
@@ -292,8 +524,11 @@ rb_facet <- function(p, data, row = NULL, col = NULL, col_wrap = NULL,
   labeller <- rb_label_eq
   if (!is.null(col) && is.null(row)) {
     facet <- if (!is.null(col_wrap)) {
-      ggplot2::facet_wrap(ggplot2::vars(.data[[col]]), ncol = col_wrap,
-                          labeller = labeller)
+      ggplot2::facet_wrap(
+        ggplot2::vars(.data[[col]]),
+        ncol = col_wrap,
+        labeller = labeller
+      )
     } else {
       ggplot2::facet_wrap(ggplot2::vars(.data[[col]]), labeller = labeller)
     }
@@ -307,8 +542,11 @@ rb_facet <- function(p, data, row = NULL, col = NULL, col_wrap = NULL,
 
 # A ggplot2 labeller producing seaborn's "var = value" strip titles.
 rb_label_eq <- function(labels) {
-  out <- Map(function(nm, vals) paste0(nm, " = ", as.character(vals)),
-             names(labels), labels)
+  out <- Map(
+    function(nm, vals) paste0(nm, " = ", as.character(vals)),
+    names(labels),
+    labels
+  )
   names(out) <- names(labels)
   out
 }
