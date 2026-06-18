@@ -76,36 +76,40 @@ save_panel(
     col = "region",
     kind = "line"
   ),
-  "reaborn_relplot_line.png", 8, 4
+  "reaborn_relplot_line.png",
+  8,
+  4
 )
 
 # --- Distributions ----------------------------------------------------------
-save_panel(
-  histplot(pen, x = "flipper_length_mm"),
-  "reaborn_hist.png", 6, 5
-)
+save_panel(histplot(pen, x = "flipper_length_mm"), "reaborn_hist.png", 6, 5)
 save_panel(
   histplot(pen, x = "flipper_length_mm", hue = "species", multiple = "stack"),
-  "reaborn_hist_stack.png", 6.5, 5
+  "reaborn_hist_stack.png",
+  6.5,
+  5
 )
 save_panel(
   kdeplot(pen, x = "flipper_length_mm", hue = "species", fill = TRUE),
-  "reaborn_kde.png", 6.5, 5
+  "reaborn_kde.png",
+  6.5,
+  5
 )
 save_panel(
   ecdfplot(pen, x = "bill_length_mm", hue = "species"),
-  "reaborn_ecdf.png", 6.5, 5
+  "reaborn_ecdf.png",
+  6.5,
+  5
 )
 save_panel(
   displot(pen, x = "flipper_length_mm", col = "species"),
-  "reaborn_displot.png", 9, 3.5
+  "reaborn_displot.png",
+  9,
+  3.5
 )
 
 # --- Categorical ------------------------------------------------------------
-save_panel(
-  boxplot(tips, x = "day", y = "total_bill"),
-  "reaborn_box.png", 6, 5
-)
+save_panel(boxplot(tips, x = "day", y = "total_bill"), "reaborn_box.png", 6, 5)
 save_panel(
   boxplot(tips, x = "day", y = "total_bill", hue = "smoker"),
   "reaborn_box_hue.png",
