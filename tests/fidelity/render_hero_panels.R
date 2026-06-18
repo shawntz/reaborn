@@ -61,8 +61,13 @@ save_panel(
 
 # 2. violin --------------------------------------------------------------------
 save_panel(
-  violinplot(data = pen, x = "species", y = "body_mass_g",
-             hue = "species", legend = FALSE),
+  violinplot(
+    data = pen,
+    x = "species",
+    y = "body_mass_g",
+    hue = "species",
+    legend = FALSE
+  ),
   "reaborn_violin.png"
 )
 
