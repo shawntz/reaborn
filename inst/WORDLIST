@@ -22,11 +22,13 @@ ecdfplot
 extensibility
 FacetGrid
 geoms
+ggbeeswarm
 ggplot
 ggplots
 gridline
 histplot
 HUSL
+jitter
 jointplot
 kde
 KDE
