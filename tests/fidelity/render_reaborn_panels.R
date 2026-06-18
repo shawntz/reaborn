@@ -57,7 +57,9 @@ tips <- load_dataset("tips")
 save_panel(
   scatterplot(pen, x = "bill_length_mm", y = "bill_depth_mm", hue = "species") +
     move_legend(loc = "lower left"),
-  "reaborn_scatter_hue.png", 6, 5
+  "reaborn_scatter_hue.png",
+  6,
+  5
 )
 save_panel(
   lineplot(fmri, x = "timepoint", y = "signal", hue = "event"),
