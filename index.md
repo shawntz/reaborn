@@ -36,8 +36,8 @@ sns.scatterplot(data = penguins, x = "bill_length_mm", y = "bill_depth_mm", hue 
 </div>
 
 <div class="rb-card">
-<h3>Pixel-faithful, provably</h3>
-<p>Not "close enough" — exact where it counts. KDEs reproduce <code>scipy.stats.gaussian_kde</code> to machine precision, histogram bins match <code>numpy.histogram_bin_edges</code> exactly, and palettes match seaborn's hex codes to the digit.</p>
+<h3>Exact numbers, indistinguishable plots</h3>
+<p>The constants are tested against the real thing: palettes match seaborn's hex codes to the digit, KDEs reproduce <code>scipy.stats.gaussian_kde</code> to machine precision, and histogram bins match <code>numpy.histogram_bin_edges</code>. The rendered output is visually indistinguishable from seaborn, not byte-identical.</p>
 </div>
 
 <div class="rb-card">
