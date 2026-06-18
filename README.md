@@ -8,7 +8,7 @@
 [![air format check](https://github.com/shawntz/reaborn/actions/workflows/air-format-check.yml/badge.svg)](https://github.com/shawntz/reaborn/actions/workflows/air-format-check.yml)
 [![air format suggest](https://github.com/shawntz/reaborn/actions/workflows/air-format-suggest.yaml/badge.svg)](https://github.com/shawntz/reaborn/actions/workflows/air-format-suggest.yaml)
 [![spellcheck](https://github.com/shawntz/reaborn/actions/workflows/spellcheck.yml/badge.svg)](https://github.com/shawntz/reaborn/actions/workflows/spellcheck.yml)
-[![pkgdown](https://github.com/shawntz/reaborn/actions/workflows/pkgdown.yaml/badge.svg)](https://github.com/shawntz/reaborn/actions/workflows/pkgdown.yaml)
+[![website](https://github.com/shawntz/reaborn/actions/workflows/pkgdown.yaml/badge.svg)](https://github.com/shawntz/reaborn/actions/workflows/pkgdown.yaml)
 
 <!-- badges: end -->
 
