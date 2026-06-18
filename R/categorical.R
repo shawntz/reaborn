@@ -75,7 +75,7 @@ rb_cat_finish <- function(p, setup, legend = "auto") {
   ylab <- if (setup$orient == "v") setup$val_name else setup$cat_name
   p <- rb_finish_plot(p, xlab = xlab, ylab = ylab,
                       legend = if (isFALSE(legend)) FALSE else "auto", breaks = FALSE)
-  if (setup$has_hue && !isFALSE(legend)) p <- p + ggplot2::theme(legend.position = "right")
+  if (setup$has_hue && !isFALSE(legend)) p <- p + rb_legend_right()
   p
 }
 
@@ -191,7 +191,7 @@ countplot <- function(data = NULL, x = NULL, y = NULL, hue = NULL, order = NULL,
   ylab <- if (s$orient == "v") s$val_name else s$cat_name
   p <- rb_finish_plot(p, xlab = xlab, ylab = ylab,
                       legend = if (isFALSE(legend)) FALSE else "auto", breaks = FALSE)
-  if (s$has_hue && !isFALSE(legend)) p <- p + ggplot2::theme(legend.position = "right")
+  if (s$has_hue && !isFALSE(legend)) p <- p + rb_legend_right()
   reaborn_plot(p, call = match.call())
 }
 
@@ -261,7 +261,7 @@ barplot <- function(data = NULL, x = NULL, y = NULL, hue = NULL, order = NULL,
   ylab <- if (vert) s$val_name else s$cat_name
   p <- rb_finish_plot(p, xlab = xlab, ylab = ylab,
                       legend = if (isFALSE(legend)) FALSE else "auto", breaks = FALSE)
-  if (s$has_hue && !isFALSE(legend)) p <- p + ggplot2::theme(legend.position = "right")
+  if (s$has_hue && !isFALSE(legend)) p <- p + rb_legend_right()
   reaborn_plot(p, call = match.call())
 }
 
@@ -404,7 +404,7 @@ catplot <- function(data = NULL, x = NULL, y = NULL, hue = NULL, row = NULL,
   }
   p <- do.call(fun, args)
   p <- rb_facet(p, data, row, col, col_wrap, row_order, col_order)
-  if (!is.null(row) || !is.null(col)) p <- p + ggplot2::theme(legend.position = "right")
+  if (!is.null(row) || !is.null(col)) p <- p + rb_legend_right()
   attr(p, "rb_height") <- height
   attr(p, "rb_aspect") <- aspect
   reaborn_plot(p, call = match.call())

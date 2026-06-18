@@ -267,7 +267,7 @@ relplot <- function(data = NULL, x = NULL, y = NULL, hue = NULL, size = NULL,
   p <- rb_facet(p, data, row, col, col_wrap, row_order, col_order)
 
   # Figure-level functions put the legend OUTSIDE (to the right), like FacetGrid.
-  p <- p + ggplot2::theme(legend.position = "right")
+  p <- p + rb_legend_right()
   attr(p, "rb_height") <- height
   attr(p, "rb_aspect") <- aspect
   reaborn_plot(p, call = match.call())

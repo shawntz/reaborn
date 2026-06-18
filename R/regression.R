@@ -227,7 +227,7 @@ lmplot <- function(data = NULL, x = NULL, y = NULL, hue = NULL, col = NULL,
   p <- rb_finish_plot(p, xlab = v$names$x, ylab = v$names$y,
                       legend = if (isFALSE(legend)) FALSE else "auto")
   if (hue_present || !is.null(col) || !is.null(row)) {
-    p <- p + ggplot2::theme(legend.position = "right")
+    p <- p + rb_legend_right()
   }
   attr(p, "rb_height") <- height; attr(p, "rb_aspect") <- aspect
   reaborn_plot(p, call = match.call())
