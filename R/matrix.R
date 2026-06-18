@@ -66,6 +66,7 @@ heatmap <- function(data, vmin = NULL, vmax = NULL, cmap = NULL, center = NULL,
   fill_scale <- ggplot2::scale_fill_gradientn(
     colours = cmap_cols, limits = c(vmin, vmax),
     oob = scales::squish, guide = if (cbar) "colourbar" else "none", name = NULL)
+  ctx <- plotting_context()
 
   tile_lw <- if (linewidths > 0) .rb_lw(linewidths) else 0
   p <- ggplot2::ggplot(long, ggplot2::aes(x = .data$col, y = .data$row, fill = .data$value)) +
@@ -100,12 +101,22 @@ heatmap <- function(data, vmin = NULL, vmax = NULL, cmap = NULL, center = NULL,
     ggplot2::labs(x = xlab, y = ylab)
   if (square) p <- p + ggplot2::coord_fixed()
 
-  # Heatmap chrome: no grid/border, ticks present, like seaborn.
+  # Heatmap chrome: seaborn despines the axes and shows no x/y tick marks, and
+  # styles the colorbar to match matplotlib's default vertical colorbar -- a
+  # full-height, thin, frameless bar with a single outward tick on the right
+  # (tick "out" direction, length ytick.major.size, width ytick.major.width).
+  # legend.key.height = unit(1, "null") stretches the bar to the panel height.
   p <- p + ggplot2::theme(
     panel.grid = ggplot2::element_blank(),
     panel.border = ggplot2::element_blank(),
-    axis.ticks = ggplot2::element_line(colour = .rb_col(DARK_GRAY), linewidth = .rb_lw(1.25)),
-    panel.background = ggplot2::element_blank()
+    panel.background = ggplot2::element_blank(),
+    axis.ticks = ggplot2::element_blank(),
+    legend.key.width = grid::unit(15, "pt"),
+    legend.key.height = grid::unit(1, "null"),
+    legend.frame = ggplot2::element_blank(),
+    legend.ticks = ggplot2::element_line(
+      colour = .rb_col(DARK_GRAY), linewidth = .rb_lw(ctx$ytick.major.width)),
+    legend.ticks.length = grid::unit(c(-ctx$ytick.major.size, 0), "pt")
   )
   reaborn_plot(p, call = match.call())
 }
