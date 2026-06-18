@@ -55,18 +55,39 @@ rb_finish_plot <- function(p, xlab = NULL, ylab = NULL, legend = "auto",
   } else if (any_legend && !is.null(legend_data) &&
              is.numeric(legend_data$x) && is.numeric(legend_data$y)) {
     corner <- rb_best_legend_corner(legend_data$x, legend_data$y)
-    # Match seaborn: the legend frame inherits the active style's axes facecolor
-    # (gray in darkgrid, white otherwise), not a hardcoded white box. The key
-    # stays transparent so that frame shows through behind each glyph.
-    st <- axes_style()
-    ctx <- plotting_context()
+    # seaborn keeps matplotlib's default legend frame: the background inherits the
+    # axes facecolor (so it reads against the gridded panel), bordered by a faint
+    # gray (0.8) edge, with a centered title and the keys themselves transparent.
+    facecol <- .rb_col(axes_style()$facecolor)
     p <- p + ggplot2::theme(
       legend.position = "inside",
       legend.position.inside = corner$inside,
       legend.justification.inside = corner$inside,
-      legend.background = .rb_legend_bg(.rb_col(st$facecolor), ctx$patch.linewidth),
-      legend.key = ggplot2::element_blank()
+      legend.background = ggplot2::element_rect(fill = facecol, colour = .rb_col(".8"),
+                                                linewidth = .rb_lw(0.8)),
+      legend.key = ggplot2::element_rect(fill = NA, colour = NA),
+      # matplotlib handles are wide and short (handlelength 2, handleheight 0.7),
+      # with a little breathing room between rows.
+      legend.key.width = grid::unit(1.7, "lines"),
+      legend.key.height = grid::unit(0.85, "lines"),
+      legend.key.spacing.y = grid::unit(2.5, "pt"),
+      legend.title = ggplot2::element_text(hjust = 0.5),
+      legend.margin = ggplot2::margin(3, 5, 3, 5)
     )
   }
   p
+}
+
+# Theme partial that places a legend outside, to the right of the axes (used by
+# the figure-level dispatchers and for hue legends on categorical axes). It also
+# undoes the inside-axes frame styling rb_finish_plot may have applied -- the
+# bordered box and centered title belong only to a legend that sits *inside* the
+# panel, whereas seaborn's outside legends are unframed with a left-aligned title.
+#' @keywords internal
+rb_legend_right <- function() {
+  ggplot2::theme(
+    legend.position = "right",
+    legend.background = ggplot2::element_blank(),
+    legend.title = ggplot2::element_text(hjust = 0)
+  )
 }

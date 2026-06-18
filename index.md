@@ -23,7 +23,7 @@ sns.scatterplot(data = penguins, x = "bill_length_mm", y = "bill_depth_mm", hue 
 
 <figure class="rb-compare">
 <img src="man/figures/compare-scatter.png" alt="Side-by-side comparison of a reaborn scatter plot and a seaborn scatter plot — visually identical">
-<figcaption>The <strong>same</strong> call, rendered by reaborn (left) and Python seaborn (right). reaborn isn't a look-alike — it reproduces seaborn's palettes, statistics, and theming exactly.</figcaption>
+<figcaption>The <strong>same</strong> call, rendered by reaborn (left) and Python seaborn (right).</figcaption>
 </figure>
 
 ## Why reaborn
@@ -36,8 +36,8 @@ sns.scatterplot(data = penguins, x = "bill_length_mm", y = "bill_depth_mm", hue 
 </div>
 
 <div class="rb-card">
-<h3>Pixel-faithful, provably</h3>
-<p>Not "close enough" — exact where it counts. KDEs reproduce <code>scipy.stats.gaussian_kde</code> to machine precision, histogram bins match <code>numpy.histogram_bin_edges</code> exactly, and palettes match seaborn's hex codes to the digit.</p>
+<h3>Exact numbers, indistinguishable plots</h3>
+<p>The constants are tested against the real thing: palettes match seaborn's hex codes to the digit, KDEs reproduce <code>scipy.stats.gaussian_kde</code> to machine precision, and histogram bins match <code>numpy.histogram_bin_edges</code>. The rendered output is visually indistinguishable from seaborn, not byte-identical.</p>
 </div>
 
 <div class="rb-card">
@@ -47,7 +47,7 @@ sns.scatterplot(data = penguins, x = "bill_length_mm", y = "bill_depth_mm", hue 
 
 <div class="rb-card">
 <h3>seaborn defaults, on import</h3>
-<p>The five seaborn styles across four contexts (<code>paper</code>/<code>notebook</code>/<code>talk</code>/<code>poster</code>) and every palette ship built in and apply globally — just like <code>sns.set_theme()</code>.</p>
+<p>The five seaborn styles across four contexts (<code>paper</code>/<code>notebook</code>/<code>talk</code>/<code>poster</code>) and every palette ships built in and applies globally — just like <code>sns.set_theme()</code>.</p>
 </div>
 
 <div class="rb-card">

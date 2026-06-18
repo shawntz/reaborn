@@ -180,7 +180,7 @@ violinplot <- function(data = NULL, x = NULL, y = NULL, hue = NULL, order = NULL
   ylab <- if (vert) s$val_name else s$cat_name
   p <- rb_finish_plot(p, xlab = xlab, ylab = ylab,
                       legend = if (isFALSE(legend)) FALSE else "auto", breaks = FALSE)
-  if (s$has_hue && !isFALSE(legend)) p <- p + ggplot2::theme(legend.position = "right")
+  if (s$has_hue && !isFALSE(legend)) p <- p + rb_legend_right()
   reaborn_plot(p, call = match.call())
 }
 

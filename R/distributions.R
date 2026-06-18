@@ -343,6 +343,13 @@ kdeplot <- function(data = NULL, x = NULL, y = NULL, hue = NULL, weights = NULL,
     p <- p + ggplot2::geom_ribbon(fill_aes, alpha = 0.25, colour = NA,
                                   show.legend = hue_present) +
       ggplot2::scale_fill_manual(values = colors, name = v$names$hue)
+    # Match seaborn's filled-KDE legend handle: a translucent patch outlined in
+    # the full hue color (the density curve's line color), not a flat fill chip.
+    if (hue_present) {
+      p <- p + ggplot2::guides(fill = ggplot2::guide_legend(
+        override.aes = list(colour = unname(colors[lv]),
+                            linewidth = rb_line_default_width())))
+    }
   }
   p <- p + ggplot2::geom_line(aes_line, linewidth = rb_line_default_width(),
                               show.legend = hue_present && !do_fill, ...) +
@@ -602,7 +609,7 @@ displot <- function(data = NULL, x = NULL, y = NULL, hue = NULL, row = NULL,
   p <- do.call(base_fun, args)
   p <- rb_facet(p, data, row, col, col_wrap, row_order, col_order)
   if (!is.null(row) || !is.null(col)) {
-    p <- p + ggplot2::theme(legend.position = "right")
+    p <- p + rb_legend_right()
   }
   attr(p, "rb_height") <- height
   attr(p, "rb_aspect") <- aspect
