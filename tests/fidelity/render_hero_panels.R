@@ -25,7 +25,11 @@ dir.create(OUT, showWarnings = FALSE, recursive = TRUE)
 # platforms (so CI doesn't churn the committed collage on every runner-image
 # bump) and is the device the package Suggests. Falls back to the default
 # grDevices device when ragg isn't installed.
-PNG_DEVICE <- if (requireNamespace("ragg", quietly = TRUE)) ragg::agg_png else NULL
+PNG_DEVICE <- if (requireNamespace("ragg", quietly = TRUE)) {
+  ragg::agg_png
+} else {
+  NULL
+}
 
 save_panel <- function(p, file, width = 6.5, height = 5) {
   ggplot2::ggsave(
