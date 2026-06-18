@@ -1,0 +1,200 @@
+---
+title: "Gallery"
+description: >
+  A tour of reaborn plots — rendered live in R — alongside side-by-side
+  comparisons proving they are visually indistinguishable from Python seaborn.
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Gallery}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE, comment = "#>",
+  dev = "ragg_png", dpi = 96,
+  fig.width = 6.5, fig.height = 4.6, fig.retina = 2,
+  message = FALSE, warning = FALSE
+)
+library(reaborn)
+set.seed(0)
+penguins <- load_dataset("penguins")
+tips     <- load_dataset("tips")
+fmri     <- load_dataset("fmri")
+```
+
+Every plot below is **rendered live by reaborn in R** from the seaborn-style code
+shown above it. Where it helps, a side-by-side panel shows the same plot in
+reaborn and in Python seaborn — they are designed to be indistinguishable.
+
+## Reaborn vs. seaborn, at a glance
+
+<img src="../reference/figures/compare-scatter.png" alt="reaborn vs seaborn scatter" style="width:100%;max-width:880px;border-radius:.6rem;box-shadow:0 4px 18px rgba(0,0,0,.1)">
+
+<img src="../reference/figures/compare-violin.png" alt="reaborn vs seaborn violin" style="width:100%;max-width:880px;border-radius:.6rem;box-shadow:0 4px 18px rgba(0,0,0,.1);margin-top:1rem">
+
+## Relational
+
+### scatterplot
+
+```{r}
+scatterplot(data = penguins, x = "bill_length_mm", y = "bill_depth_mm", hue = "species")
+```
+
+```{r}
+scatterplot(data = penguins, x = "bill_length_mm", y = "bill_depth_mm",
+            hue = "species", size = "body_mass_g", style = "species")
+```
+
+### lineplot
+
+With per-group aggregation and a bootstrap confidence band — matching seaborn.
+
+```{r}
+lineplot(data = fmri, x = "timepoint", y = "signal", hue = "event")
+```
+
+### relplot
+
+A figure-level wrapper that facets across `col`/`row`.
+
+```{r, fig.width = 8, fig.height = 3.6}
+relplot(data = fmri, x = "timepoint", y = "signal", hue = "event",
+        col = "region", kind = "line")
+```
+
+## Distributions
+
+### histplot
+
+```{r}
+histplot(data = penguins, x = "flipper_length_mm", hue = "species", multiple = "stack")
+```
+
+### kdeplot
+
+The KDE reproduces `scipy.stats.gaussian_kde` to machine precision.
+
+```{r}
+kdeplot(data = penguins, x = "flipper_length_mm", hue = "species", fill = TRUE)
+```
+
+### ecdfplot
+
+```{r}
+ecdfplot(data = penguins, x = "bill_length_mm", hue = "species")
+```
+
+### displot
+
+```{r, fig.width = 8, fig.height = 3.2}
+displot(data = penguins, x = "flipper_length_mm", col = "species")
+```
+
+## Categorical
+
+### boxplot &amp; violinplot
+
+```{r}
+boxplot(data = tips, x = "day", y = "total_bill", hue = "smoker")
+```
+
+```{r}
+violinplot(data = tips, x = "day", y = "total_bill")
+```
+
+### boxenplot
+
+A faithful letter-value plot for larger samples.
+
+```{r}
+boxenplot(data = penguins, x = "species", y = "body_mass_g")
+```
+
+### stripplot &amp; swarmplot
+
+```{r}
+stripplot(data = tips, x = "day", y = "total_bill", hue = "sex")
+```
+
+```{r}
+swarmplot(data = tips, x = "day", y = "total_bill")
+```
+
+### barplot &amp; pointplot
+
+Error bars are seaborn's bootstrap CI, not an analytic standard error.
+
+```{r}
+barplot(data = tips, x = "day", y = "total_bill")
+```
+
+```{r}
+pointplot(data = tips, x = "day", y = "total_bill", hue = "sex")
+```
+
+## Regression
+
+### regplot
+
+The confidence band is a bootstrap interval, like seaborn.
+
+```{r}
+regplot(data = tips, x = "total_bill", y = "tip")
+```
+
+### lmplot
+
+```{r, fig.width = 8, fig.height = 3.6}
+lmplot(data = tips, x = "total_bill", y = "tip", col = "time", hue = "smoker")
+```
+
+## Matrix
+
+### heatmap
+
+```{r, fig.width = 7.5, fig.height = 5.5}
+flights <- load_dataset("flights")
+mat <- tapply(flights$passengers, list(flights$month, flights$year), function(x) x[1])
+heatmap(mat, annot = TRUE, fmt = "d", linewidths = 0.5)
+```
+
+### clustermap
+
+```{r, fig.width = 6.5, fig.height = 6}
+clustermap(mat)
+```
+
+## Multi-plot grids
+
+### jointplot
+
+```{r, fig.width = 6, fig.height = 6}
+jointplot(data = penguins, x = "bill_length_mm", y = "bill_depth_mm", hue = "species")
+```
+
+### pairplot
+
+```{r, fig.width = 7.5, fig.height = 7}
+pairplot(penguins, vars = c("bill_length_mm", "bill_depth_mm", "flipper_length_mm"),
+         hue = "species")
+```
+
+## Palettes &amp; themes
+
+reaborn ships seaborn's palettes, matched to the hex digit, and its five styles.
+
+```{r, fig.width = 6, fig.height = 1}
+palplot(color_palette("deep"))
+```
+
+```{r, fig.width = 6, fig.height = 1}
+palplot(color_palette("husl", 8))
+```
+
+```{r}
+set_theme(style = "whitegrid")
+scatterplot(data = penguins, x = "bill_length_mm", y = "bill_depth_mm", hue = "species")
+set_theme()  # restore the default darkgrid
+```

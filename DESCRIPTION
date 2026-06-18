@@ -1,0 +1,41 @@
+Package: reaborn
+Title: Statistical Data Visualization, the Seaborn Way
+Version: 0.0.0.9000
+Authors@R:
+    person(given = "Shawn", family = "Schwartz", role = c("aut", "cre"),
+           email = "shawn.t.schwartz@gmail.com",
+           comment = c(ORCID = "0000-0001-6444-8451"))
+Description: An R port of the Python 'seaborn' library. reaborn mirrors seaborn's
+    public function API (identical function names, argument names, and defaults)
+    and renders visually indistinguishable plots using 'ggplot2'. Because every
+    reaborn plot is a 'ggplot' object, it can be extended with the full ggplot2
+    grammar of graphics.
+License: BSD_3_clause + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 8.0.0
+Depends:
+    R (>= 4.1)
+Imports:
+    ggplot2 (>= 4.0.0),
+    grDevices,
+    grid,
+    rlang,
+    scales,
+    stats
+Suggests:
+    colorspace,
+    ggbeeswarm,
+    ggdendro,
+    jsonlite,
+    knitr,
+    MASS,
+    patchwork,
+    ragg,
+    rmarkdown,
+    testthat (>= 3.0.0),
+    vdiffr
+Config/testthat/edition: 3
+VignetteBuilder: knitr
+URL: https://reaborn.org, https://github.com/shawntz/reaborn
+BugReports: https://github.com/shawntz/reaborn/issues
