@@ -105,7 +105,9 @@
   </div>
 </nav><div class="container template-home">
 <div class="row">
-  <main id="main" class="col-md-9"><div class="section level1 rb-hero">
+  <main id="main" class="col-md-9">
+<!-- badges: end -->
+<div class="section level1 rb-hero">
 <div class="page-header">
 <img src="logo.png" class="logo" alt=""><h1 id="seaborn-for-r-built-on-ggplot2">seaborn for R, built on ggplot2<a class="anchor" aria-label="anchor" href="#seaborn-for-r-built-on-ggplot2"></a>
 </h1>
@@ -127,7 +129,7 @@ Write the exact seaborn call you already know — same function names, arguments
 <h2 id="same-code-same-plot">Same code. Same plot.<a class="anchor" aria-label="anchor" href="#same-code-same-plot"></a>
 </h2>
 <figure class="rb-compare"><img src="reference/figures/compare-scatter.png" alt="Side-by-side comparison of a reaborn scatter plot and a seaborn scatter plot — visually identical"><figcaption>
-The <strong>same</strong> call, rendered by reaborn (left) and Python seaborn (right). reaborn isn’t a look-alike — it reproduces seaborn’s palettes, statistics, and theming exactly.
+The <strong>same</strong> call, rendered by reaborn (left) and Python seaborn (right).
 </figcaption></figure>
 </div>
 <div class="section level2">
@@ -144,10 +146,10 @@ Every function name, argument, and default mirrors seaborn exactly. <code><a hre
 </div>
 <div class="rb-card">
 <h3>
-Pixel-faithful, provably
+Exact numbers, indistinguishable plots
 </h3>
 <p>
-Not “close enough” — exact where it counts. KDEs reproduce <code>scipy.stats.gaussian_kde</code> to machine precision, histogram bins match <code>numpy.histogram_bin_edges</code> exactly, and palettes match seaborn’s hex codes to the digit.
+The constants are tested against the real thing: palettes match seaborn’s hex codes to the digit, KDEs reproduce <code>scipy.stats.gaussian_kde</code> to machine precision, and histogram bins match <code>numpy.histogram_bin_edges</code>. The rendered output is visually indistinguishable from seaborn, not byte-identical.
 </p>
 </div>
 <div class="rb-card">
@@ -163,7 +165,7 @@ reaborn doesn’t just look like ggplot — each plot <em>is</em> a ggplot objec
 seaborn defaults, on import
 </h3>
 <p>
-The five seaborn styles across four contexts (<code>paper</code>/<code>notebook</code>/<code>talk</code>/<code>poster</code>) and every palette ship built in and apply globally — just like <code><a href="reference/sns-aliases.html">sns.set_theme()</a></code>.
+The five seaborn styles across four contexts (<code>paper</code>/<code>notebook</code>/<code>talk</code>/<code>poster</code>) and every palette ships built in and applies globally — just like <code><a href="reference/sns-aliases.html">sns.set_theme()</a></code>.
 </p>
 </div>
 <div class="rb-card">
@@ -251,7 +253,18 @@ No reticulate, no Python install, no environment to manage. Just R, ggplot2, and
 </ul>
 </div>
 
-
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://github.com/shawntz/reaborn/tree/main" class="external-link"><img src="https://raw.githubusercontent.com/shawntz/reaborn/refs/heads/badges/main-branch-version.svg" alt="main branch version"></a></li>
+<li><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></li>
+<li><a href="https://github.com/shawntz/reaborn/actions/workflows/build.yml" class="external-link"><img src="https://github.com/shawntz/reaborn/actions/workflows/build.yml/badge.svg" alt="build"></a></li>
+<li><a href="https://github.com/shawntz/reaborn/actions/workflows/air-format-check.yml" class="external-link"><img src="https://github.com/shawntz/reaborn/actions/workflows/air-format-check.yml/badge.svg" alt="air format check"></a></li>
+<li><a href="https://github.com/shawntz/reaborn/actions/workflows/air-format-suggest.yaml" class="external-link"><img src="https://github.com/shawntz/reaborn/actions/workflows/air-format-suggest.yaml/badge.svg" alt="air format suggest"></a></li>
+<li><a href="https://github.com/shawntz/reaborn/actions/workflows/spellcheck.yml" class="external-link"><img src="https://github.com/shawntz/reaborn/actions/workflows/spellcheck.yml/badge.svg" alt="spellcheck"></a></li>
+<li><a href="https://github.com/shawntz/reaborn/actions/workflows/pkgdown.yaml" class="external-link"><img src="https://github.com/shawntz/reaborn/actions/workflows/pkgdown.yaml/badge.svg" alt="website"></a></li>
+</ul>
+</div>
 
   </aside>
 </div>

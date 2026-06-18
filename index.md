@@ -24,8 +24,7 @@ scatter plot — visually
 identical](reference/figures/compare-scatter.png)
 
 The **same** call, rendered by reaborn (left) and Python seaborn
-(right). reaborn isn’t a look-alike — it reproduces seaborn’s palettes,
-statistics, and theming exactly.
+(right).
 
 ## Why reaborn
 
@@ -36,12 +35,13 @@ Every function name, argument, and default mirrors seaborn exactly.
 palette globally, exposes `sns.`-prefixed aliases, and binds
 `True`/`False`/`None` — so seaborn examples run in R with zero edits.
 
-### Pixel-faithful, provably
+### Exact numbers, indistinguishable plots
 
-Not “close enough” — exact where it counts. KDEs reproduce
-`scipy.stats.gaussian_kde` to machine precision, histogram bins match
-`numpy.histogram_bin_edges` exactly, and palettes match seaborn’s hex
-codes to the digit.
+The constants are tested against the real thing: palettes match
+seaborn’s hex codes to the digit, KDEs reproduce
+`scipy.stats.gaussian_kde` to machine precision, and histogram bins
+match `numpy.histogram_bin_edges`. The rendered output is visually
+indistinguishable from seaborn, not byte-identical.
 
 ### Every plot is a ggplot
 
@@ -52,8 +52,8 @@ fundamentally can’t do.
 ### seaborn defaults, on import
 
 The five seaborn styles across four contexts
-(`paper`/`notebook`/`talk`/`poster`) and every palette ship built in and
-apply globally — just like
+(`paper`/`notebook`/`talk`/`poster`) and every palette ships built in
+and applies globally — just like
 [`sns.set_theme()`](https://reaborn.org/reference/sns-aliases.md).
 
 ### Bootstrap CIs, done right
