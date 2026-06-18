@@ -20,14 +20,25 @@
 # (Alternative: pass a PAT belonging to a repo admin via `token:` on both the
 # checkout and create-pull-request steps to push to main directly.)
 #
-# Loop safety: the PR commit is authored by GITHUB_TOKEN on a side branch, and
-# pushes/PRs made with GITHUB_TOKEN do not trigger new workflow runs. When a
-# human merges the PR, this job re-runs, re-renders to the identical bytes
-# (ragg + pinned fonts make the render reproducible), finds no diff, and opens
-# no further PR.
+# Loop safety: the render is NOT byte-reproducible run-to-run, so the old
+# assumption ("re-render to identical bytes, find no diff") does not hold -- a
+# human merging the refresh PR would re-run this job, get a fresh image, and
+# open yet another refresh PR, forever. Instead we gate the push trigger on a
+# `paths` allowlist of the actual render inputs (package source, the two render
+# scripts, dependency versions). The refresh PR only ever touches
+# man/figures/hero-collage.png, which is deliberately NOT in the allowlist, so
+# merging it cannot re-trigger this job -- the loop is broken structurally.
+# This also stops unrelated merges (docs, WORDLIST, README) from spawning a
+# refresh PR every time the render happens to differ.
 on:
   push:
     branches: [main, master]
+    paths:
+      - 'R/**'
+      - 'DESCRIPTION'
+      - 'tests/fidelity/render_hero_panels.R'
+      - 'data-raw/make-gallery.py'
+      - '.github/workflows/hero-collage.yaml'
   workflow_dispatch:
 
 name: hero-collage.yaml
