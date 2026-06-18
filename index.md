@@ -1,6 +1,6 @@
 <!-- badges: start -->
 
-[![main branch version](https://raw.githubusercontent.com/shawntz/reaborn/refs/heads/badges/main-branch-version.svg)](https://github.com/shawntz/reaborn/tree/main)
+[![dev version](https://raw.githubusercontent.com/shawntz/reaborn/refs/heads/badges/main-branch-version.svg)](https://github.com/shawntz/reaborn/tree/main)
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![build](https://github.com/shawntz/reaborn/actions/workflows/build.yml/badge.svg)](https://github.com/shawntz/reaborn/actions/workflows/build.yml)
 [![air format check](https://github.com/shawntz/reaborn/actions/workflows/air-format-check.yml/badge.svg)](https://github.com/shawntz/reaborn/actions/workflows/air-format-check.yml)
