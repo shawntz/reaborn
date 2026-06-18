@@ -23,7 +23,7 @@ sns.scatterplot(data = penguins, x = "bill_length_mm", y = "bill_depth_mm", hue 
 
 <figure class="rb-compare">
 <img src="man/figures/compare-scatter.png" alt="Side-by-side comparison of a reaborn scatter plot and a seaborn scatter plot — visually identical">
-<figcaption>The <strong>same</strong> call, rendered by reaborn (left) and Python seaborn (right). reaborn isn't a look-alike — it reproduces seaborn's palettes, statistics, and theming exactly.</figcaption>
+<figcaption>The <strong>same</strong> call, rendered by reaborn (left) and Python seaborn (right).</figcaption>
 </figure>
 
 ## Why reaborn
