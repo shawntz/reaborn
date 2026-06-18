@@ -63,7 +63,9 @@ save_panel(
 )
 save_panel(
   lineplot(fmri, x = "timepoint", y = "signal", hue = "event"),
-  "reaborn_line_hue.png", 6, 5
+  "reaborn_line_hue.png",
+  6,
+  5
 )
 save_panel(
   relplot(
