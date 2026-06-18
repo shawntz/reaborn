@@ -1,0 +1,121 @@
+# Keep the man/figures/compare-*.png fidelity figures in sync on every merge to
+# main.
+#
+# Each compare-<name>.png is a reaborn|seaborn side-by-side. The seaborn halves
+# are FROZEN ground truth -- a fidelity figure's reference must not move when
+# reaborn changes -- so they live as committed pixels in tests/fidelity/seaborn/
+# and are never re-rendered here (no Python/seaborn env is needed). Only the
+# reaborn halves are re-rendered, through the public API in
+# tests/fidelity/render_reaborn_panels.R, so the figures always reflect the
+# current plotting/theme code (e.g. the inside-axes hue-legend styling). Then
+# data-raw/make-gallery.py composites each fresh reaborn panel beside its frozen
+# seaborn partner.
+#
+# make-gallery.py also rebuilds hero-collage.png as a side effect, but this job
+# only commits compare-*.png (see add-paths) -- the hero collage has its own
+# workflow (hero-collage.yaml).
+#
+# It opens a PR with the refreshed images rather than committing to main directly,
+# because main is governed by a ruleset that requires pull requests -- the
+# GITHUB_TOKEN / github-actions[bot] is not a bypass actor, so a direct push
+# would be rejected. The PR also gives the refreshed assets a human review before
+# they land. When nothing changed, no PR is opened.
+#
+# PREREQUISITE (one-time): enable "Allow GitHub Actions to create and approve
+# pull requests" under Settings -> Actions -> General -> Workflow permissions.
+# (Alternative: pass a PAT belonging to a repo admin via `token:` on both the
+# checkout and create-pull-request steps to push to main directly.)
+#
+# Loop safety: the render is NOT byte-reproducible run-to-run, so we gate the push
+# trigger on a `paths` allowlist of the actual render inputs (package source, the
+# render script, the frozen seaborn refs, the compositor, dependency versions).
+# The refresh PR only ever touches man/figures/compare-*.png, which is
+# deliberately NOT in the allowlist, so merging it cannot re-trigger this job --
+# the loop is broken structurally. This also stops unrelated merges (docs,
+# WORDLIST, README) from spawning a refresh PR every time the render differs.
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - 'R/**'
+      - 'DESCRIPTION'
+      - 'tests/fidelity/render_reaborn_panels.R'
+      - 'tests/fidelity/seaborn/**'
+      - 'data-raw/make-gallery.py'
+      - '.github/workflows/compare-figures.yaml'
+  workflow_dispatch:
+
+name: compare-figures.yaml
+permissions: read-all
+
+jobs:
+  compare-figures:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: compare-figures-${{ github.ref }}
+      cancel-in-progress: false
+    permissions:
+      contents: write
+      pull-requests: write
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+
+      # Pinned fonts so "sans" resolves identically run-to-run on Linux.
+      - name: Install fonts
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends fonts-dejavu-core fontconfig
+
+      - uses: r-lib/actions/setup-pandoc@v2
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
+      # Installs reaborn (local::.) and its Imports (ggplot2, etc.), plus ragg
+      # so the render goes through a reproducible PNG device.
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: any::ragg, local::.
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install Pillow
+        run: python -m pip install --upgrade pip Pillow
+
+      - name: Render the 14 reaborn comparison panels
+        run: Rscript tests/fidelity/render_reaborn_panels.R
+
+      # make-gallery.py reads both halves from tests/fidelity/out. The reaborn
+      # halves were just rendered there; drop the frozen seaborn references in
+      # alongside them so each pair composites.
+      - name: Stage the frozen seaborn reference halves
+        run: cp tests/fidelity/seaborn/*.png tests/fidelity/out/
+
+      - name: Recomposite the comparison figures
+        run: python data-raw/make-gallery.py
+
+      - name: Open a PR if any comparison figure changed
+        if: github.ref_name == github.event.repository.default_branch
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          base: ${{ github.event.repository.default_branch }}
+          branch: chore/refresh-compare-figures
+          add-paths: man/figures/compare-*.png
+          commit-message: "chore(figures): refresh comparison figures"
+          title: "chore(figures): refresh comparison figures"
+          body: |
+            Automated refresh of `man/figures/compare-*.png`.
+
+            The reaborn halves were re-rendered through the public API
+            (`tests/fidelity/render_reaborn_panels.R`) and recomposited beside
+            the frozen seaborn reference halves (`tests/fidelity/seaborn/`) with
+            `data-raw/make-gallery.py`. Merge to keep the comparison figures in
+            sync with the current plotting/theme code.
+          delete-branch: true
+          labels: automated
