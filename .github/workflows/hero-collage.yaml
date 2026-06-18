@@ -1,0 +1,99 @@
+# Keep man/figures/hero-collage.png in sync on every merge to main.
+#
+# The hero collage is a grid of six reaborn-only showcase panels, so it can
+# drift whenever the plotting code or theme changes (e.g. the KDE hue-legend
+# styling). On each push to main this job re-renders the six panels through the
+# public API and recomposites the collage with data-raw/make-gallery.py. It is
+# reaborn-only -- no seaborn/Python reference env is needed; make-gallery skips
+# every compare-*.png pair (their seaborn halves are absent), so this job only
+# ever touches hero-collage.png.
+#
+# It opens a PR with the refreshed image rather than committing to main directly,
+# because main is governed by a ruleset that requires pull requests -- the
+# GITHUB_TOKEN / github-actions[bot] is not a bypass actor, so a direct push
+# would be rejected. The PR also gives the refreshed asset a human review before
+# it lands. When nothing changed, no PR is opened.
+#
+# PREREQUISITE (one-time): enable "Allow GitHub Actions to create and approve
+# pull requests" under Settings -> Actions -> General -> Workflow permissions.
+# Without it, the create-pull-request step cannot open the PR with GITHUB_TOKEN.
+# (Alternative: pass a PAT belonging to a repo admin via `token:` on both the
+# checkout and create-pull-request steps to push to main directly.)
+#
+# Loop safety: the PR commit is authored by GITHUB_TOKEN on a side branch, and
+# pushes/PRs made with GITHUB_TOKEN do not trigger new workflow runs. When a
+# human merges the PR, this job re-runs, re-renders to the identical bytes
+# (ragg + pinned fonts make the render reproducible), finds no diff, and opens
+# no further PR.
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+name: hero-collage.yaml
+permissions: read-all
+
+jobs:
+  hero-collage:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: hero-collage-${{ github.ref }}
+      cancel-in-progress: false
+    permissions:
+      contents: write
+      pull-requests: write
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+
+      # Pinned fonts so "sans" resolves identically run-to-run on Linux.
+      - name: Install fonts
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends fonts-dejavu-core fontconfig
+
+      - uses: r-lib/actions/setup-pandoc@v2
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
+      # Installs reaborn (local::.) and its Imports (ggplot2, etc.), plus ragg
+      # so the render goes through a reproducible PNG device.
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: any::ragg, local::.
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install Pillow
+        run: python -m pip install --upgrade pip Pillow
+
+      - name: Render the six reaborn hero panels
+        run: Rscript tests/fidelity/render_hero_panels.R
+
+      - name: Recomposite the hero collage
+        run: python data-raw/make-gallery.py
+
+      - name: Open a PR if the collage changed
+        if: github.ref_name == github.event.repository.default_branch
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          base: ${{ github.event.repository.default_branch }}
+          branch: chore/refresh-hero-collage
+          add-paths: man/figures/hero-collage.png
+          commit-message: "chore(figures): refresh hero collage"
+          title: "chore(figures): refresh hero collage"
+          body: |
+            Automated refresh of `man/figures/hero-collage.png`.
+
+            The six reaborn showcase panels were re-rendered through the public
+            API (`tests/fidelity/render_hero_panels.R`) and recomposited with
+            `data-raw/make-gallery.py`. Merge to keep the hero collage in sync
+            with the current plotting/theme code.
+          delete-branch: true
+          labels: automated
