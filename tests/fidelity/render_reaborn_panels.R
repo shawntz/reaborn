@@ -120,10 +120,7 @@ save_panel(
 )
 
 # --- Regression -------------------------------------------------------------
-save_panel(
-  regplot(tips, x = "total_bill", y = "tip"),
-  "reaborn_reg.png", 6, 5
-)
+save_panel(regplot(tips, x = "total_bill", y = "tip"), "reaborn_reg.png", 6, 5)
 
 # --- Matrix -----------------------------------------------------------------
 mat <- tapply(fl$passengers, list(fl$month, fl$year), function(x) x[1])
