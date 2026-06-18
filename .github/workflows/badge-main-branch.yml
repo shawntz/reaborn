@@ -1,0 +1,51 @@
+name: reaborn main branch version badge
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  badge:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Extract version
+        id: version
+        run: |
+          VERSION=$(grep '^Version:' DESCRIPTION | awk '{print $2}')
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Trash old badge
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git fetch origin badges
+          git checkout badges
+          git pull origin badges
+          rm -f main-branch-version.svg
+          git add -A
+          git commit -m "removed old main-branch-version.svg file (triggered by ${{ github.sha }}) [skip ci]" || echo "no changes to commit"
+          git push origin badges
+
+      - name: Create badge
+        uses: emibcn/badge-action@v2
+        with:
+          label: main
+          status: ${{ steps.version.outputs.version }}
+          color: blue
+          path: main-branch-version.svg
+
+      - name: Commit and push badge
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git fetch origin badges
+          git checkout badges
+          git add -A
+          git commit -m "update main branch version badge (triggered by ${{ github.sha }}) [skip ci]" || echo "no changes to commit"
+          git push origin badges
