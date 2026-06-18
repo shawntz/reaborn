@@ -1,3 +1,15 @@
+<!-- badges: start -->
+
+[![main branch version](https://raw.githubusercontent.com/shawntz/reaborn/refs/heads/badges/main-branch-version.svg)](https://github.com/shawntz/reaborn/tree/main)
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![build](https://github.com/shawntz/reaborn/actions/workflows/build.yml/badge.svg)](https://github.com/shawntz/reaborn/actions/workflows/build.yml)
+[![air format check](https://github.com/shawntz/reaborn/actions/workflows/air-format-check.yml/badge.svg)](https://github.com/shawntz/reaborn/actions/workflows/air-format-check.yml)
+[![air format suggest](https://github.com/shawntz/reaborn/actions/workflows/air-format-suggest.yaml/badge.svg)](https://github.com/shawntz/reaborn/actions/workflows/air-format-suggest.yaml)
+[![spellcheck](https://github.com/shawntz/reaborn/actions/workflows/spellcheck.yml/badge.svg)](https://github.com/shawntz/reaborn/actions/workflows/spellcheck.yml)
+[![pkgdown](https://github.com/shawntz/reaborn/actions/workflows/pkgdown.yaml/badge.svg)](https://github.com/shawntz/reaborn/actions/workflows/pkgdown.yaml)
+
+<!-- badges: end -->
+
 <div class="rb-hero">
 
 # seaborn for R, built on ggplot2
