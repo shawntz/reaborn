@@ -7,17 +7,21 @@
 # Currently embeds the continuous seaborn / matplotlib colormaps as 256-color
 # hex lookup tables (too large and opaque to hand-write as R literals).
 
-js <- jsonlite::fromJSON("inst/extdata/seaborn_constants.json",
-                         simplifyVector = TRUE)
+js <- jsonlite::fromJSON(
+  "inst/extdata/seaborn_constants.json",
+  simplifyVector = TRUE
+)
 
 # Named list of 256-element hex character vectors (bin-midpoint sampled, so
 # floor(x*256) indexing reproduces matplotlib's cmap(x) exactly).
 .reaborn_cmaps <- c(
-  as.list(js$cmaps),       # rocket, mako, flare, crest, icefire, vlag (+ _r)
-  as.list(js$mpl_cmaps)    # magma, inferno, plasma, viridis, cividis, coolwarm, ...
+  as.list(js$cmaps), # rocket, mako, flare, crest, icefire, vlag (+ _r)
+  as.list(js$mpl_cmaps) # magma, inferno, plasma, viridis, cividis, coolwarm, ...
 )
 # Drop any NULL/empty entries defensively.
-.reaborn_cmaps <- .reaborn_cmaps[vapply(.reaborn_cmaps, length, integer(1)) == 256L]
+.reaborn_cmaps <- .reaborn_cmaps[
+  vapply(.reaborn_cmaps, length, integer(1)) == 256L
+]
 
 # matplotlib named-color table: single-letter BASE_COLORS, the 148 CSS4 names,
 # and the tab: colors. reaborn resolves color names through this (NOT R's
@@ -63,10 +67,24 @@ js <- jsonlite::fromJSON("inst/extdata/seaborn_constants.json",
   res
 })
 
-save(.reaborn_cmaps, .reaborn_fixtures, .reaborn_mpl_colors, .reaborn_dataset_orders,
-     file = "R/sysdata.rda", version = 3, compress = "xz")
+save(
+  .reaborn_cmaps,
+  .reaborn_fixtures,
+  .reaborn_mpl_colors,
+  .reaborn_dataset_orders,
+  file = "R/sysdata.rda",
+  version = 3,
+  compress = "xz"
+)
 
-cat("Wrote R/sysdata.rda with", length(.reaborn_cmaps), "colormaps,",
-    length(.reaborn_fixtures), "fixture groups,",
-    length(.reaborn_mpl_colors), "named colors, and",
-    length(.reaborn_dataset_orders), "dataset orderings\n")
+cat(
+  "Wrote R/sysdata.rda with",
+  length(.reaborn_cmaps),
+  "colormaps,",
+  length(.reaborn_fixtures),
+  "fixture groups,",
+  length(.reaborn_mpl_colors),
+  "named colors, and",
+  length(.reaborn_dataset_orders),
+  "dataset orderings\n"
+)

@@ -9,7 +9,11 @@ pen <- load_dataset("penguins")
 p <- kdeplot(pen, x = "flipper_length_mm", hue = "species", fill = TRUE)
 
 ggplot2::ggsave(
-  "tests/fidelity/out/reaborn_kde.png", p,
-  width = 6.5, height = 5, dpi = 100, bg = "white"
+  "tests/fidelity/out/reaborn_kde.png",
+  p,
+  width = 6.5,
+  height = 5,
+  dpi = 100,
+  bg = "white"
 )
 cat("reaborn KDE PNG saved\n")

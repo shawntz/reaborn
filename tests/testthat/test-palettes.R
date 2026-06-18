@@ -4,10 +4,25 @@
 fx <- reaborn:::.reaborn_fixtures
 
 test_that("named qualitative palettes match seaborn exactly", {
-  for (name in c("deep", "muted", "pastel", "bright", "dark", "colorblind",
-                 "deep6", "muted6", "pastel6", "bright6", "dark6", "colorblind6")) {
-    expect_identical(toupper(color_palette(name)), toupper(fx$palettes[[name]]),
-                     info = name)
+  for (name in c(
+    "deep",
+    "muted",
+    "pastel",
+    "bright",
+    "dark",
+    "colorblind",
+    "deep6",
+    "muted6",
+    "pastel6",
+    "bright6",
+    "dark6",
+    "colorblind6"
+  )) {
+    expect_identical(
+      toupper(color_palette(name)),
+      toupper(fx$palettes[[name]]),
+      info = name
+    )
   }
 })
 
@@ -17,7 +32,10 @@ test_that("hls and husl palettes match seaborn exactly", {
 })
 
 test_that("cubehelix default matches seaborn exactly", {
-  expect_identical(toupper(cubehelix_palette()), toupper(fx$pal_cubehelix_default))
+  expect_identical(
+    toupper(cubehelix_palette()),
+    toupper(fx$pal_cubehelix_default)
+  )
 })
 
 test_that("cubehelix string shorthand parses to valid colors", {
@@ -30,8 +48,10 @@ test_that("color_palette recycles to n_colors and respects desat", {
   expect_length(color_palette("deep", 14), 14)
   expect_identical(color_palette("deep", 14)[11], color_palette("deep")[1])
   # desaturating toward 1 is a no-op
-  expect_identical(toupper(color_palette("deep", 6, desat = 1)),
-                   toupper(color_palette("deep", 6)))
+  expect_identical(
+    toupper(color_palette("deep", 6, desat = 1)),
+    toupper(color_palette("deep", 6))
+  )
 })
 
 test_that("diverging and blend palettes match seaborn exactly", {

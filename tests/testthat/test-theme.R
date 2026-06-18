@@ -7,8 +7,7 @@ test_that("plotting_context scales the base context exactly like seaborn", {
     got <- plotting_context(ctx)
     want <- fx$rc_context_raw[[ctx]]
     for (k in names(want)) {
-      expect_equal(got[[k]], want[[k]], tolerance = 1e-9,
-                   info = paste(ctx, k))
+      expect_equal(got[[k]], want[[k]], tolerance = 1e-9, info = paste(ctx, k))
     }
   }
 })

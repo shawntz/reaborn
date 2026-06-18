@@ -34,8 +34,15 @@ rb_role_col <- function(base, vd, ref, role, internal) {
 }
 
 #' @keywords internal
-rb_finish_plot <- function(p, xlab = NULL, ylab = NULL, legend = "auto",
-                           legend_data = NULL, any_legend = FALSE, breaks = TRUE) {
+rb_finish_plot <- function(
+  p,
+  xlab = NULL,
+  ylab = NULL,
+  legend = "auto",
+  legend_data = NULL,
+  any_legend = FALSE,
+  breaks = TRUE
+) {
   # Continuous axes get matplotlib-style tick locations (unless the caller has
   # already added its own scales, e.g. histplot/kdeplot).
   if (breaks && !is.null(legend_data)) {
@@ -47,33 +54,45 @@ rb_finish_plot <- function(p, xlab = NULL, ylab = NULL, legend = "auto",
     }
   }
 
-  if (!is.null(xlab)) p <- p + ggplot2::labs(x = xlab)
-  if (!is.null(ylab)) p <- p + ggplot2::labs(y = ylab)
+  if (!is.null(xlab)) {
+    p <- p + ggplot2::labs(x = xlab)
+  }
+  if (!is.null(ylab)) {
+    p <- p + ggplot2::labs(y = ylab)
+  }
 
   if (isFALSE(legend) || identical(legend, "none")) {
     p <- p + ggplot2::theme(legend.position = "none")
-  } else if (any_legend && !is.null(legend_data) &&
-             is.numeric(legend_data$x) && is.numeric(legend_data$y)) {
+  } else if (
+    any_legend &&
+      !is.null(legend_data) &&
+      is.numeric(legend_data$x) &&
+      is.numeric(legend_data$y)
+  ) {
     corner <- rb_best_legend_corner(legend_data$x, legend_data$y)
     # seaborn keeps matplotlib's default legend frame: the background inherits the
     # axes facecolor (so it reads against the gridded panel), bordered by a faint
     # gray (0.8) edge, with a centered title and the keys themselves transparent.
     facecol <- .rb_col(axes_style()$facecolor)
-    p <- p + ggplot2::theme(
-      legend.position = "inside",
-      legend.position.inside = corner$inside,
-      legend.justification.inside = corner$inside,
-      legend.background = ggplot2::element_rect(fill = facecol, colour = .rb_col(".8"),
-                                                linewidth = .rb_lw(0.8)),
-      legend.key = ggplot2::element_rect(fill = NA, colour = NA),
-      # matplotlib handles are wide and short (handlelength 2, handleheight 0.7),
-      # with a little breathing room between rows.
-      legend.key.width = grid::unit(1.7, "lines"),
-      legend.key.height = grid::unit(0.85, "lines"),
-      legend.key.spacing.y = grid::unit(2.5, "pt"),
-      legend.title = ggplot2::element_text(hjust = 0.5),
-      legend.margin = ggplot2::margin(3, 5, 3, 5)
-    )
+    p <- p +
+      ggplot2::theme(
+        legend.position = "inside",
+        legend.position.inside = corner$inside,
+        legend.justification.inside = corner$inside,
+        legend.background = ggplot2::element_rect(
+          fill = facecol,
+          colour = .rb_col(".8"),
+          linewidth = .rb_lw(0.8)
+        ),
+        legend.key = ggplot2::element_rect(fill = NA, colour = NA),
+        # matplotlib handles are wide and short (handlelength 2, handleheight 0.7),
+        # with a little breathing room between rows.
+        legend.key.width = grid::unit(1.7, "lines"),
+        legend.key.height = grid::unit(0.85, "lines"),
+        legend.key.spacing.y = grid::unit(2.5, "pt"),
+        legend.title = ggplot2::element_text(hjust = 0.5),
+        legend.margin = ggplot2::margin(3, 5, 3, 5)
+      )
   }
   p
 }
