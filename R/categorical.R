@@ -248,9 +248,10 @@ barplot <- function(data = NULL, x = NULL, y = NULL, hue = NULL, order = NULL,
              else ggplot2::aes(y = .data$.cat, xmin = .data$ymin, xmax = .data$ymax,
                                group = if (s$has_hue) .data$.hue else NULL)
   err_fun <- if (vert) ggplot2::geom_errorbar else ggplot2::geom_errorbarh
+  # seaborn barplot sets err_kws["linewidth"] = 1.5 * lines.linewidth (points).
   p <- p + err_fun(err_aes, position = dodge_w, width = capsize,
                    colour = ek$color %||% RB_BOX_LINECOLOR,
-                   linewidth = .rb_lw(ek$linewidth %||% 1.5))
+                   linewidth = .rb_lw(ek$linewidth %||% (1.5 * SEABORN_DEFAULTS$linewidth)))
 
   if (s$has_hue) p <- p + ggplot2::scale_fill_manual(values = colors, name = s$hue_name)
   # Bars start at 0.
