@@ -92,8 +92,13 @@ save_panel(
 
 # 6. boxen ---------------------------------------------------------------------
 save_panel(
-  boxenplot(data = pen, x = "species", y = "body_mass_g",
-            hue = "species", legend = FALSE),
+  boxenplot(
+    data = pen,
+    x = "species",
+    y = "body_mass_g",
+    hue = "species",
+    legend = FALSE
+  ),
   "reaborn_boxen.png"
 )
 
