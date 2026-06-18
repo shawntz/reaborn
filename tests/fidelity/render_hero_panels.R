@@ -50,8 +50,12 @@ fl <- load_dataset("flights")
 
 # 1. scatter (hue) -------------------------------------------------------------
 save_panel(
-  scatterplot(data = pen, x = "bill_length_mm", y = "bill_depth_mm",
-              hue = "species"),
+  scatterplot(
+    data = pen,
+    x = "bill_length_mm",
+    y = "bill_depth_mm",
+    hue = "species"
+  ),
   "reaborn_scatter_hue.png"
 )
 
