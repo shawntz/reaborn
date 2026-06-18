@@ -72,7 +72,15 @@ move_legend <- function(obj = NULL, loc = "best", ...) {
 # inside placements that ggplot2 anchors by corner.
 .rb_legend_loc <- function(loc) {
   # matplotlib: a numeric 2-tuple anchors the legend's lower-left corner there.
-  if (is.numeric(loc)) return(list(position = loc, justification = c(0, 0)))
+  # Coordinates may sit outside [0, 1] to place the legend beyond the panel, as
+  # in matplotlib, but they must be a finite pair.
+  if (is.numeric(loc)) {
+    if (length(loc) != 2L || !all(is.finite(loc))) {
+      stop("`loc` must be a length-2 numeric vector of relative coordinates ",
+           "(e.g. c(0.5, 0.5)) or a matplotlib location string.")
+    }
+    return(list(position = loc, justification = c(0, 0)))
+  }
   inside <- list(
     "upper right" = list(position = c(0.98, 0.98), justification = c(1, 1)),
     "lower right" = list(position = c(0.98, 0.02), justification = c(1, 0)),
