@@ -47,7 +47,7 @@ sns.scatterplot(data = penguins, x = "bill_length_mm", y = "bill_depth_mm", hue 
 
 <div class="rb-card">
 <h3>seaborn defaults, on import</h3>
-<p>The five seaborn styles across four contexts (<code>paper</code>/<code>notebook</code>/<code>talk</code>/<code>poster</code>) and every palette ship built in and apply globally — just like <code>sns.set_theme()</code>.</p>
+<p>The five seaborn styles across four contexts (<code>paper</code>/<code>notebook</code>/<code>talk</code>/<code>poster</code>) and every palette ships built in and applies globally — just like <code>sns.set_theme()</code>.</p>
 </div>
 
 <div class="rb-card">
