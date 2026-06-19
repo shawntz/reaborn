@@ -10,15 +10,6 @@ make seaborn plots look good out of the box (the styles, the palettes,
 the spacing) come along for the ride, because reaborn reproduces them
 rather than approximating them.
 
-Fidelity is the part most ports get wrong, so reaborn treats it as the
-headline. Palettes match seaborn’s hex codes digit-for-digit (including
-matplotlib’s colormap quantization and named-color table); KDEs
-reproduce `scipy.stats.gaussian_kde` to machine precision; histogram bin
-edges match `numpy.histogram_bin_edges` exactly; and confidence
-intervals use seaborn’s bootstrap, not ggplot2’s analytic standard
-error. When a reaborn chart and a seaborn chart sit side by side, the
-goal is “indistinguishable,” not “close enough.”
-
 ![reaborn vs seaborn KDE](../reference/figures/compare-kde.png)
 
 The part seaborn can’t match: **every reaborn plot *is* a ggplot

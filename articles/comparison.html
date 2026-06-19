@@ -129,15 +129,6 @@ the plotting code you already know runs in R with little to no
 translation. The defaults that make seaborn plots look good out of the
 box (the styles, the palettes, the spacing) come along for the ride,
 because reaborn reproduces them rather than approximating them.</p>
-<p>Fidelity is the part most ports get wrong, so reaborn treats it as
-the headline. Palettes match seaborn’s hex codes digit-for-digit
-(including matplotlib’s colormap quantization and named-color table);
-KDEs reproduce <code>scipy.stats.gaussian_kde</code> to machine
-precision; histogram bin edges match
-<code>numpy.histogram_bin_edges</code> exactly; and confidence intervals
-use seaborn’s bootstrap, not ggplot2’s analytic standard error. When a
-reaborn chart and a seaborn chart sit side by side, the goal is
-“indistinguishable,” not “close enough.”</p>
 <p><img src="../reference/figures/compare-kde.png" alt="reaborn vs seaborn KDE" style="width:100%;max-width:880px;border-radius:.6rem;box-shadow:0 4px 18px rgba(0,0,0,.1)"></p>
 <p>The part seaborn can’t match: <strong>every reaborn plot <em>is</em>
 a ggplot object.</strong> A call like <code>scatterplot(...)</code>
