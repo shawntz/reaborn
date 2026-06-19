@@ -83,8 +83,6 @@ an ordinary `ggplot`** that you keep building.
 - **Get statistics ggplot doesn't ship.** Bootstrap confidence intervals
   (seaborn-style, not analytic SE), `scipy`-exact KDEs, and `numpy`-exact
   histogram edges — without writing a custom `stat_`.
-- **Borrow a hex-matched palette system**, including HUSL and colormap
-  quantization, usable on any plot.
 - **It composes, it doesn't replace.** Everything is a real `ggplot`, so
   `patchwork`, custom scales, extra geoms, and your theme tweaks all keep working.
 
