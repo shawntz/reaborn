@@ -22,9 +22,15 @@ Because every reaborn plot **is** a ggplot, you can extend it with the entire
 ggplot2 grammar of graphics — something seaborn can't do.
 
 ```r
+install.packages("reaborn")
+library(reaborn)
+```
+
+Or install the development version from GitHub:
+
+```r
 # install.packages("remotes")
 remotes::install_github("shawntz/reaborn")
-library(reaborn)
 ```
 
 ## Paste seaborn Python into R
