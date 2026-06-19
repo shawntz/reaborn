@@ -84,6 +84,7 @@
 <li class="active nav-item"><a class="nav-link" href="../articles/comparison.html">vs seaborn</a></li>
 <li class="nav-item"><a class="nav-link" href="../articles/agents.html">For AI agents</a></li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
@@ -137,90 +138,6 @@ grammar of graphics — add <code>facet_wrap()</code>, swap in
 <code>scale_x_log10()</code>, layer extra geoms, override the theme. You
 get seaborn’s defaults as a starting point and ggplot2’s composability
 as the ceiling.</p>
-</div>
-<div class="section level2">
-<h2 id="feature-comparison">Feature comparison<a class="anchor" aria-label="anchor" href="#feature-comparison"></a>
-</h2>
-<table class="table">
-<colgroup>
-<col width="25%">
-<col width="25%">
-<col width="25%">
-<col width="25%">
-</colgroup>
-<thead><tr class="header">
-<th>Capability</th>
-<th>reaborn</th>
-<th>seaborn</th>
-<th>ggplot2</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td>
-<strong>Identical seaborn API</strong> (names, args, defaults)</td>
-<td>✅ Full — ~40 functions ported 1:1</td>
-<td>✅ It <em>is</em> the API</td>
-<td>❌ Different grammar entirely</td>
-</tr>
-<tr class="even">
-<td><strong>Copy-paste Python code runs verbatim</strong></td>
-<td>✅ <code>sns.</code> aliases +
-<code>True</code>/<code>False</code>/<code>None</code> bound</td>
-<td>✅ Native Python</td>
-<td>❌</td>
-</tr>
-<tr class="odd">
-<td>
-<strong>Statistical fidelity</strong> (KDE, bins, bootstrap
-CIs)</td>
-<td>✅ Matches seaborn/scipy/numpy to machine precision</td>
-<td>✅ Reference implementation</td>
-<td>⚠️ Different methods</td>
-</tr>
-<tr class="even">
-<td><strong>Theming &amp; palettes match seaborn exactly</strong></td>
-<td>✅ Hex-exact; global like <code><a href="../reference/sns-aliases.html">sns.set_theme()</a></code>
-</td>
-<td>✅ Reference</td>
-<td>⚠️ Its own (good) defaults</td>
-</tr>
-<tr class="odd">
-<td><strong>Grammar-of-graphics extensibility</strong></td>
-<td>✅ Returns a real <code>ggplot</code>
-</td>
-<td>❌ Returns matplotlib <code>Axes</code>
-</td>
-<td>✅ Native, most complete</td>
-</tr>
-<tr class="even">
-<td><strong>Breadth of arbitrary custom geoms/stats</strong></td>
-<td>⚠️ Inherits ggplot2’s</td>
-<td>⚠️ Fixed function set</td>
-<td>✅ The widest</td>
-</tr>
-<tr class="odd">
-<td><strong>Language / ecosystem</strong></td>
-<td>R (tidyverse-adjacent)</td>
-<td>Python (pandas/matplotlib)</td>
-<td>R (tidyverse)</td>
-</tr>
-<tr class="even">
-<td><strong>Dependency weight</strong></td>
-<td>🟢 Light: ggplot2 stack; heavy bits are <code>Suggests</code>
-</td>
-<td>🟡 matplotlib + numpy + scipy + pandas</td>
-<td>🟢 Light</td>
-</tr>
-<tr class="odd">
-<td><strong>License</strong></td>
-<td>BSD-3 (same as seaborn)</td>
-<td>BSD-3</td>
-<td>MIT</td>
-</tr>
-</tbody>
-</table>
-<p><small>✅ first-class · ⚠️ partial/with caveats · ❌ not a goal ·
-🟢/🟡 lighter/heavier.</small></p>
 </div>
 <div class="section level2">
 <h2 id="coming-from-seaborn">Coming from seaborn?<a class="anchor" aria-label="anchor" href="#coming-from-seaborn"></a>
