@@ -80,9 +80,6 @@ an ordinary `ggplot`** that you keep building.
 - **Skip the boilerplate.** `histplot(data, x="x", hue="g")` gets you seaborn's
   binning, palette, and theme in one call — then `+ facet_wrap(~year) + scale_x_log10()`
   is yours.
-- **Get statistics ggplot doesn't ship.** Bootstrap confidence intervals
-  (seaborn-style, not analytic SE), `scipy`-exact KDEs, and `numpy`-exact
-  histogram edges — without writing a custom `stat_`.
 - **It composes, it doesn't replace.** Everything is a real `ggplot`, so
   `patchwork`, custom scales, extra geoms, and your theme tweaks all keep working.
 
