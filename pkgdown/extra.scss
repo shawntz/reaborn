@@ -4,6 +4,14 @@ $rb-blue: #4C72B0;
 $rb-orange: #DD8452;
 $rb-green: #55A868;
 
+/* ---- Navbar hex logo (shown at the top of every page) ---- */
+.navbar-logo {
+  img {
+    height: 2.4rem;
+    width: auto;
+  }
+}
+
 /* ---- Hero ---- */
 .rb-hero {
   text-align: center;
