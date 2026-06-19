@@ -81,18 +81,8 @@ The full classic seaborn function API:
 reaborn matches seaborn by extracting ground-truth constants from a real seaborn
 install rather than approximating:
 
-- **Palettes** match seaborn's hex codes exactly (`deep`, `husl`, `cubehelix`,
-  `diverging`, … — verified to the digit, including matplotlib's colormap
-  quantization and named-color table).
-- **KDEs** reproduce `scipy.stats.gaussian_kde` to machine precision; histogram
-  bins reproduce `numpy.histogram_bin_edges` exactly.
-- **Confidence intervals** use seaborn's bootstrap (not ggplot2's analytic SE).
+- **Palettes** match seaborn's hex codes exactly.
 - **Themes** reproduce the five seaborn styles × four contexts.
-
-The honest target is *visually equivalent*: indistinguishable at a glance, with
-bars, heatmaps, and scatter pushed to near pixel-exactness. A handful of things
-can't be byte-identical across the language boundary (R vs NumPy RNG for
-bootstraps, font rasterization) and are documented as such.
 
 ## Python → R conversion notes
 
