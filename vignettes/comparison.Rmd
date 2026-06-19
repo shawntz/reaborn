@@ -82,8 +82,3 @@ an ordinary `ggplot`** that you keep building.
   is yours.
 - **It composes, it doesn't replace.** Everything is a real `ggplot`, so
   `patchwork`, custom scales, extra geoms, and your theme tweaks all keep working.
-
-Honest framing: if your goal is a fully bespoke chart designed grammar-up, plain
-ggplot2 remains the most flexible tool — that's not the claim. reaborn's edge is
-narrower and specific: **seaborn-grade defaults and statistical fidelity,
-delivered as extensible ggplots.**
