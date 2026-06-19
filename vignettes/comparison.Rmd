@@ -31,22 +31,6 @@ grammar of graphics — add `facet_wrap()`, swap in `scale_x_log10()`, layer ext
 geoms, override the theme. You get seaborn's defaults as a starting point and
 ggplot2's composability as the ceiling.
 
-## Feature comparison
-
-| Capability | reaborn | seaborn | ggplot2 |
-|---|---|---|---|
-| **Identical seaborn API** (names, args, defaults) | ✅ Full — ~40 functions ported 1:1 | ✅ It *is* the API | ❌ Different grammar entirely |
-| **Copy-paste Python code runs verbatim** | ✅ `sns.` aliases + `True`/`False`/`None` bound | ✅ Native Python | ❌ |
-| **Statistical fidelity** (KDE, bins, bootstrap CIs) | ✅ Matches seaborn/scipy/numpy to machine precision | ✅ Reference implementation | ⚠️ Different methods |
-| **Theming & palettes match seaborn exactly** | ✅ Hex-exact; global like `sns.set_theme()` | ✅ Reference | ⚠️ Its own (good) defaults |
-| **Grammar-of-graphics extensibility** | ✅ Returns a real `ggplot` | ❌ Returns matplotlib `Axes` | ✅ Native, most complete |
-| **Breadth of arbitrary custom geoms/stats** | ⚠️ Inherits ggplot2's | ⚠️ Fixed function set | ✅ The widest |
-| **Language / ecosystem** | R (tidyverse-adjacent) | Python (pandas/matplotlib) | R (tidyverse) |
-| **Dependency weight** | 🟢 Light: ggplot2 stack; heavy bits are `Suggests` | 🟡 matplotlib + numpy + scipy + pandas | 🟢 Light |
-| **License** | BSD-3 (same as seaborn) | BSD-3 | MIT |
-
-<small>✅ first-class · ⚠️ partial/with caveats · ❌ not a goal · 🟢/🟡 lighter/heavier.</small>
-
 ## Coming from seaborn?
 
 In most cases you change **nothing but the language host**. After
