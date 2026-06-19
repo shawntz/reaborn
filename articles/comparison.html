@@ -306,23 +306,10 @@ that you keep building.</p>
 palette, and theme in one call — then
 <code>+ facet_wrap(~year) + scale_x_log10()</code> is yours.</li>
 <li>
-<strong>Get statistics ggplot doesn’t ship.</strong> Bootstrap
-confidence intervals (seaborn-style, not analytic SE),
-<code>scipy</code>-exact KDEs, and <code>numpy</code>-exact histogram
-edges — without writing a custom <code>stat_</code>.</li>
-<li>
-<strong>Borrow a hex-matched palette system</strong>, including HUSL
-and colormap quantization, usable on any plot.</li>
-<li>
 <strong>It composes, it doesn’t replace.</strong> Everything is a
 real <code>ggplot</code>, so <code>patchwork</code>, custom scales,
 extra geoms, and your theme tweaks all keep working.</li>
 </ul>
-<p>Honest framing: if your goal is a fully bespoke chart designed
-grammar-up, plain ggplot2 remains the most flexible tool — that’s not
-the claim. reaborn’s edge is narrower and specific:
-<strong>seaborn-grade defaults and statistical fidelity, delivered as
-extensible ggplots.</strong></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

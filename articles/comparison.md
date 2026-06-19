@@ -71,16 +71,6 @@ building.
 - **Skip the boilerplate.** `histplot(data, x="x", hue="g")` gets you
   seaborn’s binning, palette, and theme in one call — then
   `+ facet_wrap(~year) + scale_x_log10()` is yours.
-- **Get statistics ggplot doesn’t ship.** Bootstrap confidence intervals
-  (seaborn-style, not analytic SE), `scipy`-exact KDEs, and
-  `numpy`-exact histogram edges — without writing a custom `stat_`.
-- **Borrow a hex-matched palette system**, including HUSL and colormap
-  quantization, usable on any plot.
 - **It composes, it doesn’t replace.** Everything is a real `ggplot`, so
   `patchwork`, custom scales, extra geoms, and your theme tweaks all
   keep working.
-
-Honest framing: if your goal is a fully bespoke chart designed
-grammar-up, plain ggplot2 remains the most flexible tool — that’s not
-the claim. reaborn’s edge is narrower and specific: **seaborn-grade
-defaults and statistical fidelity, delivered as extensible ggplots.**
