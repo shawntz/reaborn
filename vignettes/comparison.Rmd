@@ -86,9 +86,9 @@ You already love the grammar of graphics. reaborn doesn't ask you to give it up 
 it hands you **seaborn's defaults and statistics as a starting layer, returned as
 an ordinary `ggplot`** that you keep building.
 
-- **Skip the boilerplate.** `histplot(data, x="x", hue="g")` gets you seaborn's
-  binning, palette, and theme in one call — then `+ facet_wrap(~year) + scale_x_log10()`
-  is yours.
+- **Skip the boilerplate.** One call to `histplot(data, x="x", hue="g")` sets up
+  seaborn's binning, palette, and theme. From there, add `+ facet_wrap(~year) +
+  scale_x_log10()` and keep going.
 - **Get statistics ggplot doesn't ship.** Bootstrap confidence intervals
   (seaborn-style, not analytic SE), `scipy`-exact KDEs, and `numpy`-exact
   histogram edges — without writing a custom `stat_`.
