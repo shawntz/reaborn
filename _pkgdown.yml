@@ -17,8 +17,8 @@ template:
       alt: "reaborn — seaborn for R, built on ggplot2"
   includes:
     before_title: |
-      <a class="navbar-brand navbar-logo p-0 me-2" href="index.html" aria-label="reaborn home">
-        <img src="logo.png" alt="reaborn hex logo" class="d-inline-block align-middle">
+      <a class="navbar-brand navbar-logo p-0 me-2" href="/" aria-label="reaborn home">
+        <img src="/logo.png" alt="reaborn hex logo" class="d-inline-block align-middle">
       </a>
     in_header: |
       <script async src="https://cdn.seline.com/seline.js" data-token="f5ea81614dfd243"></script>
