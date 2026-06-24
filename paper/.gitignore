@@ -1,0 +1,10 @@
+# LaTeX build artifacts (paper.pdf is kept as the compiled preprint)
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+*.fls
+*.fdb_latexmk
+*.toc
+*.synctex.gz
