@@ -5,10 +5,10 @@ Authors@R:
     person(given = "Shawn", family = "Schwartz", role = c("aut", "cre"),
            email = "shawn.t.schwartz@gmail.com",
            comment = c(ORCID = "0000-0001-6444-8451"))
-Description: An R port of the 'Python' 'seaborn' library. reaborn mirrors the
+Description: An 'R' port of the 'Python' 'seaborn' library. 'reaborn' mirrors the
     'seaborn' public function API (identical function names, argument names, and
     defaults) and renders visually indistinguishable plots using 'ggplot2'.
-    Because every reaborn plot is a 'ggplot' object, it can be extended with the
+    Because every 'reaborn' plot is a 'ggplot' object, it can be extended with the
     full 'ggplot2' grammar of graphics.
 License: BSD_3_clause + file LICENSE
 Encoding: UTF-8
