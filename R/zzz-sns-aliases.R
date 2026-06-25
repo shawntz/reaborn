@@ -15,9 +15,10 @@
 #' counterpart (`sns.scatterplot <- scatterplot`, and so on), so calling an
 #' alias returns precisely what the counterpart returns. By category: the
 #' plotting functions (e.g. `sns.scatterplot()`, `sns.histplot()`,
-#' `sns.heatmap()`, `sns.pairplot()`, `sns.FacetGrid()`) return a `reaborn_plot`
-#' object (a ggplot2/patchwork object that draws when printed), except
-#' `sns.palplot()`, which draws a palette swatch and returns `NULL` invisibly;
+#' `sns.heatmap()`, `sns.pairplot()`, `sns.FacetGrid()`, `sns.palplot()`) return
+#' a `reaborn_plot` object (a ggplot2/patchwork object that draws when printed),
+#' except the easter-egg `sns.dogplot()`, which prints an affirmation and
+#' returns `NULL` invisibly;
 #' the palette constructors (e.g. `sns.color_palette()`, `sns.husl_palette()`,
 #' `sns.cubehelix_palette()`) return a character vector of hex colors, or a
 #' `reaborn_cmap`; the color helpers `sns.desaturate()`, `sns.saturate()`, and

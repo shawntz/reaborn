@@ -61,9 +61,10 @@ Each \code{sns.}-prefixed object is the exact same function as its unprefixed
 counterpart (\code{sns.scatterplot <- scatterplot}, and so on), so calling an
 alias returns precisely what the counterpart returns. By category: the
 plotting functions (e.g. \code{sns.scatterplot()}, \code{sns.histplot()},
-\code{sns.heatmap()}, \code{sns.pairplot()}, \code{sns.FacetGrid()}) return a \code{reaborn_plot}
-object (a ggplot2/patchwork object that draws when printed), except
-\code{sns.palplot()}, which draws a palette swatch and returns \code{NULL} invisibly;
+\code{sns.heatmap()}, \code{sns.pairplot()}, \code{sns.FacetGrid()}, \code{sns.palplot()}) return
+a \code{reaborn_plot} object (a ggplot2/patchwork object that draws when printed),
+except the easter-egg \code{sns.dogplot()}, which prints an affirmation and
+returns \code{NULL} invisibly;
 the palette constructors (e.g. \code{sns.color_palette()}, \code{sns.husl_palette()},
 \code{sns.cubehelix_palette()}) return a character vector of hex colors, or a
 \code{reaborn_cmap}; the color helpers \code{sns.desaturate()}, \code{sns.saturate()}, and
