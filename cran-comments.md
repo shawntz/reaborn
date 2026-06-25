@@ -10,9 +10,9 @@ Thank you for your time and consideration.
 
 ## R CMD check results (reaborn v1.0.0)
 
-Duration: 44.5s
+Duration: 43.2s
 
-❯ checking CRAN incoming feasibility ... [2s/15s] NOTE
+❯ checking CRAN incoming feasibility ... [2s/14s] NOTE
   Maintainer: ‘Shawn Schwartz <shawn.t.schwartz@gmail.com>’
   
   New submission
