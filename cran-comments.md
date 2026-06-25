@@ -4,6 +4,14 @@ This is a resubmission of the initial submission for the package, reaborn, an R 
 
 ## Notes
 
+This resubmission fixes the following comments:
+
+> Missing Rd-tags:
+>      python-literals.Rd: \value
+>      sns-aliases.Rd: \value
+>
+> Please fix and resubmit.
+
 All checks (`R CMD check`, `devtools::check(remote = TRUE)`, GitHub Actions CI) pass on macOS, Windows, and Ubuntu.
 
 Thank you for your time and consideration.
