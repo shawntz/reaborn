@@ -56,6 +56,28 @@
 \alias{sns.load_dataset}
 \alias{sns.get_dataset_names}
 \title{seaborn-style \code{sns.} function aliases}
+\value{
+Each \code{sns.}-prefixed object is the exact same function as its unprefixed
+counterpart (\code{sns.scatterplot <- scatterplot}, and so on), so calling an
+alias returns precisely what the counterpart returns. By category: the
+plotting functions (e.g. \code{sns.scatterplot()}, \code{sns.histplot()},
+\code{sns.heatmap()}, \code{sns.pairplot()}, \code{sns.FacetGrid()}) return a \code{reaborn_plot}
+object (a ggplot2/patchwork object that draws when printed), except
+\code{sns.palplot()}, which draws a palette swatch and returns \code{NULL} invisibly;
+the palette constructors (e.g. \code{sns.color_palette()}, \code{sns.husl_palette()},
+\code{sns.cubehelix_palette()}) return a character vector of hex colours, or a
+\code{reaborn_cmap}; the colour helpers \code{sns.desaturate()}, \code{sns.saturate()}, and
+\code{sns.set_hls_values()} return a hex colour string; \code{sns.axes_style()} and
+\code{sns.plotting_context()} return a named list of style/context parameters;
+\code{sns.despine()} and \code{sns.move_legend()} return a ggplot2 theme object to add
+to a plot; \code{sns.load_dataset()} returns a data frame and
+\code{sns.get_dataset_names()} a character vector; and the theming setters
+(\code{sns.set_theme()}, \code{sns.set()}, \code{sns.set_style()}, \code{sns.set_context()},
+\code{sns.set_palette()}, \code{sns.set_color_codes()}, \code{sns.reset_defaults()},
+\code{sns.reset_orig()}) are called for their side effect of changing global plot
+defaults and return their value invisibly. See each unprefixed function's own
+help page for the precise structure and meaning of its return value.
+}
 \description{
 For copy-paste compatibility with Python, reaborn provides a \code{sns.}-prefixed
 alias for every public plotting, palette, and theming function (R allows dots
