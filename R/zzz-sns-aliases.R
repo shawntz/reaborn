@@ -19,9 +19,9 @@
 #' object (a ggplot2/patchwork object that draws when printed), except
 #' `sns.palplot()`, which draws a palette swatch and returns `NULL` invisibly;
 #' the palette constructors (e.g. `sns.color_palette()`, `sns.husl_palette()`,
-#' `sns.cubehelix_palette()`) return a character vector of hex colours, or a
-#' `reaborn_cmap`; the colour helpers `sns.desaturate()`, `sns.saturate()`, and
-#' `sns.set_hls_values()` return a hex colour string; `sns.axes_style()` and
+#' `sns.cubehelix_palette()`) return a character vector of hex colors, or a
+#' `reaborn_cmap`; the color helpers `sns.desaturate()`, `sns.saturate()`, and
+#' `sns.set_hls_values()` return a hex color string; `sns.axes_style()` and
 #' `sns.plotting_context()` return a named list of style/context parameters;
 #' `sns.despine()` and `sns.move_legend()` return a ggplot2 theme object to add
 #' to a plot; `sns.load_dataset()` returns a data frame and

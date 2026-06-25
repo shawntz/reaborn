@@ -65,9 +65,9 @@ plotting functions (e.g. \code{sns.scatterplot()}, \code{sns.histplot()},
 object (a ggplot2/patchwork object that draws when printed), except
 \code{sns.palplot()}, which draws a palette swatch and returns \code{NULL} invisibly;
 the palette constructors (e.g. \code{sns.color_palette()}, \code{sns.husl_palette()},
-\code{sns.cubehelix_palette()}) return a character vector of hex colours, or a
-\code{reaborn_cmap}; the colour helpers \code{sns.desaturate()}, \code{sns.saturate()}, and
-\code{sns.set_hls_values()} return a hex colour string; \code{sns.axes_style()} and
+\code{sns.cubehelix_palette()}) return a character vector of hex colors, or a
+\code{reaborn_cmap}; the color helpers \code{sns.desaturate()}, \code{sns.saturate()}, and
+\code{sns.set_hls_values()} return a hex color string; \code{sns.axes_style()} and
 \code{sns.plotting_context()} return a named list of style/context parameters;
 \code{sns.despine()} and \code{sns.move_legend()} return a ggplot2 theme object to add
 to a plot; \code{sns.load_dataset()} returns a data frame and
