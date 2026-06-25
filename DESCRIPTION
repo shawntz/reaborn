@@ -12,6 +12,7 @@ Description: An R port of the 'Python' 'seaborn' library. reaborn mirrors the
     full 'ggplot2' grammar of graphics.
 License: BSD_3_clause + file LICENSE
 Encoding: UTF-8
+Language: en-US
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 8.0.0
 Depends:

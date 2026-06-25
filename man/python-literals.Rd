@@ -16,6 +16,13 @@ False
 
 None
 }
+\value{
+These objects are exported constants, not functions. Referencing one yields
+its stored value: \code{True} is the length-one logical vector \code{TRUE}, \code{False} is
+the length-one logical vector \code{FALSE}, and \code{None} is \code{NULL}. They exist only
+so that seaborn code containing Python's \code{True}, \code{False}, and \code{None} literals
+evaluates in R unchanged.
+}
 \description{
 \code{True}, \code{False}, and \code{None} are provided so that seaborn Python code pasted
 into R (e.g. \code{histplot(data = df, x = "a", kde = True)}) runs unchanged.

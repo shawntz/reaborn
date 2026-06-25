@@ -10,6 +10,29 @@
 #' Each alias is identical to its unprefixed counterpart; see that function for
 #' arguments and details.
 #'
+#' @return
+#' Each `sns.`-prefixed object is the exact same function as its unprefixed
+#' counterpart (`sns.scatterplot <- scatterplot`, and so on), so calling an
+#' alias returns precisely what the counterpart returns. By category: the
+#' plotting functions (e.g. `sns.scatterplot()`, `sns.histplot()`,
+#' `sns.heatmap()`, `sns.pairplot()`, `sns.FacetGrid()`, `sns.palplot()`) return
+#' a `reaborn_plot` object (a ggplot2/patchwork object that draws when printed),
+#' except the easter-egg `sns.dogplot()`, which prints an affirmation and
+#' returns `NULL` invisibly;
+#' the palette constructors (e.g. `sns.color_palette()`, `sns.husl_palette()`,
+#' `sns.cubehelix_palette()`) return a character vector of hex colors, or a
+#' `reaborn_cmap`; the color helpers `sns.desaturate()`, `sns.saturate()`, and
+#' `sns.set_hls_values()` return a hex color string; `sns.axes_style()` and
+#' `sns.plotting_context()` return a named list of style/context parameters;
+#' `sns.despine()` and `sns.move_legend()` return a ggplot2 theme object to add
+#' to a plot; `sns.load_dataset()` returns a data frame and
+#' `sns.get_dataset_names()` a character vector; and the theming setters
+#' (`sns.set_theme()`, `sns.set()`, `sns.set_style()`, `sns.set_context()`,
+#' `sns.set_palette()`, `sns.set_color_codes()`, `sns.reset_defaults()`,
+#' `sns.reset_orig()`) are called for their side effect of changing global plot
+#' defaults and return their value invisibly. See each unprefixed function's own
+#' help page for the precise structure and meaning of its return value.
+#'
 #' @name sns-aliases
 #' @usage NULL
 #' @aliases sns.scatterplot sns.lineplot sns.relplot sns.histplot sns.kdeplot sns.ecdfplot sns.rugplot sns.displot sns.boxplot sns.violinplot sns.boxenplot sns.stripplot sns.swarmplot sns.barplot sns.pointplot sns.countplot sns.catplot sns.regplot sns.residplot sns.lmplot sns.heatmap sns.clustermap sns.pairplot sns.jointplot sns.FacetGrid sns.palplot sns.dogplot sns.color_palette sns.hls_palette sns.husl_palette sns.mpl_palette sns.dark_palette sns.light_palette sns.diverging_palette sns.blend_palette sns.cubehelix_palette sns.set_color_codes sns.set_theme sns.set sns.reset_defaults sns.reset_orig sns.axes_style sns.set_style sns.plotting_context sns.set_context sns.set_palette sns.desaturate sns.saturate sns.set_hls_values sns.move_legend sns.despine sns.load_dataset sns.get_dataset_names
