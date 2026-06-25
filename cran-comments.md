@@ -6,9 +6,12 @@ This is a resubmission of the initial submission for the package, reaborn, an R 
 
 This resubmission fixes the following comments:
 
-> Missing Rd-tags:
->      python-literals.Rd: \value
->      sns-aliases.Rd: \value
+> Possibly misspelled words in DESCRIPTION:
+>     reaborn (8:59, 11:19)
+>
+> Please single quote software names in both Title and Description fields
+> of the DESCRIPTION file, this inclused 'reaborn' and 'R' (which many
+> people forget to quote).
 >
 > Please fix and resubmit.
 
