@@ -3,6 +3,9 @@
 <!-- badges: start -->
 
 [![dev version](https://raw.githubusercontent.com/shawntz/reaborn/refs/heads/badges/main-branch-version.svg)](https://github.com/shawntz/reaborn/tree/main)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/reaborn)](https://CRAN.R-project.org/package=reaborn)
+[![downloads](http://cranlogs.r-pkg.org/badges/grand-total/reaborn?color=brightgreen)](https://cran.r-project.org/package=badger)
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![build](https://github.com/shawntz/reaborn/actions/workflows/build.yml/badge.svg)](https://github.com/shawntz/reaborn/actions/workflows/build.yml)
 [![air format check](https://github.com/shawntz/reaborn/actions/workflows/air-format-check.yml/badge.svg)](https://github.com/shawntz/reaborn/actions/workflows/air-format-check.yml)
