@@ -8,6 +8,7 @@
 ^\.claude$
 ^_pkgdown\.yml$
 ^docs$
+^paper$
 ^pkgdown$
 ^\.lintr$
 ^\.air\.toml$
