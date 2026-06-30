@@ -116,6 +116,13 @@ numpy-exact bins, and seaborn’s bootstrap CIs.
 
 ``` r
 
+install.packages("reaborn")
+```
+
+Or install the development version from GitHub:
+
+``` r
+
 # install.packages("remotes")
 remotes::install_github("shawntz/reaborn")
 ```
