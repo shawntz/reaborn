@@ -17,3 +17,7 @@ A \code{reaborn_plot}.
 \description{
 Port of \code{seaborn.palplot}. Returns a \link{reaborn_plot}.
 }
+\examples{
+palplot(color_palette("deep"))
+palplot(color_palette("rocket", 8))
+}

@@ -59,3 +59,10 @@ A \code{reaborn_plot}.
 \description{
 Port of \code{seaborn.stripplot}. Returns a \link{reaborn_plot}.
 }
+\examples{
+tips <- load_dataset("tips")
+stripplot(data = tips, x = "day", y = "total_bill", hue = "smoker")
+
+# Separate hue levels along the categorical axis with dodge
+stripplot(data = tips, x = "day", y = "total_bill", hue = "smoker", dodge = TRUE)
+}

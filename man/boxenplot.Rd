@@ -69,3 +69,8 @@ A \code{reaborn_plot}.
 \description{
 Port of \code{seaborn.boxenplot} (letter-value plot). Returns a \link{reaborn_plot}.
 }
+\examples{
+tips <- load_dataset("tips")
+boxenplot(data = tips, x = "day", y = "total_bill")
+boxenplot(data = tips, x = "day", y = "total_bill", hue = "smoker")
+}

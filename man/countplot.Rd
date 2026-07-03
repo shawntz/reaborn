@@ -56,3 +56,11 @@ A \code{reaborn_plot}.
 \description{
 Port of \code{seaborn.countplot}. Returns a \link{reaborn_plot}.
 }
+\examples{
+penguins <- load_dataset("penguins")
+countplot(data = penguins, x = "species", hue = "sex")
+
+# Horizontal bars by assigning the categorical variable to y.
+tips <- load_dataset("tips")
+countplot(data = tips, y = "day")
+}

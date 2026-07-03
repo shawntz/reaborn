@@ -76,6 +76,12 @@
 #' @param ... Passed to the bar geom.
 #' @return A `reaborn_plot`.
 #' @param .facet_vars Internal; facet columns forwarded by the figure-level dispatchers (catplot/displot/relplot). Not intended for direct use.
+#' @examples
+#' penguins <- load_dataset("penguins")
+#' histplot(data = penguins, x = "flipper_length_mm", hue = "species")
+#'
+#' # Stack the hue groups
+#' histplot(data = penguins, x = "flipper_length_mm", hue = "species", multiple = "stack")
 #' @export
 histplot <- function(
   data = NULL,
@@ -660,6 +666,10 @@ rb_hist_stat_2d <- function(counts, area, stat, cumulative = FALSE) {
 #' @return A `reaborn_plot`.
 #' @param log_scale Reserved for compatibility.
 #' @param .facet_vars Internal; facet columns forwarded by the figure-level dispatchers (catplot/displot/relplot). Not intended for direct use.
+#' @examples
+#' penguins <- load_dataset("penguins")
+#' kdeplot(data = penguins, x = "flipper_length_mm", hue = "species", fill = TRUE)
+#' kdeplot(data = penguins, x = "flipper_length_mm", hue = "species", multiple = "stack")
 #' @export
 kdeplot <- function(
   data = NULL,
@@ -1055,6 +1065,12 @@ rb_iso_proportion_levels <- function(z, levels, thresh = 0.05) {
 #' @param hue_order Order of hue levels.
 #' @param hue_norm Normalization for a numeric hue.
 #' @param .facet_vars Internal; facet columns forwarded by the figure-level dispatchers (catplot/displot/relplot). Not intended for direct use.
+#' @examples
+#' penguins <- load_dataset("penguins")
+#' ecdfplot(data = penguins, x = "flipper_length_mm", hue = "species")
+#'
+#' # Complementary ECDF with counts
+#' ecdfplot(data = penguins, x = "bill_length_mm", stat = "count", complementary = TRUE)
 #' @export
 ecdfplot <- function(
   data = NULL,
@@ -1205,6 +1221,12 @@ ecdfplot <- function(
 #' @param palette Palette for the hue mapping.
 #' @param hue_order Order of hue levels.
 #' @param hue_norm Normalization for a numeric hue.
+#' @examples
+#' penguins <- load_dataset("penguins")
+#' rugplot(data = penguins, x = "bill_length_mm", y = "bill_depth_mm")
+#'
+#' # Add a hue semantic to color ticks by group
+#' rugplot(data = penguins, x = "bill_length_mm", hue = "species")
 #' @export
 rugplot <- function(
   data = NULL,
@@ -1281,6 +1303,13 @@ rugplot <- function(
 #' @param facet_kws Reserved for compatibility.
 #' @return A `reaborn_plot`.
 #' @param rug_kws Arguments forwarded to the rug layer when `rug = TRUE`.
+#' @examples
+#' penguins <- load_dataset("penguins")
+#' displot(data = penguins, x = "flipper_length_mm", col = "species")
+#' displot(
+#'   data = penguins, x = "flipper_length_mm",
+#'   hue = "species", col = "sex", kind = "kde"
+#' )
 #' @export
 displot <- function(
   data = NULL,

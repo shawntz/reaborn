@@ -48,3 +48,17 @@ A \code{reaborn_plot}.
 Port of \code{seaborn.scatterplot}. Returns a \link{reaborn_plot} (a ggplot), so it can
 be extended with any ggplot2 component.
 }
+\examples{
+penguins <- load_dataset("penguins")
+scatterplot(data = penguins, x = "bill_length_mm", y = "bill_depth_mm", hue = "species")
+
+# Add size and style semantics
+scatterplot(
+  data = penguins,
+  x = "bill_length_mm",
+  y = "bill_depth_mm",
+  hue = "species",
+  size = "body_mass_g",
+  style = "sex"
+)
+}

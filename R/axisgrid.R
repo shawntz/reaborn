@@ -45,6 +45,10 @@
 #' @param color,palette Color controls.
 #' @param ... Passed to the joint plotting function.
 #' @return A `reaborn_plot` (patchwork).
+#' @examplesIf requireNamespace("patchwork", quietly = TRUE)
+#' penguins <- load_dataset("penguins")
+#' jointplot(data = penguins, x = "bill_length_mm", y = "bill_depth_mm", hue = "species")
+#' jointplot(data = penguins, x = "bill_length_mm", y = "bill_depth_mm", kind = "reg")
 #' @export
 jointplot <- function(
   data = NULL,
@@ -127,6 +131,21 @@ jointplot <- function(
 #' @param palette,height,aspect,corner Layout controls.
 #' @param ... Reserved.
 #' @return A `reaborn_plot` (patchwork).
+#' @examplesIf requireNamespace("patchwork", quietly = TRUE)
+#' penguins <- load_dataset("penguins")
+#' pairplot(
+#'   data = penguins,
+#'   vars = c("bill_length_mm", "flipper_length_mm", "body_mass_g"),
+#'   hue = "species"
+#' )
+#'
+#' # Regression fits off the diagonal
+#' pairplot(
+#'   data = penguins,
+#'   vars = c("bill_length_mm", "flipper_length_mm"),
+#'   hue = "species",
+#'   kind = "reg"
+#' )
 #' @export
 pairplot <- function(
   data,
@@ -216,6 +235,12 @@ pairplot <- function(
 #' @param height,aspect Facet sizing.
 #' @param palette Hue palette.
 #' @return A `reaborn_plot`.
+#' @examples
+#' tips <- load_dataset("tips")
+#' FacetGrid(tips, col = "time", hue = "sex") +
+#'   ggplot2::geom_point(ggplot2::aes(x = total_bill, y = tip))
+#' FacetGrid(tips, row = "sex", col = "time") +
+#'   ggplot2::geom_point(ggplot2::aes(x = total_bill, y = tip))
 #' @export
 FacetGrid <- function(
   data,

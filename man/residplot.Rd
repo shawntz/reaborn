@@ -40,3 +40,10 @@ A \code{reaborn_plot}.
 \description{
 Port of \code{seaborn.residplot}. Returns a \link{reaborn_plot}.
 }
+\examples{
+tips <- load_dataset("tips")
+residplot(data = tips, x = "total_bill", y = "tip")
+
+# Add a lowess smooth to help detect structure in the residuals
+residplot(data = tips, x = "total_bill", y = "tip", lowess = TRUE)
+}

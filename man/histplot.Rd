@@ -91,3 +91,10 @@ A \code{reaborn_plot}.
 \description{
 Port of \code{seaborn.histplot}. Returns a \link{reaborn_plot}.
 }
+\examples{
+penguins <- load_dataset("penguins")
+histplot(data = penguins, x = "flipper_length_mm", hue = "species")
+
+# Stack the hue groups
+histplot(data = penguins, x = "flipper_length_mm", hue = "species", multiple = "stack")
+}

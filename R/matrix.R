@@ -27,6 +27,13 @@ rb_relative_luminance <- function(color) {
 #' @param mask Logical matrix of cells to hide.
 #' @param ... Reserved.
 #' @return A `reaborn_plot`.
+#' @examples
+#' flights <- load_dataset("flights")
+#' m <- tapply(flights$passengers, list(flights$month, flights$year), sum)
+#' heatmap(m, annot = TRUE, fmt = "d", cmap = "YlGnBu")
+#'
+#' # Center a diverging colormap on a reference value
+#' heatmap(m, center = m["Jan", "1955"], cmap = "icefire")
 #' @export
 heatmap <- function(
   data,
@@ -209,6 +216,11 @@ rb_format_value <- function(x, fmt) {
 #' @param dendrogram_ratio Fraction of the figure used by the dendrograms.
 #' @param ... Passed to [heatmap].
 #' @return A `reaborn_plot` (patchwork).
+#' @examplesIf requireNamespace("patchwork", quietly = TRUE) && requireNamespace("ggdendro", quietly = TRUE)
+#' flights <- load_dataset("flights")
+#' m <- tapply(flights$passengers, list(flights$month, flights$year), sum)
+#' clustermap(m)
+#' clustermap(m, z_score = 0, cmap = "vlag")
 #' @export
 clustermap <- function(
   data,

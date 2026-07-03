@@ -79,3 +79,13 @@ Port of \code{seaborn.relplot}. Draws \link{scatterplot} (\code{kind = "scatter"
 Returns a \link{reaborn_plot} (a faceted ggplot) with the legend outside, like a
 seaborn FacetGrid.
 }
+\examples{
+fmri <- load_dataset("fmri")
+relplot(
+  data = fmri, x = "timepoint", y = "signal",
+  hue = "event", col = "region", kind = "line"
+)
+
+tips <- load_dataset("tips")
+relplot(data = tips, x = "total_bill", y = "tip", hue = "day", col = "time")
+}

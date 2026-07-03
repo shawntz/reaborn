@@ -44,3 +44,10 @@ A \code{reaborn_plot} (patchwork).
 Port of \code{seaborn.jointplot}. Returns a patchwork composition (printable and
 saveable like any reaborn plot).
 }
+\examples{
+\dontshow{if (requireNamespace("patchwork", quietly = TRUE)) withAutoprint(\{ # examplesIf}
+penguins <- load_dataset("penguins")
+jointplot(data = penguins, x = "bill_length_mm", y = "bill_depth_mm", hue = "species")
+jointplot(data = penguins, x = "bill_length_mm", y = "bill_depth_mm", kind = "reg")
+\dontshow{\}) # examplesIf}
+}

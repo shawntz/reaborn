@@ -48,3 +48,10 @@ Port of \code{seaborn.rugplot}. Draws small ticks at each observation along the
 relevant axis. Returns a \link{reaborn_plot} (typically added to another plot, but
 usable standalone).
 }
+\examples{
+penguins <- load_dataset("penguins")
+rugplot(data = penguins, x = "bill_length_mm", y = "bill_depth_mm")
+
+# Add a hue semantic to color ticks by group
+rugplot(data = penguins, x = "bill_length_mm", hue = "species")
+}

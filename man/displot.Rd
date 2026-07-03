@@ -65,3 +65,11 @@ Port of \code{seaborn.displot}. Draws \link{histplot} (\code{kind = "hist"}), \l
 (\code{kind = "kde"}), or \link{ecdfplot} (\code{kind = "ecdf"}) onto a grid of facets.
 Returns a faceted \link{reaborn_plot}.
 }
+\examples{
+penguins <- load_dataset("penguins")
+displot(data = penguins, x = "flipper_length_mm", col = "species")
+displot(
+  data = penguins, x = "flipper_length_mm",
+  hue = "species", col = "sex", kind = "kde"
+)
+}
