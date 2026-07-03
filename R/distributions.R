@@ -682,6 +682,7 @@ rb_kdeplot_bivariate <- function(
   gridsize,
   cut,
   legend,
+  cmap = NULL,
   ...
 ) {
   v <- rb_assign_variables(data, x = x, y = y, hue = hue)
@@ -702,11 +703,23 @@ rb_kdeplot_bivariate <- function(
     ggplot2::aes(x = .data$x, y = .data$y, z = .data$z)
   )
   if (do_fill) {
-    cmap <- attr(light_palette(col, as_cmap = TRUE), "colors")
+    # seaborn colors filled bivariate KDE through `cmap` when given, and only
+    # falls back to a light palette built from `color` when it is not. Resolve
+    # cmap with the same machinery heatmap() uses (string name or color list).
+    fill_cmap <- if (is.null(cmap)) {
+      light_palette(col, as_cmap = TRUE)
+    } else if (length(cmap) > 1) {
+      blend_palette(cmap, as_cmap = TRUE)
+    } else {
+      color_palette(cmap, as_cmap = TRUE)
+    }
+    # Named colors would make scale_fill_manual match by name instead of by the
+    # contour bands' order, dropping every fill to na.value; keep it positional.
+    fill_cols <- unname(attr(fill_cmap, "colors"))
     p <- p +
       ggplot2::geom_contour_filled(breaks = c(lev, Inf)) +
       ggplot2::scale_fill_manual(
-        values = cmap[round(seq(40, 256, length.out = length(lev)))],
+        values = fill_cols[round(seq(40, 256, length.out = length(lev)))],
         guide = "none"
       )
   } else {
@@ -753,8 +766,13 @@ rb_gaussian_kde_2d <- function(x, y, bw_adjust = 1, gridsize = 100, cut = 3) {
   list(x = gx, y = gy, z = z)
 }
 
-# Convert iso-proportion levels (fraction of mass enclosed) to density levels,
-# mirroring seaborn's _quantile_to_level.
+# Convert iso-proportion levels to density levels, mirroring seaborn's
+# _quantile_to_level. An iso-proportion `p` names the contour below which `p` of
+# the total mass lies, so the density level encloses `1 - p` of the mass
+# (searchsorted(cumsum, 1 - isoprop)). Levels come out ascending in density:
+# `p = thresh` is the outermost contour and `p = 1` is the peak. Using `p`
+# instead of `1 - p` inverts this, driving the outer level to ~0 so the fill
+# floods the whole grid.
 rb_iso_proportion_levels <- function(z, levels, thresh = 0.05) {
   if (length(levels) == 1) {
     levels <- seq(thresh, 1, length.out = levels)
@@ -764,7 +782,7 @@ rb_iso_proportion_levels <- function(z, levels, thresh = 0.05) {
   vapply(
     levels,
     function(p) {
-      idx <- which(csum >= p)[1]
+      idx <- which(csum >= (1 - p))[1]
       if (is.na(idx)) min(v) else v[idx]
     },
     numeric(1)
