@@ -107,7 +107,4 @@ displot(
   data = penguins, x = "flipper_length_mm",
   hue = "species", col = "sex", kind = "kde"
 )
-#> Warning: no non-missing arguments to min; returning Inf
-#> Warning: no non-missing arguments to max; returning -Inf
-#> Error in seq.default(lo, hi, length.out = gridsize): 'from' must be a finite number
 ```
