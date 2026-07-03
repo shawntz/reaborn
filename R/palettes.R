@@ -201,6 +201,13 @@ set_hls_values <- function(color, h = NULL, l = NULL, s = NULL) {
 #' @param desat Proportion to desaturate each color by.
 #' @param as_cmap If `TRUE`, return a continuous colormap (a `reaborn_cmap`).
 #' @return A character vector of hex colors, or a `reaborn_cmap`.
+#' @examples
+#' palplot(color_palette("deep"))
+#' palplot(color_palette("husl", 8))
+#' palplot(hls_palette(8))
+#' palplot(cubehelix_palette(8))
+#' palplot(light_palette("seagreen"))
+#' palplot(diverging_palette(220, 20))
 #' @export
 color_palette <- function(
   palette = NULL,

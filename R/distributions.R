@@ -82,6 +82,12 @@
 #' @param ... Passed to the bar geom.
 #' @return A `reaborn_plot`.
 #' @param .facet_vars Internal; facet columns forwarded by the figure-level dispatchers (catplot/displot/relplot). Not intended for direct use.
+#' @examples
+#' penguins <- load_dataset("penguins")
+#' histplot(data = penguins, x = "flipper_length_mm", hue = "species")
+#'
+#' # Stack the hue groups
+#' histplot(data = penguins, x = "flipper_length_mm", hue = "species", multiple = "stack")
 #' @export
 histplot <- function(
   data = NULL,
@@ -576,6 +582,10 @@ rb_histplot_bivariate <- function(
   }
   cmap_cols <- attr(cmap_obj, "colors")
 
+  # The colour bar is a legend; `legend = FALSE` suppresses it as it does the
+  # hue legend elsewhere, so gate every colorbar branch on both flags.
+  show_cbar <- isTRUE(cbar) && !isFALSE(legend)
+
   p <- ggplot2::ggplot(cells) +
     ggplot2::geom_rect(
       ggplot2::aes(
@@ -592,7 +602,7 @@ rb_histplot_bivariate <- function(
       limits = c(0, vmax),
       oob = scales::squish,
       na.value = "transparent",
-      guide = if (isTRUE(cbar)) "colourbar" else "none",
+      guide = if (show_cbar) "colourbar" else "none",
       name = NULL
     ) +
     ggplot2::scale_x_continuous(breaks = rb_mpl_breaks(), expand = c(0, 0)) +
@@ -602,13 +612,13 @@ rb_histplot_bivariate <- function(
     p,
     xlab = v$names$x,
     ylab = v$names$y,
-    legend = if (isTRUE(cbar)) "auto" else FALSE,
+    legend = if (show_cbar) "auto" else FALSE,
     any_legend = FALSE,
     breaks = FALSE
   )
   # Style the colour bar like seaborn's default vertical matplotlib colorbar:
   # a thin, frameless, full-height bar with a single outward tick (see heatmap).
-  if (isTRUE(cbar)) {
+  if (show_cbar) {
     ctx <- plotting_context()
     ck <- cbar_kws %||% list()
     p <- p +
@@ -666,6 +676,10 @@ rb_hist_stat_2d <- function(counts, area, stat, cumulative = FALSE) {
 #' @return A `reaborn_plot`.
 #' @param log_scale Reserved for compatibility.
 #' @param .facet_vars Internal; facet columns forwarded by the figure-level dispatchers (catplot/displot/relplot). Not intended for direct use.
+#' @examples
+#' penguins <- load_dataset("penguins")
+#' kdeplot(data = penguins, x = "flipper_length_mm", hue = "species", fill = TRUE)
+#' kdeplot(data = penguins, x = "flipper_length_mm", hue = "species", multiple = "stack")
 #' @export
 kdeplot <- function(
   data = NULL,
@@ -1061,6 +1075,12 @@ rb_iso_proportion_levels <- function(z, levels, thresh = 0.05) {
 #' @param hue_order Order of hue levels.
 #' @param hue_norm Normalization for a numeric hue.
 #' @param .facet_vars Internal; facet columns forwarded by the figure-level dispatchers (catplot/displot/relplot). Not intended for direct use.
+#' @examples
+#' penguins <- load_dataset("penguins")
+#' ecdfplot(data = penguins, x = "flipper_length_mm", hue = "species")
+#'
+#' # Complementary ECDF with counts
+#' ecdfplot(data = penguins, x = "bill_length_mm", stat = "count", complementary = TRUE)
 #' @export
 ecdfplot <- function(
   data = NULL,
@@ -1211,6 +1231,12 @@ ecdfplot <- function(
 #' @param palette Palette for the hue mapping.
 #' @param hue_order Order of hue levels.
 #' @param hue_norm Normalization for a numeric hue.
+#' @examples
+#' penguins <- load_dataset("penguins")
+#' rugplot(data = penguins, x = "bill_length_mm", y = "bill_depth_mm")
+#'
+#' # Add a hue semantic to color ticks by group
+#' rugplot(data = penguins, x = "bill_length_mm", hue = "species")
 #' @export
 rugplot <- function(
   data = NULL,
@@ -1287,6 +1313,13 @@ rugplot <- function(
 #' @param facet_kws Reserved for compatibility.
 #' @return A `reaborn_plot`.
 #' @param rug_kws Arguments forwarded to the rug layer when `rug = TRUE`.
+#' @examples
+#' penguins <- load_dataset("penguins")
+#' displot(data = penguins, x = "flipper_length_mm", col = "species")
+#' displot(
+#'   data = penguins, x = "flipper_length_mm",
+#'   hue = "species", col = "sex", kind = "kde"
+#' )
 #' @export
 displot <- function(
   data = NULL,

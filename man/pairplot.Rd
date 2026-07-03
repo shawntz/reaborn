@@ -39,3 +39,21 @@ A \code{reaborn_plot} (patchwork).
 Port of \code{seaborn.pairplot}. Returns a patchwork matrix of scatter plots with
 univariate distributions on the diagonal.
 }
+\examples{
+\dontshow{if (requireNamespace("patchwork", quietly = TRUE)) withAutoprint(\{ # examplesIf}
+penguins <- load_dataset("penguins")
+pairplot(
+  data = penguins,
+  vars = c("bill_length_mm", "flipper_length_mm", "body_mass_g"),
+  hue = "species"
+)
+
+# Regression fits off the diagonal
+pairplot(
+  data = penguins,
+  vars = c("bill_length_mm", "flipper_length_mm"),
+  hue = "species",
+  kind = "reg"
+)
+\dontshow{\}) # examplesIf}
+}

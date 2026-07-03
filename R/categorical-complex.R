@@ -72,6 +72,10 @@
 #' @param linewidth Outline width.
 #' @param linecolor Outline color (`"auto"` for seaborn's gray).
 #' @param .facet_vars Internal; facet columns forwarded by the figure-level dispatchers (catplot/displot/relplot). Not intended for direct use.
+#' @examples
+#' tips <- load_dataset("tips")
+#' violinplot(data = tips, x = "day", y = "total_bill")
+#' violinplot(data = tips, x = "day", y = "total_bill", hue = "sex", split = TRUE)
 #' @export
 violinplot <- function(
   data = NULL,
@@ -416,6 +420,10 @@ rb_letter_values <- function(
 #' @param linewidth Box outline width.
 #' @param linecolor Box outline color.
 #' @param .facet_vars Internal; facet columns forwarded by the figure-level dispatchers (catplot/displot/relplot). Not intended for direct use.
+#' @examples
+#' tips <- load_dataset("tips")
+#' boxenplot(data = tips, x = "day", y = "total_bill")
+#' boxenplot(data = tips, x = "day", y = "total_bill", hue = "smoker")
 #' @export
 boxenplot <- function(
   data = NULL,
@@ -597,6 +605,10 @@ boxenplot <- function(
 #' @param color Single color override.
 #' @param palette Palette for the hue mapping.
 #' @param .facet_vars Internal; facet columns forwarded by the figure-level dispatchers (catplot/displot/relplot). Not intended for direct use.
+#' @examplesIf requireNamespace("ggbeeswarm", quietly = TRUE)
+#' tips <- load_dataset("tips")
+#' swarmplot(data = tips, x = "day", y = "total_bill")
+#' swarmplot(data = tips, x = "day", y = "total_bill", hue = "sex", dodge = TRUE)
 #' @export
 swarmplot <- function(
   data = NULL,

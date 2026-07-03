@@ -7,6 +7,9 @@
 #' @param pal A sequence of colors (e.g. from [color_palette]).
 #' @param size Scaling factor for the swatch size.
 #' @return A `reaborn_plot`.
+#' @examples
+#' palplot(color_palette("deep"))
+#' palplot(color_palette("rocket", 8))
 #' @export
 palplot <- function(pal, size = 1) {
   n <- length(pal)
@@ -30,6 +33,8 @@ palplot <- function(pal, size = 1) {
 #' Port of `seaborn.dogplot` (an easter egg). Prints an affirmation.
 #' @param ... Ignored.
 #' @return Invisibly `NULL`.
+#' @examples
+#' dogplot()
 #' @export
 dogplot <- function(...) {
   message(

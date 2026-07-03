@@ -59,3 +59,11 @@ A \code{reaborn_plot}.
 \description{
 Port of \code{seaborn.heatmap}. Returns a \link{reaborn_plot}.
 }
+\examples{
+flights <- load_dataset("flights")
+m <- tapply(flights$passengers, list(flights$month, flights$year), sum)
+heatmap(m, annot = TRUE, fmt = "d", cmap = "YlGnBu")
+
+# Center a diverging colormap on a reference value
+heatmap(m, center = m["Jan", "1955"], cmap = "icefire")
+}

@@ -69,3 +69,13 @@ A \code{reaborn_plot}.
 \description{
 Port of \code{seaborn.pointplot}. Returns a \link{reaborn_plot}.
 }
+\examples{
+tips <- load_dataset("tips")
+pointplot(data = tips, x = "time", y = "total_bill", hue = "smoker")
+
+# Dodge the hue levels and add caps to the error bars
+pointplot(
+  data = tips, x = "day", y = "total_bill", hue = "sex",
+  dodge = TRUE, capsize = 0.1
+)
+}

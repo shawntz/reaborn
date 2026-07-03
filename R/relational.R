@@ -15,6 +15,19 @@
 #' @param legend `"auto"`, `"brief"`, `"full"`, or `FALSE`.
 #' @param ... Passed to [ggplot2::geom_point].
 #' @return A `reaborn_plot`.
+#' @examples
+#' penguins <- load_dataset("penguins")
+#' scatterplot(data = penguins, x = "bill_length_mm", y = "bill_depth_mm", hue = "species")
+#'
+#' # Add size and style semantics
+#' scatterplot(
+#'   data = penguins,
+#'   x = "bill_length_mm",
+#'   y = "bill_depth_mm",
+#'   hue = "species",
+#'   size = "body_mass_g",
+#'   style = "sex"
+#' )
 #' @export
 scatterplot <- function(
   data = NULL,
@@ -165,6 +178,15 @@ RB_SCATTER_STROKE <- 0.3
 #' @return A `reaborn_plot`.
 #' @param style_order Order of style levels.
 #' @param .facet_vars Internal; facet columns forwarded by the figure-level dispatchers (catplot/displot/relplot). Not intended for direct use.
+#' @examples
+#' fmri <- load_dataset("fmri")
+#' # Aggregated mean with a 95% bootstrap CI band across repeated observations
+#' lineplot(data = fmri, x = "timepoint", y = "signal", hue = "event")
+#' # Add a style semantic to distinguish brain regions
+#' lineplot(
+#'   data = fmri, x = "timepoint", y = "signal",
+#'   hue = "event", style = "region"
+#' )
 #' @export
 lineplot <- function(
   data = NULL,
@@ -423,6 +445,15 @@ rb_line_default_width <- function() .rb_lw(SEABORN_DEFAULTS$linewidth)
 #' @param facet_kws Reserved for compatibility.
 #' @return A `reaborn_plot`.
 #' @param style_order Order of style levels.
+#' @examples
+#' fmri <- load_dataset("fmri")
+#' relplot(
+#'   data = fmri, x = "timepoint", y = "signal",
+#'   hue = "event", col = "region", kind = "line"
+#' )
+#'
+#' tips <- load_dataset("tips")
+#' relplot(data = tips, x = "total_bill", y = "tip", hue = "day", col = "time")
 #' @export
 relplot <- function(
   data = NULL,

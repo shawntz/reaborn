@@ -74,3 +74,8 @@ A \code{reaborn_plot}.
 Port of \code{seaborn.kdeplot}. The KDE matches \code{scipy.stats.gaussian_kde} exactly.
 Returns a \link{reaborn_plot}.
 }
+\examples{
+penguins <- load_dataset("penguins")
+kdeplot(data = penguins, x = "flipper_length_mm", hue = "species", fill = TRUE)
+kdeplot(data = penguins, x = "flipper_length_mm", hue = "species", multiple = "stack")
+}
