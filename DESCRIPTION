@@ -1,6 +1,6 @@
 Package: reaborn
 Title: Statistical Data Visualization, the 'seaborn' Way
-Version: 1.0.0
+Version: 1.0.0.9000
 Authors@R:
     person(given = "Shawn", family = "Schwartz", role = c("aut", "cre"),
            email = "shawn.t.schwartz@gmail.com",
