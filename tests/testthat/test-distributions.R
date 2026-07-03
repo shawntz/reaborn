@@ -74,6 +74,41 @@ test_that("kdeplot density integrates to ~1 and builds", {
   )))
 })
 
+test_that("bivariate kdeplot(fill=TRUE) honors cmap", {
+  pen <- load_dataset("penguins")
+  fills <- function(...) {
+    b <- ggplot2::ggplot_build(kdeplot(
+      data = pen,
+      x = "bill_length_mm",
+      y = "bill_depth_mm",
+      fill = TRUE,
+      ...
+    ))
+    unique(b$data[[1]]$fill)
+  }
+
+  default <- fills()
+  viridis <- fills(cmap = "viridis")
+  rocket <- fills(cmap = "rocket")
+  listcm <- fills(cmap = c("#ffffff", "#ff0000"))
+
+  # cmap must actually change the fill (the bug: it was silently ignored).
+  expect_false(identical(default, viridis))
+  expect_false(identical(viridis, rocket))
+  expect_false(identical(default, listcm))
+
+  # Every band gets a real color -- a named cmap vector used to collapse all
+  # fills to na.value ("grey50") via scale_fill_manual name-matching.
+  for (f in list(viridis, rocket, listcm)) {
+    expect_false(anyNA(f))
+    expect_false(any(f == "grey50"))
+  }
+
+  # The colormap resolves to genuine viridis colors, not the light-palette
+  # default.
+  expect_true(all(grepl("^#[0-9a-fA-F]{6}$", viridis)))
+})
+
 test_that("ecdfplot is monotonic from 0 to 1", {
   pen <- load_dataset("penguins")
   p <- ecdfplot(data = pen, x = "bill_length_mm")

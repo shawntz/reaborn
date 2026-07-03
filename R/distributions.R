@@ -682,6 +682,7 @@ rb_kdeplot_bivariate <- function(
   gridsize,
   cut,
   legend,
+  cmap = NULL,
   ...
 ) {
   v <- rb_assign_variables(data, x = x, y = y, hue = hue)
@@ -702,11 +703,23 @@ rb_kdeplot_bivariate <- function(
     ggplot2::aes(x = .data$x, y = .data$y, z = .data$z)
   )
   if (do_fill) {
-    cmap <- attr(light_palette(col, as_cmap = TRUE), "colors")
+    # seaborn colors filled bivariate KDE through `cmap` when given, and only
+    # falls back to a light palette built from `color` when it is not. Resolve
+    # cmap with the same machinery heatmap() uses (string name or color list).
+    fill_cmap <- if (is.null(cmap)) {
+      light_palette(col, as_cmap = TRUE)
+    } else if (length(cmap) > 1) {
+      blend_palette(cmap, as_cmap = TRUE)
+    } else {
+      color_palette(cmap, as_cmap = TRUE)
+    }
+    # Named colors would make scale_fill_manual match by name instead of by the
+    # contour bands' order, dropping every fill to na.value; keep it positional.
+    fill_cols <- unname(attr(fill_cmap, "colors"))
     p <- p +
       ggplot2::geom_contour_filled(breaks = c(lev, Inf)) +
       ggplot2::scale_fill_manual(
-        values = cmap[round(seq(40, 256, length.out = length(lev)))],
+        values = fill_cols[round(seq(40, 256, length.out = length(lev)))],
         guide = "none"
       )
   } else {
