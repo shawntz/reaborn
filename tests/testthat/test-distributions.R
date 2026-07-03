@@ -56,6 +56,99 @@ test_that("histplot builds for all multiple/stat options", {
   }
 })
 
+test_that("histplot(x, y) is a bivariate 2-D count heatmap", {
+  pen <- load_dataset("penguins")
+  p <- histplot(data = pen, x = "bill_length_mm", y = "bill_depth_mm")
+  expect_no_error(ggplot2::ggplot_build(p))
+  # A single rect layer whose fill varies with the cell count (not one flat
+  # colour as the old degenerate univariate fallback produced).
+  expect_length(p$layers, 1)
+  expect_s3_class(p$layers[[1]]$geom, "GeomRect")
+  d <- ggplot2::ggplot_build(p)$data[[1]]
+  drawn <- d$fill[!is.na(d$fill) & d$fill != "transparent"]
+  expect_gt(length(unique(drawn)), 1)
+
+  # 2-D counts conserve the number of complete observations.
+  ok <- !is.na(pen$bill_length_mm) & !is.na(pen$bill_depth_mm)
+  xe <- rb_hist_bins(pen$bill_length_mm[ok], "auto")
+  ye <- rb_hist_bins(pen$bill_depth_mm[ok], "auto")
+  cm <- reaborn:::.rb_bin_counts_2d(
+    pen$bill_length_mm[ok],
+    pen$bill_depth_mm[ok],
+    xe,
+    ye
+  )
+  expect_equal(sum(cm), sum(ok))
+})
+
+test_that("bivariate histplot honors cbar, cmap, stat, and thresh", {
+  pen <- load_dataset("penguins")
+  args <- list(data = pen, x = "bill_length_mm", y = "bill_depth_mm")
+
+  # cbar toggles a real (non-empty) colour guide.
+  real_guide <- function(p) {
+    g <- ggplot2::ggplotGrob(p)
+    idx <- which(grepl("guide-box", g$layout$name))
+    any(vapply(
+      idx,
+      function(i) !inherits(g$grobs[[i]], "zeroGrob"),
+      logical(1)
+    ))
+  }
+  expect_true(real_guide(do.call(histplot, c(args, list(cbar = TRUE)))))
+  expect_false(real_guide(do.call(histplot, c(args, list(cbar = FALSE)))))
+
+  # cmap changes the fill colours.
+  fills <- function(p) {
+    d <- ggplot2::ggplot_build(p)$data[[1]]
+    sort(unique(d$fill[!is.na(d$fill) & d$fill != "transparent"]))
+  }
+  expect_false(identical(
+    fills(do.call(histplot, args)),
+    fills(do.call(histplot, c(args, list(cmap = "rocket"))))
+  ))
+
+  # Every stat builds; default thresh = 0 leaves empty cells transparent while
+  # thresh = NULL keeps them all.
+  for (s in c("count", "density", "probability", "percent", "frequency")) {
+    expect_no_error(ggplot2::ggplot_build(do.call(
+      histplot,
+      c(args, list(stat = s))
+    )))
+  }
+  n_blank <- function(p) {
+    d <- ggplot2::ggplot_build(p)$data[[1]]
+    sum(is.na(d$fill) | d$fill == "transparent")
+  }
+  expect_gt(n_blank(do.call(histplot, args)), 0)
+  expect_equal(n_blank(do.call(histplot, c(args, list(thresh = NULL)))), 0)
+})
+
+test_that("bivariate hist/KDE warn that hue is ignored (but still build)", {
+  pen <- load_dataset("penguins")
+  a <- list(data = pen, x = "bill_length_mm", y = "bill_depth_mm")
+
+  # Bivariate + hue: warns, yet returns a usable plot.
+  expect_warning(
+    p <- do.call(histplot, c(a, list(hue = "species"))),
+    "hue.*ignored.*bivariate"
+  )
+  expect_no_error(ggplot2::ggplot_build(p))
+  expect_warning(
+    do.call(kdeplot, c(a, list(hue = "species"))),
+    "hue.*ignored.*bivariate"
+  )
+
+  # No hue, and univariate + hue, are silent.
+  expect_no_warning(do.call(histplot, a))
+  expect_no_warning(do.call(kdeplot, a))
+  expect_no_warning(histplot(
+    data = pen,
+    x = "flipper_length_mm",
+    hue = "species"
+  ))
+})
+
 test_that("kdeplot density integrates to ~1 and builds", {
   pen <- load_dataset("penguins")
   est <- rb_gaussian_kde(pen$flipper_length_mm[!is.na(pen$flipper_length_mm)])

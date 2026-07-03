@@ -13,6 +13,22 @@
   counts
 }
 
+# Weighted 2-D bin counts on fixed x/y edges, returned as an
+# (nx-1) x (ny-1) matrix indexed [x bin, y bin] (the numpy.histogram2d layout).
+.rb_bin_counts_2d <- function(x, y, x_edges, y_edges, weights = NULL) {
+  w <- weights %||% rep(1, length(x))
+  nx <- length(x_edges) - 1
+  ny <- length(y_edges) - 1
+  ix <- findInterval(x, x_edges, rightmost.closed = TRUE, all.inside = TRUE)
+  iy <- findInterval(y, y_edges, rightmost.closed = TRUE, all.inside = TRUE)
+  fx <- factor(ix, levels = seq_len(nx))
+  fy <- factor(iy, levels = seq_len(ny))
+  tab <- tapply(w, list(fx, fy), sum)
+  counts <- matrix(0, nx, ny)
+  counts[!is.na(tab)] <- tab[!is.na(tab)]
+  counts
+}
+
 # Normalize a count vector to a statistic, optionally using a shared total
 # (common_norm) across groups.
 .rb_hist_stat <- function(counts, widths, stat, total = NULL) {
@@ -49,7 +65,13 @@
 #' @param shrink Shrink bar widths by this factor.
 #' @param kde Overlay a KDE curve.
 #' @param kde_kws Arguments for the KDE (e.g. `bw_adjust`).
+#' @param thresh Bivariate-only. Cells with a value at or below `thresh` are left
+#'   transparent (default `0`, so empty cells are blank); `NULL` fills every cell.
+#' @param cbar,cbar_kws Bivariate-only. Draw a color bar for the counts and,
+#'   optionally, theme overrides for it.
 #' @param palette,hue_order,hue_norm,color Color controls.
+#' @param cmap Bivariate-only colormap (name, `reaborn_cmap`, or color vector);
+#'   defaults to a light sequential ramp built from `color`.
 #' @param legend Show the legend.
 #' @param ... Passed to the bar geom.
 #' @return A `reaborn_plot`.
@@ -75,14 +97,47 @@ histplot <- function(
   shrink = 1,
   kde = FALSE,
   kde_kws = NULL,
+  thresh = 0,
+  cbar = FALSE,
+  cbar_kws = NULL,
   palette = NULL,
   hue_order = NULL,
   hue_norm = NULL,
   color = NULL,
+  cmap = NULL,
   legend = TRUE,
   .facet_vars = NULL,
   ...
 ) {
+  # Bivariate: a 2-D count heatmap when both x and y are supplied, mirroring
+  # seaborn's `histplot(x, y)`. Bins both variables and maps cell fill to the
+  # binned statistic through a continuous colormap.
+  if (!is.null(x) && !is.null(y)) {
+    if (!is.null(hue)) {
+      rb_warn_bivariate_hue("histograms")
+    }
+    return(rb_histplot_bivariate(
+      data = data,
+      x = x,
+      y = y,
+      weights = weights,
+      stat = stat,
+      bins = bins,
+      binwidth = binwidth,
+      binrange = binrange,
+      discrete = discrete,
+      cumulative = cumulative,
+      thresh = thresh,
+      cbar = cbar,
+      cbar_kws = cbar_kws,
+      color = color,
+      cmap = cmap,
+      legend = legend,
+      .facet_vars = .facet_vars,
+      ...
+    ))
+  }
+
   horizontal <- is.null(x) && !is.null(y)
   vvar <- if (horizontal) y else x
   v <- rb_assign_variables(data, val = vvar, hue = hue, weights = weights)
@@ -392,6 +447,202 @@ rb_add_kde_overlay <- function(
     )
 }
 
+# Warn that `hue` is dropped in a bivariate distribution plot: reaborn computes a
+# single 2-D histogram / density and does not yet layer bivariate distributions
+# by hue the way seaborn does (stacking one mesh / contour set per level).
+rb_warn_bivariate_hue <- function(what) {
+  warning(
+    sprintf(
+      "`hue` is ignored for bivariate %s; reaborn does not yet layer them by hue.",
+      what
+    ),
+    call. = FALSE
+  )
+}
+
+# Bivariate histogram: a 2-D count heatmap. Ports seaborn's
+# `_DistributionPlotter.plot_bivariate_histogram` for the single-group case
+# (mirroring the bivariate KDE, hue is not split). Bins x and y independently,
+# turns the 2-D counts into the requested `stat`, and colours each cell through a
+# continuous colormap.
+rb_histplot_bivariate <- function(
+  data,
+  x,
+  y,
+  weights,
+  stat,
+  bins,
+  binwidth,
+  binrange,
+  discrete,
+  cumulative,
+  thresh,
+  cbar,
+  cbar_kws,
+  color,
+  cmap,
+  legend,
+  .facet_vars,
+  ...
+) {
+  v <- rb_assign_variables(data, x = x, y = y, weights = weights)
+  mb <- rb_make_base(data, v, c("x", "y", "weights"))
+  vd <- mb$vd
+  xv <- vd[["x"]]
+  yv <- vd[["y"]]
+  wts <- vd[["weights"]]
+  facet_vars <- intersect(.facet_vars %||% character(0), names(mb$base))
+
+  # Bin edges are computed once over all data (common_bins) so cells align
+  # across facets; seaborn bins x and y independently.
+  disc <- isTRUE(discrete)
+  x_edges <- rb_hist_bins(xv, bins, binrange, binwidth, disc)
+  y_edges <- rb_hist_bins(yv, bins, binrange, binwidth, disc)
+  area <- outer(diff(x_edges), diff(y_edges))
+  x_mids <- x_edges[-length(x_edges)] + diff(x_edges) / 2
+  y_mids <- y_edges[-length(y_edges)] + diff(y_edges) / 2
+
+  # Per-(facet) cell statistic.
+  work <- data.frame(.x = xv, .y = yv, stringsAsFactors = FALSE)
+  for (fv in facet_vars) {
+    work[[fv]] <- mb$base[[fv]]
+  }
+  if (!is.null(wts)) {
+    work$.w <- wts
+  }
+  combos <- if (length(facet_vars)) {
+    unique(work[facet_vars])
+  } else {
+    data.frame(.all = 1)
+  }
+  cells <- do.call(
+    rbind,
+    lapply(seq_len(nrow(combos)), function(i) {
+      sel <- rep(TRUE, nrow(work))
+      for (fv in facet_vars) {
+        sel <- sel & as.character(work[[fv]]) == as.character(combos[i, fv])
+      }
+      gw <- if (!is.null(wts)) work$.w[sel] else NULL
+      counts <- .rb_bin_counts_2d(
+        work$.x[sel],
+        work$.y[sel],
+        x_edges,
+        y_edges,
+        gw
+      )
+      z <- rb_hist_stat_2d(counts, area, stat, cumulative)
+      row <- data.frame(
+        xmid = rep(x_mids, times = length(y_mids)),
+        xmin = rep(x_edges[-length(x_edges)], times = length(y_mids)),
+        xmax = rep(x_edges[-1], times = length(y_mids)),
+        ymin = rep(y_edges[-length(y_edges)], each = length(x_mids)),
+        ymax = rep(y_edges[-1], each = length(x_mids)),
+        z = as.vector(z),
+        stringsAsFactors = FALSE
+      )
+      for (fv in facet_vars) {
+        row[[fv]] <- combos[i, fv]
+      }
+      row
+    })
+  )
+
+  # Colour norm runs from 0 to the largest cell value.
+  vmax <- max(cells$z, 0)
+  # Cells at or below the threshold are left transparent (seaborn's default
+  # thresh = 0 blanks empty cells); thresh = NULL fills every cell.
+  if (!is.null(thresh)) {
+    cells$z[cells$z <= thresh] <- NA
+  }
+
+  # Default colormap is a light sequential ramp from the seed colour (the
+  # convention reaborn already uses for filled bivariate KDE); a supplied `cmap`
+  # (name, reaborn_cmap, or colour vector) overrides it.
+  col <- color %||% color_palette(.reaborn_get("palette", "deep"), 1)
+  cmap_obj <- if (is.null(cmap)) {
+    light_palette(col, as_cmap = TRUE)
+  } else if (inherits(cmap, "reaborn_cmap")) {
+    cmap
+  } else if (is.character(cmap) && length(cmap) == 1) {
+    color_palette(cmap, as_cmap = TRUE)
+  } else {
+    blend_palette(cmap, as_cmap = TRUE)
+  }
+  cmap_cols <- attr(cmap_obj, "colors")
+
+  p <- ggplot2::ggplot(cells) +
+    ggplot2::geom_rect(
+      ggplot2::aes(
+        xmin = .data$xmin,
+        xmax = .data$xmax,
+        ymin = .data$ymin,
+        ymax = .data$ymax,
+        fill = .data$z
+      ),
+      ...
+    ) +
+    ggplot2::scale_fill_gradientn(
+      colours = cmap_cols,
+      limits = c(0, vmax),
+      oob = scales::squish,
+      na.value = "transparent",
+      guide = if (isTRUE(cbar)) "colourbar" else "none",
+      name = NULL
+    ) +
+    ggplot2::scale_x_continuous(breaks = rb_mpl_breaks(), expand = c(0, 0)) +
+    ggplot2::scale_y_continuous(breaks = rb_mpl_breaks(), expand = c(0, 0))
+
+  p <- rb_finish_plot(
+    p,
+    xlab = v$names$x,
+    ylab = v$names$y,
+    legend = if (isTRUE(cbar)) "auto" else FALSE,
+    any_legend = FALSE,
+    breaks = FALSE
+  )
+  # Style the colour bar like seaborn's default vertical matplotlib colorbar:
+  # a thin, frameless, full-height bar with a single outward tick (see heatmap).
+  if (isTRUE(cbar)) {
+    ctx <- plotting_context()
+    ck <- cbar_kws %||% list()
+    p <- p +
+      ggplot2::theme(
+        legend.key.width = grid::unit(ck$width %||% 15, "pt"),
+        legend.key.height = grid::unit(1, "null"),
+        legend.frame = ggplot2::element_blank(),
+        legend.ticks = ggplot2::element_line(
+          colour = .rb_col(DARK_GRAY),
+          linewidth = .rb_lw(ctx$ytick.major.width)
+        ),
+        legend.ticks.length = grid::unit(c(-ctx$ytick.major.size, 0), "pt")
+      )
+  }
+  reaborn_plot(p, call = match.call())
+}
+
+# 2-D histogram statistic for a matrix of bin counts, matching seaborn's
+# Histogram estimator (density/frequency divide by cell area; the cumulative
+# form accumulates counts along both axes).
+rb_hist_stat_2d <- function(counts, area, stat, cumulative = FALSE) {
+  total <- sum(counts)
+  z <- switch(
+    stat,
+    count = counts,
+    frequency = counts / area,
+    density = counts / (total * area),
+    probability = ,
+    proportion = counts / total,
+    percent = counts / total * 100,
+    stop(sprintf("Unknown stat '%s'", stat))
+  )
+  if (cumulative) {
+    base <- if (stat %in% c("density", "frequency")) z * area else z
+    z <- apply(apply(base, 2, cumsum), 1, cumsum)
+    z <- t(z)
+  }
+  z
+}
+
 #' Plot a univariate or bivariate kernel density estimate
 #'
 #' Port of `seaborn.kdeplot`. The KDE matches `scipy.stats.gaussian_kde` exactly.
@@ -439,6 +690,9 @@ kdeplot <- function(
 ) {
   bivariate <- !is.null(x) && !is.null(y)
   if (bivariate) {
+    if (!is.null(hue)) {
+      rb_warn_bivariate_hue("densities")
+    }
     return(rb_kdeplot_bivariate(
       data,
       x,
