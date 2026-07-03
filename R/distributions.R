@@ -523,7 +523,13 @@ rb_histplot_bivariate <- function(
         sel <- sel & as.character(work[[fv]]) == as.character(combos[i, fv])
       }
       gw <- if (!is.null(wts)) work$.w[sel] else NULL
-      counts <- .rb_bin_counts_2d(work$.x[sel], work$.y[sel], x_edges, y_edges, gw)
+      counts <- .rb_bin_counts_2d(
+        work$.x[sel],
+        work$.y[sel],
+        x_edges,
+        y_edges,
+        gw
+      )
       z <- rb_hist_stat_2d(counts, area, stat, cumulative)
       row <- data.frame(
         xmid = rep(x_mids, times = length(y_mids)),
