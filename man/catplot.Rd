@@ -74,3 +74,10 @@ Port of \code{seaborn.catplot}. Dispatches to \link{stripplot} (\code{kind = "st
 \link{boxplot}, \link{barplot}, \link{pointplot}, or \link{countplot} and adds row/col faceting.
 Returns a faceted \link{reaborn_plot}.
 }
+\examples{
+tips <- load_dataset("tips")
+catplot(data = tips, x = "day", y = "total_bill", hue = "smoker",
+        kind = "box", col = "time")
+
+catplot(data = tips, x = "day", y = "total_bill", kind = "bar", col = "time")
+}

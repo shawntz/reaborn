@@ -81,3 +81,8 @@ A \code{reaborn_plot}.
 Port of \code{seaborn.violinplot}. The kernel density matches
 \code{scipy.stats.gaussian_kde}. Returns a \link{reaborn_plot}.
 }
+\examples{
+tips <- load_dataset("tips")
+violinplot(data = tips, x = "day", y = "total_bill")
+violinplot(data = tips, x = "day", y = "total_bill", hue = "sex", split = TRUE)
+}

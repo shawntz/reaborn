@@ -56,3 +56,10 @@ A \code{reaborn_plot}.
 \description{
 Port of \code{seaborn.swarmplot}, using a beeswarm layout. Returns a \link{reaborn_plot}.
 }
+\examples{
+\dontshow{if (requireNamespace("ggbeeswarm", quietly = TRUE)) withAutoprint(\{ # examplesIf}
+tips <- load_dataset("tips")
+swarmplot(data = tips, x = "day", y = "total_bill")
+swarmplot(data = tips, x = "day", y = "total_bill", hue = "sex", dodge = TRUE)
+\dontshow{\}) # examplesIf}
+}

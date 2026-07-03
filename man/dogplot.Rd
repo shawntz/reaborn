@@ -15,3 +15,6 @@ Invisibly \code{NULL}.
 \description{
 Port of \code{seaborn.dogplot} (an easter egg). Prints an affirmation.
 }
+\examples{
+dogplot()
+}

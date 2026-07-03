@@ -85,6 +85,12 @@
 #' @return A `reaborn_plot`.
 #' @param x_jitter Uniform jitter added to x for display only.
 #' @param y_jitter Uniform jitter added to y for display only.
+#' @examples
+#' tips <- load_dataset("tips")
+#' regplot(data = tips, x = "total_bill", y = "tip")
+#'
+#' # Fit a higher-order polynomial
+#' regplot(data = tips, x = "size", y = "total_bill", order = 2)
 #' @export
 regplot <- function(
   data = NULL,
@@ -196,6 +202,12 @@ regplot <- function(
 #' @param lowess Add a lowess smooth of the residuals.
 #' @return A `reaborn_plot`.
 #' @param robust Fit a robust regression when computing residuals.
+#' @examples
+#' tips <- load_dataset("tips")
+#' residplot(data = tips, x = "total_bill", y = "tip")
+#'
+#' # Add a lowess smooth to help detect structure in the residuals
+#' residplot(data = tips, x = "total_bill", y = "tip", lowess = TRUE)
 #' @export
 residplot <- function(
   data = NULL,
@@ -259,6 +271,12 @@ residplot <- function(
 #' @param height,aspect Facet sizing.
 #' @param legend,facet_kws Legend / facet options.
 #' @return A `reaborn_plot`.
+#' @examples
+#' tips <- load_dataset("tips")
+#' lmplot(data = tips, x = "total_bill", y = "tip", hue = "smoker")
+#'
+#' # Facet across a second variable with col
+#' lmplot(data = tips, x = "total_bill", y = "tip", hue = "smoker", col = "time")
 #' @export
 lmplot <- function(
   data = NULL,

@@ -77,3 +77,13 @@ Port of \code{seaborn.lineplot}. When the data has repeated observations per x
 value, they are aggregated (default: mean) and an error band (default: 95\%
 bootstrap CI) is drawn. Returns a \link{reaborn_plot}.
 }
+\examples{
+fmri <- load_dataset("fmri")
+# Aggregated mean with a 95\% bootstrap CI band across repeated observations
+lineplot(data = fmri, x = "timepoint", y = "signal", hue = "event")
+# Add a style semantic to distinguish brain regions
+lineplot(
+  data = fmri, x = "timepoint", y = "signal",
+  hue = "event", style = "region"
+)
+}

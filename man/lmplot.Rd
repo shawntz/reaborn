@@ -67,3 +67,10 @@ A \code{reaborn_plot}.
 Port of \code{seaborn.lmplot}. Draws \link{regplot} across a grid of facets and/or hue
 groups. Returns a \link{reaborn_plot}.
 }
+\examples{
+tips <- load_dataset("tips")
+lmplot(data = tips, x = "total_bill", y = "tip", hue = "smoker")
+
+# Facet across a second variable with col
+lmplot(data = tips, x = "total_bill", y = "tip", hue = "smoker", col = "time")
+}

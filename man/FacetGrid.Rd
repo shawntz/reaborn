@@ -35,3 +35,10 @@ by adding \code{+ ggplot2::facet_wrap()}/\code{facet_grid()} to a plot, or via t
 figure-level functions (\link{relplot}, \link{displot}, \link{catplot}, \link{lmplot}). This
 constructor returns a base plot you can map geoms onto.
 }
+\examples{
+tips <- load_dataset("tips")
+FacetGrid(tips, col = "time", hue = "sex") +
+  ggplot2::geom_point(ggplot2::aes(x = total_bill, y = tip))
+FacetGrid(tips, row = "sex", col = "time") +
+  ggplot2::geom_point(ggplot2::aes(x = total_bill, y = tip))
+}

@@ -44,3 +44,11 @@ Port of \code{seaborn.clustermap}. Reorders rows/columns by hierarchical
 clustering and draws dendrograms alongside the heatmap. Returns a patchwork
 composition.
 }
+\examples{
+\dontshow{if (requireNamespace("patchwork", quietly = TRUE) && requireNamespace("ggdendro", quietly = TRUE)) withAutoprint(\{ # examplesIf}
+flights <- load_dataset("flights")
+m <- tapply(flights$passengers, list(flights$month, flights$year), sum)
+clustermap(m)
+clustermap(m, z_score = 0, cmap = "vlag")
+\dontshow{\}) # examplesIf}
+}

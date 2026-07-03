@@ -102,3 +102,11 @@ of a seaborn palette (\code{deep}, \code{muted}, \code{bright}, \code{pastel}, \
 shorthand (\code{"ch:..."}), \code{"light:<color>"}, \code{"dark:<color>"},
 \code{"blend:<c1>,<c2>"}, or a sequence of colors.
 }
+\examples{
+palplot(color_palette("deep"))
+palplot(color_palette("husl", 8))
+palplot(hls_palette(8))
+palplot(cubehelix_palette(8))
+palplot(light_palette("seagreen"))
+palplot(diverging_palette(220, 20))
+}

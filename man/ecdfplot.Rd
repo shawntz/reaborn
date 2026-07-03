@@ -52,3 +52,10 @@ A \code{reaborn_plot}.
 \description{
 Port of \code{seaborn.ecdfplot}. Returns a \link{reaborn_plot}.
 }
+\examples{
+penguins <- load_dataset("penguins")
+ecdfplot(data = penguins, x = "flipper_length_mm", hue = "species")
+
+# Complementary ECDF with counts
+ecdfplot(data = penguins, x = "bill_length_mm", stat = "count", complementary = TRUE)
+}

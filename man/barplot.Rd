@@ -70,3 +70,8 @@ A \code{reaborn_plot}.
 Port of \code{seaborn.barplot}. Bar heights are an aggregate (default mean) with a
 bootstrap CI error bar. Returns a \link{reaborn_plot}.
 }
+\examples{
+penguins <- load_dataset("penguins")
+barplot(data = penguins, x = "island", y = "body_mass_g")
+barplot(data = penguins, x = "island", y = "body_mass_g", hue = "sex")
+}

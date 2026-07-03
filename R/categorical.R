@@ -144,6 +144,10 @@ RB_BOX_LINECOLOR <- "#4C4C4C"
 #' @return A `reaborn_plot`.
 #' @param dodge How to dodge boxes by hue (`"auto"`, `TRUE`, or `FALSE`).
 #' @param .facet_vars Internal; facet columns forwarded by the figure-level dispatchers (catplot/displot/relplot). Not intended for direct use.
+#' @examples
+#' tips <- load_dataset("tips")
+#' boxplot(data = tips, x = "day", y = "total_bill")
+#' boxplot(data = tips, x = "day", y = "total_bill", hue = "smoker")
 #' @export
 boxplot <- function(
   data = NULL,
@@ -218,6 +222,13 @@ boxplot <- function(
 #' @return A `reaborn_plot`.
 #' @param dodge How to dodge bars by hue (`"auto"`, `TRUE`, or `FALSE`).
 #' @param .facet_vars Internal; facet columns forwarded by the figure-level dispatchers (catplot/displot/relplot). Not intended for direct use.
+#' @examples
+#' penguins <- load_dataset("penguins")
+#' countplot(data = penguins, x = "species", hue = "sex")
+#'
+#' # Horizontal bars by assigning the categorical variable to y.
+#' tips <- load_dataset("tips")
+#' countplot(data = tips, y = "day")
 #' @export
 countplot <- function(
   data = NULL,
@@ -361,6 +372,10 @@ rb_cat_aggregate <- function(s, estimator, errorbar, n_boot, seed) {
 #' @return A `reaborn_plot`.
 #' @param dodge How to dodge bars by hue (`"auto"`, `TRUE`, or `FALSE`).
 #' @param .facet_vars Internal; facet columns forwarded by the figure-level dispatchers (catplot/displot/relplot). Not intended for direct use.
+#' @examples
+#' penguins <- load_dataset("penguins")
+#' barplot(data = penguins, x = "island", y = "body_mass_g")
+#' barplot(data = penguins, x = "island", y = "body_mass_g", hue = "sex")
 #' @export
 barplot <- function(
   data = NULL,
@@ -490,6 +505,12 @@ barplot <- function(
 #' @param color Single color override.
 #' @param palette Palette for the hue mapping.
 #' @param .facet_vars Internal; facet columns forwarded by the figure-level dispatchers (catplot/displot/relplot). Not intended for direct use.
+#' @examples
+#' tips <- load_dataset("tips")
+#' stripplot(data = tips, x = "day", y = "total_bill", hue = "smoker")
+#'
+#' # Separate hue levels along the categorical axis with dodge
+#' stripplot(data = tips, x = "day", y = "total_bill", hue = "smoker", dodge = TRUE)
 #' @export
 stripplot <- function(
   data = NULL,
@@ -572,6 +593,15 @@ stripplot <- function(
 #' @param color Single color override.
 #' @param palette Palette for the hue mapping.
 #' @param .facet_vars Internal; facet columns forwarded by the figure-level dispatchers (catplot/displot/relplot). Not intended for direct use.
+#' @examples
+#' tips <- load_dataset("tips")
+#' pointplot(data = tips, x = "time", y = "total_bill", hue = "smoker")
+#'
+#' # Dodge the hue levels and add caps to the error bars
+#' pointplot(
+#'   data = tips, x = "day", y = "total_bill", hue = "sex",
+#'   dodge = TRUE, capsize = 0.1
+#' )
 #' @export
 pointplot <- function(
   data = NULL,
@@ -681,6 +711,12 @@ pointplot <- function(
 #' @param weights Observation weights (bar/point kinds).
 #' @param color Single color override.
 #' @param palette Palette for the hue mapping.
+#' @examples
+#' tips <- load_dataset("tips")
+#' catplot(data = tips, x = "day", y = "total_bill", hue = "smoker",
+#'         kind = "box", col = "time")
+#'
+#' catplot(data = tips, x = "day", y = "total_bill", kind = "bar", col = "time")
 #' @export
 catplot <- function(
   data = NULL,
