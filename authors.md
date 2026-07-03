@@ -8,7 +8,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/shawntz/reaborn/blob/v1.0.1/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/shawntz/reaborn/blob/main/DESCRIPTION)
 
 Schwartz S (2026). *reaborn: Statistical Data Visualization, the
 'seaborn' Way*. R package version 1.0.1, <https://reaborn.org>.
