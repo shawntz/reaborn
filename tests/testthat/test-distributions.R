@@ -89,7 +89,11 @@ test_that("bivariate histplot honors cbar, cmap, stat, and thresh", {
   real_guide <- function(p) {
     g <- ggplot2::ggplotGrob(p)
     idx <- which(grepl("guide-box", g$layout$name))
-    any(vapply(idx, function(i) !inherits(g$grobs[[i]], "zeroGrob"), logical(1)))
+    any(vapply(
+      idx,
+      function(i) !inherits(g$grobs[[i]], "zeroGrob"),
+      logical(1)
+    ))
   }
   expect_true(real_guide(do.call(histplot, c(args, list(cbar = TRUE)))))
   expect_false(real_guide(do.call(histplot, c(args, list(cbar = FALSE)))))
