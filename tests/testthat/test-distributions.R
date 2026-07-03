@@ -142,7 +142,11 @@ test_that("bivariate hist/KDE warn that hue is ignored (but still build)", {
   # No hue, and univariate + hue, are silent.
   expect_no_warning(do.call(histplot, a))
   expect_no_warning(do.call(kdeplot, a))
-  expect_no_warning(histplot(data = pen, x = "flipper_length_mm", hue = "species"))
+  expect_no_warning(histplot(
+    data = pen,
+    x = "flipper_length_mm",
+    hue = "species"
+  ))
 })
 
 test_that("kdeplot density integrates to ~1 and builds", {
