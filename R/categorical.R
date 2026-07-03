@@ -250,6 +250,18 @@ countplot <- function(
   .facet_vars = NULL,
   ...
 ) {
+  # countplot's value axis is the computed count, so the lone assigned variable
+  # is always categorical and the value axis holds the counts. Orientation
+  # therefore follows which of x/y was given -- a single `y` means horizontal
+  # bars -- overriding any conflicting `orient` rather than deferring to
+  # rb_cat_setup's dtype inference (which is for value plots such as
+  # barplot(y=) -> one vertical bar). Matches seaborn.countplot.
+  if (!is.null(x) && !is.null(y)) {
+    stop("Cannot pass values for both `x` and `y`.", call. = FALSE)
+  }
+  if (!is.null(x) || !is.null(y)) {
+    orient <- if (is.null(x)) "h" else "v"
+  }
   s <- rb_cat_setup(data, x, y, hue, order, hue_order, orient, .facet_vars)
   colors <- rb_cat_colors(s, palette, color, saturation)
 

@@ -44,6 +44,44 @@ test_that("boxplot / countplot / stripplot build", {
   )))
 })
 
+test_that("countplot(y=) draws horizontal bars of the categorical counts", {
+  tips <- load_dataset("tips")
+  d <- ggplot2::ggplot_build(countplot(data = tips, y = "day"))$data[[1]]
+  # One bar per day category, count on the x (value) axis, categories on y.
+  expect_identical(nrow(d), 4L)
+  expect_equal(sort(round(d$x)), sort(unname(as.numeric(table(tips$day)))))
+  expect_equal(sort(as.numeric(d$y)), c(1, 2, 3, 4))
+  p <- countplot(data = tips, y = "day")
+  expect_identical(p$labels$x, "Count")
+  expect_identical(p$labels$y, "day")
+})
+
+test_that("countplot orientation follows the assigned variable", {
+  tips <- load_dataset("tips")
+  day_counts <- sort(unname(as.numeric(table(tips$day))))
+  # The assigned axis is categorical; a conflicting `orient` is overridden so
+  # bars never collapse into a single empty category (matches seaborn.countplot).
+  xd <- ggplot2::ggplot_build(countplot(
+    data = tips,
+    x = "day",
+    orient = "h"
+  ))$data[[1]]
+  expect_identical(nrow(xd), 4L)
+  expect_equal(sort(round(xd$y)), day_counts) # counts stay on y => vertical
+  yd <- ggplot2::ggplot_build(countplot(
+    data = tips,
+    y = "day",
+    orient = "v"
+  ))$data[[1]]
+  expect_identical(nrow(yd), 4L)
+  expect_equal(sort(round(yd$x)), day_counts) # counts stay on x => horizontal
+  # Passing both x and y is ambiguous for a count plot.
+  expect_error(
+    countplot(data = tips, x = "day", y = "total_bill"),
+    "both `x` and `y`"
+  )
+})
+
 test_that("barplot heights equal group means and CI brackets them", {
   tips <- load_dataset("tips")
   s <- reaborn:::rb_cat_setup(tips, x = "day", y = "total_bill")
