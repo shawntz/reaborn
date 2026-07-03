@@ -48,7 +48,16 @@ load_dataset <- function(name, cache = TRUE, data_home = NULL, ...) {
       path <- cached
     }
   }
-  df <- utils::read.csv(path, stringsAsFactors = FALSE, check.names = TRUE)
+  # pandas.read_csv (what seaborn uses) treats empty fields as NaN; read.csv
+  # would otherwise leave them as "" in character columns, which then surface as
+  # a spurious blank category (e.g. penguins with a missing `sex` becoming an
+  # unnamed third hue level). Match pandas by mapping empty/"NA" fields to NA.
+  df <- utils::read.csv(
+    path,
+    stringsAsFactors = FALSE,
+    check.names = TRUE,
+    na.strings = c("NA", "")
+  )
   .rb_apply_dataset_dtypes(df, name)
 }
 
