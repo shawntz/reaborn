@@ -97,6 +97,7 @@ heatmap (like \code{seaborn.histplot(x, y)}). In that bivariate case \code{hue} 
 ignored, with a warning, and the hue-based color controls (\code{palette},
 \code{hue_order}, \code{hue_norm}) do not apply; the fill is driven by \code{cmap}, which
 defaults to a light sequential ramp built from \code{color}.
+}
 \examples{
 penguins <- load_dataset("penguins")
 histplot(data = penguins, x = "flipper_length_mm", hue = "species")
