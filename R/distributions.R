@@ -49,6 +49,12 @@
 #'
 #' Port of `seaborn.histplot`. Returns a [reaborn_plot].
 #'
+#' When both `x` and `y` are supplied, `histplot()` draws a single 2-D count
+#' heatmap (like `seaborn.histplot(x, y)`). In that bivariate case `hue` is
+#' ignored, with a warning, and the hue-based color controls (`palette`,
+#' `hue_order`, `hue_norm`) do not apply; the fill is driven by `cmap`, which
+#' defaults to a light sequential ramp built from `color`.
+#'
 #' @param data A data frame.
 #' @param x,y Column name/vector for the histogram variable (use `y` for a
 #'   horizontal histogram).
@@ -67,8 +73,8 @@
 #' @param kde_kws Arguments for the KDE (e.g. `bw_adjust`).
 #' @param thresh Bivariate-only. Cells with a value at or below `thresh` are left
 #'   transparent (default `0`, so empty cells are blank); `NULL` fills every cell.
-#' @param cbar,cbar_kws Bivariate-only. Draw a color bar for the counts and,
-#'   optionally, theme overrides for it.
+#' @param cbar,cbar_kws Bivariate-only. Draw a color bar for the counts;
+#'   `cbar_kws` accepts `width` (the bar width in points).
 #' @param palette,hue_order,hue_norm,color Color controls.
 #' @param cmap Bivariate-only colormap (name, `reaborn_cmap`, or color vector);
 #'   defaults to a light sequential ramp built from `color`.
