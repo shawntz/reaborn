@@ -95,3 +95,14 @@ lmplot(
 ## Value
 
 A `reaborn_plot`.
+
+## Examples
+
+``` r
+tips <- load_dataset("tips")
+lmplot(data = tips, x = "total_bill", y = "tip", hue = "smoker")
+
+
+# Facet across a second variable with col
+lmplot(data = tips, x = "total_bill", y = "tip", hue = "smoker", col = "time")
+```

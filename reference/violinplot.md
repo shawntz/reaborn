@@ -122,3 +122,12 @@ violinplot(
 ## Value
 
 A `reaborn_plot`.
+
+## Examples
+
+``` r
+tips <- load_dataset("tips")
+violinplot(data = tips, x = "day", y = "total_bill")
+
+violinplot(data = tips, x = "day", y = "total_bill", hue = "sex", split = TRUE)
+```

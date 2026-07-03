@@ -90,3 +90,12 @@ boxplot(
 ## Value
 
 A `reaborn_plot`.
+
+## Examples
+
+``` r
+tips <- load_dataset("tips")
+boxplot(data = tips, x = "day", y = "total_bill")
+
+boxplot(data = tips, x = "day", y = "total_bill", hue = "smoker")
+```

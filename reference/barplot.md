@@ -102,3 +102,12 @@ barplot(
 ## Value
 
 A `reaborn_plot`.
+
+## Examples
+
+``` r
+penguins <- load_dataset("penguins")
+barplot(data = penguins, x = "island", y = "body_mass_g")
+
+barplot(data = penguins, x = "island", y = "body_mass_g", hue = "sex")
+```

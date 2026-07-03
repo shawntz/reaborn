@@ -65,3 +65,21 @@ scatterplot(
 ## Value
 
 A `reaborn_plot`.
+
+## Examples
+
+``` r
+penguins <- load_dataset("penguins")
+scatterplot(data = penguins, x = "bill_length_mm", y = "bill_depth_mm", hue = "species")
+
+
+# Add size and style semantics
+scatterplot(
+  data = penguins,
+  x = "bill_length_mm",
+  y = "bill_depth_mm",
+  hue = "species",
+  size = "body_mass_g",
+  style = "sex"
+)
+```

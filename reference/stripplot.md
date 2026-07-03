@@ -89,3 +89,14 @@ stripplot(
 ## Value
 
 A `reaborn_plot`.
+
+## Examples
+
+``` r
+tips <- load_dataset("tips")
+stripplot(data = tips, x = "day", y = "total_bill", hue = "smoker")
+
+
+# Separate hue levels along the categorical axis with dodge
+stripplot(data = tips, x = "day", y = "total_bill", hue = "smoker", dodge = TRUE)
+```

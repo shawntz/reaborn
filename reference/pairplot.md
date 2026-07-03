@@ -53,3 +53,23 @@ pairplot(
 ## Value
 
 A `reaborn_plot` (patchwork).
+
+## Examples
+
+``` r
+penguins <- load_dataset("penguins")
+pairplot(
+  data = penguins,
+  vars = c("bill_length_mm", "flipper_length_mm", "body_mass_g"),
+  hue = "species"
+)
+
+
+# Regression fits off the diagonal
+pairplot(
+  data = penguins,
+  vars = c("bill_length_mm", "flipper_length_mm"),
+  hue = "species",
+  kind = "reg"
+)
+```

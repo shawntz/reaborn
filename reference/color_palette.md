@@ -124,3 +124,19 @@ cubehelix_palette(
 ## Value
 
 A character vector of hex colors, or a `reaborn_cmap`.
+
+## Examples
+
+``` r
+palplot(color_palette("deep"))
+
+palplot(color_palette("husl", 8))
+
+palplot(hls_palette(8))
+
+palplot(cubehelix_palette(8))
+
+palplot(light_palette("seagreen"))
+
+palplot(diverging_palette(220, 20))
+```

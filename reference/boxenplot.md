@@ -104,3 +104,12 @@ boxenplot(
 ## Value
 
 A `reaborn_plot`.
+
+## Examples
+
+``` r
+tips <- load_dataset("tips")
+boxenplot(data = tips, x = "day", y = "total_bill")
+
+boxenplot(data = tips, x = "day", y = "total_bill", hue = "smoker")
+```

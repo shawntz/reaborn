@@ -17,3 +17,10 @@ dogplot(...)
 ## Value
 
 Invisibly `NULL`.
+
+## Examples
+
+``` r
+dogplot()
+#> 🐶  Woof! (seaborn's dogplot shows a very good dog; reaborn salutes them.)
+```

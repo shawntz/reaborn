@@ -93,3 +93,14 @@ regplot(
 ## Value
 
 A `reaborn_plot`.
+
+## Examples
+
+``` r
+tips <- load_dataset("tips")
+regplot(data = tips, x = "total_bill", y = "tip")
+
+
+# Fit a higher-order polynomial
+regplot(data = tips, x = "size", y = "total_bill", order = 2)
+```

@@ -82,3 +82,15 @@ countplot(
 ## Value
 
 A `reaborn_plot`.
+
+## Examples
+
+``` r
+penguins <- load_dataset("penguins")
+countplot(data = penguins, x = "species", hue = "sex")
+
+
+# Horizontal bars by assigning the categorical variable to y.
+tips <- load_dataset("tips")
+countplot(data = tips, y = "day")
+```

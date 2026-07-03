@@ -94,3 +94,15 @@ displot(
 ## Value
 
 A `reaborn_plot`.
+
+## Examples
+
+``` r
+penguins <- load_dataset("penguins")
+displot(data = penguins, x = "flipper_length_mm", col = "species")
+
+displot(
+  data = penguins, x = "flipper_length_mm",
+  hue = "species", col = "sex", kind = "kde"
+)
+```

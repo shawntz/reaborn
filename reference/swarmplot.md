@@ -85,3 +85,12 @@ swarmplot(
 ## Value
 
 A `reaborn_plot`.
+
+## Examples
+
+``` r
+tips <- load_dataset("tips")
+swarmplot(data = tips, x = "day", y = "total_bill")
+
+swarmplot(data = tips, x = "day", y = "total_bill", hue = "sex", dodge = TRUE)
+```

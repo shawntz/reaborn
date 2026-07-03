@@ -107,3 +107,12 @@ kdeplot(
 ## Value
 
 A `reaborn_plot`.
+
+## Examples
+
+``` r
+penguins <- load_dataset("penguins")
+kdeplot(data = penguins, x = "flipper_length_mm", hue = "species", fill = TRUE)
+
+kdeplot(data = penguins, x = "flipper_length_mm", hue = "species", multiple = "stack")
+```

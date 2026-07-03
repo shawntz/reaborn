@@ -114,3 +114,17 @@ relplot(
 ## Value
 
 A `reaborn_plot`.
+
+## Examples
+
+``` r
+fmri <- load_dataset("fmri")
+relplot(
+  data = fmri, x = "timepoint", y = "signal",
+  hue = "event", col = "region", kind = "line"
+)
+
+
+tips <- load_dataset("tips")
+relplot(data = tips, x = "total_bill", y = "tip", hue = "day", col = "time")
+```

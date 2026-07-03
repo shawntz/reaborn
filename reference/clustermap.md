@@ -62,3 +62,13 @@ clustermap(
 ## Value
 
 A `reaborn_plot` (patchwork).
+
+## Examples
+
+``` r
+flights <- load_dataset("flights")
+m <- tapply(flights$passengers, list(flights$month, flights$year), sum)
+clustermap(m)
+
+clustermap(m, z_score = 0, cmap = "vlag")
+```

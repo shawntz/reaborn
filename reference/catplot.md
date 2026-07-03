@@ -111,3 +111,14 @@ catplot(
 ## Value
 
 A `reaborn_plot`.
+
+## Examples
+
+``` r
+tips <- load_dataset("tips")
+catplot(data = tips, x = "day", y = "total_bill", hue = "smoker",
+        kind = "box", col = "time")
+
+
+catplot(data = tips, x = "day", y = "total_bill", kind = "bar", col = "time")
+```

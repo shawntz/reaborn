@@ -137,3 +137,14 @@ histplot(
 ## Value
 
 A `reaborn_plot`.
+
+## Examples
+
+``` r
+penguins <- load_dataset("penguins")
+histplot(data = penguins, x = "flipper_length_mm", hue = "species")
+
+
+# Stack the hue groups
+histplot(data = penguins, x = "flipper_length_mm", hue = "species", multiple = "stack")
+```

@@ -23,3 +23,11 @@ palplot(pal, size = 1)
 ## Value
 
 A `reaborn_plot`.
+
+## Examples
+
+``` r
+palplot(color_palette("deep"))
+
+palplot(color_palette("rocket", 8))
+```

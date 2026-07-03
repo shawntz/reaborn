@@ -57,3 +57,14 @@ residplot(
 ## Value
 
 A `reaborn_plot`.
+
+## Examples
+
+``` r
+tips <- load_dataset("tips")
+residplot(data = tips, x = "total_bill", y = "tip")
+
+
+# Add a lowess smooth to help detect structure in the residuals
+residplot(data = tips, x = "total_bill", y = "tip", lowess = TRUE)
+```

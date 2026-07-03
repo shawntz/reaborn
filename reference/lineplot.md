@@ -109,3 +109,17 @@ lineplot(
 ## Value
 
 A `reaborn_plot`.
+
+## Examples
+
+``` r
+fmri <- load_dataset("fmri")
+# Aggregated mean with a 95% bootstrap CI band across repeated observations
+lineplot(data = fmri, x = "timepoint", y = "signal", hue = "event")
+
+# Add a style semantic to distinguish brain regions
+lineplot(
+  data = fmri, x = "timepoint", y = "signal",
+  hue = "event", style = "region"
+)
+```

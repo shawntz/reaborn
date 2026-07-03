@@ -69,3 +69,14 @@ rugplot(
 ## Value
 
 A `reaborn_plot`.
+
+## Examples
+
+``` r
+penguins <- load_dataset("penguins")
+rugplot(data = penguins, x = "bill_length_mm", y = "bill_depth_mm")
+
+
+# Add a hue semantic to color ticks by group
+rugplot(data = penguins, x = "bill_length_mm", hue = "species")
+```

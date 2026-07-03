@@ -49,3 +49,14 @@ FacetGrid(
 ## Value
 
 A `reaborn_plot`.
+
+## Examples
+
+``` r
+tips <- load_dataset("tips")
+FacetGrid(tips, col = "time", hue = "sex") +
+  ggplot2::geom_point(ggplot2::aes(x = total_bill, y = tip))
+
+FacetGrid(tips, row = "sex", col = "time") +
+  ggplot2::geom_point(ggplot2::aes(x = total_bill, y = tip))
+```

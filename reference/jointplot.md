@@ -62,3 +62,12 @@ jointplot(
 ## Value
 
 A `reaborn_plot` (patchwork).
+
+## Examples
+
+``` r
+penguins <- load_dataset("penguins")
+jointplot(data = penguins, x = "bill_length_mm", y = "bill_depth_mm", hue = "species")
+
+jointplot(data = penguins, x = "bill_length_mm", y = "bill_depth_mm", kind = "reg")
+```
