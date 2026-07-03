@@ -278,6 +278,50 @@ test_that("rugplot and displot build", {
   )))
 })
 
+test_that("faceting on a variable with NA drops the NA level (matches seaborn)", {
+  pen <- load_dataset("penguins")
+  # penguins$sex has 11 NA values; seaborn's FacetGrid drops NA facet levels
+  # rather than painting an empty "sex = NA" panel. Regression: the NA level used
+  # to reach a per-facet KDE over an empty subset and error in rb_gaussian_kde.
+  expect_no_error(ggplot2::ggplot_build(displot(
+    data = pen,
+    x = "flipper_length_mm",
+    hue = "species",
+    col = "sex",
+    kind = "kde"
+  )))
+
+  # Every kind must survive an NA facet variable, and produce no NA panel.
+  for (k in c("hist", "kde", "ecdf")) {
+    p <- displot(data = pen, x = "flipper_length_mm", col = "sex", kind = k)
+    lay <- ggplot2::ggplot_build(p)$layout$layout
+    expect_false(any(is.na(lay$sex)), info = k)
+    expect_identical(sort(as.character(unique(lay$sex))), c("Female", "Male"))
+  }
+
+  # Sibling figure-level dispatchers share the same fix.
+  expect_no_error(ggplot2::ggplot_build(catplot(
+    data = pen,
+    x = "species",
+    y = "flipper_length_mm",
+    col = "sex",
+    kind = "box"
+  )))
+  expect_no_error(ggplot2::ggplot_build(relplot(
+    data = pen,
+    x = "bill_length_mm",
+    y = "flipper_length_mm",
+    col = "sex"
+  )))
+})
+
+test_that("rb_gaussian_kde bails out gracefully on empty/singleton input", {
+  # Backstop: never call seq() on non-finite bounds when fewer than 2 points.
+  expect_identical(rb_gaussian_kde(numeric(0))$y, numeric(0))
+  expect_identical(rb_gaussian_kde(c(NA_real_, NA_real_))$y, numeric(0))
+  expect_identical(rb_gaussian_kde(5)$y, numeric(0))
+})
+
 test_that("sns.* aliases exist for distribution functions", {
   expect_true(is.function(sns.histplot))
   expect_true(is.function(sns.kdeplot))

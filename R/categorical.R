@@ -758,6 +758,7 @@ catplot <- function(
   facet_kws = NULL,
   ...
 ) {
+  data <- rb_drop_facet_na(data, row, col)
   fun <- switch(
     kind,
     strip = stripplot,
