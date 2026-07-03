@@ -145,7 +145,14 @@ count heatmap (like `seaborn.histplot(x, y)`). In that bivariate case
 `hue` is ignored, with a warning, and the hue-based color controls
 (`palette`, `hue_order`, `hue_norm`) do not apply; the fill is driven by
 `cmap`, which defaults to a light sequential ramp built from `color`.
-penguins \<- load_dataset("penguins") histplot(data = penguins, x =
-"flipper_length_mm", hue = "species")# Stack the hue groups
-histplot(data = penguins, x = "flipper_length_mm", hue = "species",
-multiple = "stack")
+
+## Examples
+
+``` r
+penguins <- load_dataset("penguins")
+histplot(data = penguins, x = "flipper_length_mm", hue = "species")
+
+
+# Stack the hue groups
+histplot(data = penguins, x = "flipper_length_mm", hue = "species", multiple = "stack")
+```
