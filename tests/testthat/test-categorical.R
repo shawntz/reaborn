@@ -61,7 +61,11 @@ test_that("countplot orientation follows the assigned variable", {
   day_counts <- sort(unname(as.numeric(table(tips$day))))
   # The assigned axis is categorical; a conflicting `orient` is overridden so
   # bars never collapse into a single empty category (matches seaborn.countplot).
-  xd <- ggplot2::ggplot_build(countplot(data = tips, x = "day", orient = "h"))$data[[1]]
+  xd <- ggplot2::ggplot_build(countplot(
+    data = tips,
+    x = "day",
+    orient = "h"
+  ))$data[[1]]
   expect_identical(nrow(xd), 4L)
   expect_equal(sort(round(xd$y)), day_counts) # counts stay on y => vertical
   yd <- ggplot2::ggplot_build(countplot(data = tips, y = "day", orient = "v"))$data[[1]]
