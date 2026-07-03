@@ -766,8 +766,13 @@ rb_gaussian_kde_2d <- function(x, y, bw_adjust = 1, gridsize = 100, cut = 3) {
   list(x = gx, y = gy, z = z)
 }
 
-# Convert iso-proportion levels (fraction of mass enclosed) to density levels,
-# mirroring seaborn's _quantile_to_level.
+# Convert iso-proportion levels to density levels, mirroring seaborn's
+# _quantile_to_level. An iso-proportion `p` names the contour below which `p` of
+# the total mass lies, so the density level encloses `1 - p` of the mass
+# (searchsorted(cumsum, 1 - isoprop)). Levels come out ascending in density:
+# `p = thresh` is the outermost contour and `p = 1` is the peak. Using `p`
+# instead of `1 - p` inverts this, driving the outer level to ~0 so the fill
+# floods the whole grid.
 rb_iso_proportion_levels <- function(z, levels, thresh = 0.05) {
   if (length(levels) == 1) {
     levels <- seq(thresh, 1, length.out = levels)
@@ -777,7 +782,7 @@ rb_iso_proportion_levels <- function(z, levels, thresh = 0.05) {
   vapply(
     levels,
     function(p) {
-      idx <- which(csum >= p)[1]
+      idx <- which(csum >= (1 - p))[1]
       if (is.na(idx)) min(v) else v[idx]
     },
     numeric(1)

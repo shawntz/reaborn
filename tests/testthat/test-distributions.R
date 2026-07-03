@@ -109,6 +109,47 @@ test_that("bivariate kdeplot(fill=TRUE) honors cmap", {
   expect_true(all(grepl("^#[0-9a-fA-F]{6}$", viridis)))
 })
 
+test_that("rb_iso_proportion_levels matches seaborn's mass mapping", {
+  # A smooth density grid (separable Gaussian).
+  g <- stats::dnorm(seq(-3, 3, length.out = 60))
+  z <- outer(g, g)
+  lev <- reaborn:::rb_iso_proportion_levels(z, 10, thresh = 0.05)
+
+  # seaborn's iso-proportion `p` names the contour below which `p` of the mass
+  # lies, so levels ascend in density from the outermost contour to the peak.
+  expect_false(is.unsorted(lev))
+  # p = 1 encloses 0% of the mass -> the grid's peak density.
+  expect_equal(max(lev), max(z))
+  # The outermost contour (p = thresh = 0.05) encloses ~95% of the mass -- NOT
+  # ~100%, which is the inverted-mapping bug that floods the whole grid.
+  expect_equal(sum(z[z >= min(lev)]) / sum(z), 0.95, tolerance = 0.02)
+})
+
+test_that("bivariate kdeplot(fill=TRUE) draws a bounded gradient, not a blob", {
+  set.seed(1)
+  n <- 300
+  df <- data.frame(
+    x = c(stats::rnorm(n, 0, 1), stats::rnorm(n, 4, 1)),
+    y = c(stats::rnorm(n, 0, 1), stats::rnorm(n, 3, 1.2))
+  )
+  d <- ggplot2::ggplot_build(kdeplot(
+    data = df,
+    x = "x",
+    y = "y",
+    fill = TRUE
+  ))$data[[1]]
+
+  lvls <- levels(d$level)
+  area <- function(s) diff(range(s$x)) * diff(range(s$y))
+  peak <- d[as.character(d$level) == utils::tail(lvls, 1), ] # densest, drawn last
+  outer <- d[as.character(d$level) == lvls[1], ] # sparsest, drawn first
+
+  # The peak band sits at the mode and must not flood the panel. The inverted
+  # levels bug produced a catch-all (~0, Inf] band painted over the whole grid.
+  expect_lt(area(peak), 0.25 * area(outer))
+  expect_false(any(grepl("e-1[0-9], Inf", as.character(d$level))))
+})
+
 test_that("ecdfplot is monotonic from 0 to 1", {
   pen <- load_dataset("penguins")
   p <- ecdfplot(data = pen, x = "bill_length_mm")
