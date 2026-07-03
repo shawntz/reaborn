@@ -97,6 +97,11 @@ test_that("bivariate histplot honors cbar, cmap, stat, and thresh", {
   }
   expect_true(real_guide(do.call(histplot, c(args, list(cbar = TRUE)))))
   expect_false(real_guide(do.call(histplot, c(args, list(cbar = FALSE)))))
+  # legend = FALSE suppresses the colour bar even when cbar = TRUE.
+  expect_false(real_guide(do.call(
+    histplot,
+    c(args, list(cbar = TRUE, legend = FALSE))
+  )))
 
   # cmap changes the fill colours.
   fills <- function(p) {

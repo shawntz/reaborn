@@ -576,6 +576,10 @@ rb_histplot_bivariate <- function(
   }
   cmap_cols <- attr(cmap_obj, "colors")
 
+  # The colour bar is a legend; `legend = FALSE` suppresses it as it does the
+  # hue legend elsewhere, so gate every colorbar branch on both flags.
+  show_cbar <- isTRUE(cbar) && !isFALSE(legend)
+
   p <- ggplot2::ggplot(cells) +
     ggplot2::geom_rect(
       ggplot2::aes(
@@ -592,7 +596,7 @@ rb_histplot_bivariate <- function(
       limits = c(0, vmax),
       oob = scales::squish,
       na.value = "transparent",
-      guide = if (isTRUE(cbar)) "colourbar" else "none",
+      guide = if (show_cbar) "colourbar" else "none",
       name = NULL
     ) +
     ggplot2::scale_x_continuous(breaks = rb_mpl_breaks(), expand = c(0, 0)) +
@@ -602,13 +606,13 @@ rb_histplot_bivariate <- function(
     p,
     xlab = v$names$x,
     ylab = v$names$y,
-    legend = if (isTRUE(cbar)) "auto" else FALSE,
+    legend = if (show_cbar) "auto" else FALSE,
     any_legend = FALSE,
     breaks = FALSE
   )
   # Style the colour bar like seaborn's default vertical matplotlib colorbar:
   # a thin, frameless, full-height bar with a single outward tick (see heatmap).
-  if (isTRUE(cbar)) {
+  if (show_cbar) {
     ctx <- plotting_context()
     ck <- cbar_kws %||% list()
     p <- p +
