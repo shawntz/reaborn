@@ -24,10 +24,14 @@ histplot(
   shrink = 1,
   kde = FALSE,
   kde_kws = NULL,
+  thresh = 0,
+  cbar = FALSE,
+  cbar_kws = NULL,
   palette = NULL,
   hue_order = NULL,
   hue_norm = NULL,
   color = NULL,
+  cmap = NULL,
   legend = TRUE,
   .facet_vars = NULL,
   ...
@@ -64,7 +68,16 @@ horizontal histogram).}
 
 \item{kde_kws}{Arguments for the KDE (e.g. \code{bw_adjust}).}
 
+\item{thresh}{Bivariate-only. Cells with a value at or below \code{thresh} are left
+transparent (default \code{0}, so empty cells are blank); \code{NULL} fills every cell.}
+
+\item{cbar, cbar_kws}{Bivariate-only. Draw a color bar for the counts and,
+optionally, theme overrides for it.}
+
 \item{palette, hue_order, hue_norm, color}{Color controls.}
+
+\item{cmap}{Bivariate-only colormap (name, \code{reaborn_cmap}, or color vector);
+defaults to a light sequential ramp built from \code{color}.}
 
 \item{legend}{Show the legend.}
 
