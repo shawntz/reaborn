@@ -41,7 +41,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">reaborn</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.0.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -72,7 +72,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Plot a univariate or bivariate histogram</h1>
-      <small class="dont-index">Source: <a href="https://github.com/shawntz/reaborn/blob/main/R/distributions.R" class="external-link"><code>R/distributions.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/shawntz/reaborn/blob/v1.0.1/R/distributions.R" class="external-link"><code>R/distributions.R</code></a></small>
       <div class="d-none name"><code>histplot.Rd</code></div>
     </div>
 
@@ -184,8 +184,8 @@ transparent (default <code>0</code>, so empty cells are blank); <code>NULL</code
 
 
 <dt id="arg-cbar-cbar-kws">cbar, cbar_kws<a class="anchor" aria-label="anchor" href="#arg-cbar-cbar-kws"></a></dt>
-<dd><p>Bivariate-only. Draw a color bar for the counts and,
-optionally, theme overrides for it.</p></dd>
+<dd><p>Bivariate-only. Draw a color bar for the counts;
+<code>cbar_kws</code> accepts <code>width</code> (the bar width in points).</p></dd>
 
 
 <dt id="arg-palette-hue-order-hue-norm-color">palette, hue_order, hue_norm, color<a class="anchor" aria-label="anchor" href="#arg-palette-hue-order-hue-norm-color"></a></dt>
@@ -212,6 +212,14 @@ defaults to a light sequential ramp built from <code>color</code>.</p></dd>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>A <code>reaborn_plot</code>.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>When both <code>x</code> and <code>y</code> are supplied, <code>histplot()</code> draws a single 2-D count
+heatmap (like <code>seaborn.histplot(x, y)</code>). In that bivariate case <code>hue</code> is
+ignored, with a warning, and the hue-based color controls (<code>palette</code>,
+<code>hue_order</code>, <code>hue_norm</code>) do not apply; the fill is driven by <code>cmap</code>, which
+defaults to a light sequential ramp built from <code>color</code>.</p>
     </div>
 
     <div class="section level2">

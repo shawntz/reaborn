@@ -109,8 +109,8 @@ histplot(
 
 - cbar, cbar_kws:
 
-  Bivariate-only. Draw a color bar for the counts and, optionally, theme
-  overrides for it.
+  Bivariate-only. Draw a color bar for the counts; `cbar_kws` accepts
+  `width` (the bar width in points).
 
 - palette, hue_order, hue_norm, color:
 
@@ -137,6 +137,14 @@ histplot(
 ## Value
 
 A `reaborn_plot`.
+
+## Details
+
+When both `x` and `y` are supplied, `histplot()` draws a single 2-D
+count heatmap (like `seaborn.histplot(x, y)`). In that bivariate case
+`hue` is ignored, with a warning, and the hue-based color controls
+(`palette`, `hue_order`, `hue_norm`) do not apply; the fill is driven by
+`cmap`, which defaults to a light sequential ramp built from `color`.
 
 ## Examples
 
