@@ -68,7 +68,11 @@ test_that("countplot orientation follows the assigned variable", {
   ))$data[[1]]
   expect_identical(nrow(xd), 4L)
   expect_equal(sort(round(xd$y)), day_counts) # counts stay on y => vertical
-  yd <- ggplot2::ggplot_build(countplot(data = tips, y = "day", orient = "v"))$data[[1]]
+  yd <- ggplot2::ggplot_build(countplot(
+    data = tips,
+    y = "day",
+    orient = "v"
+  ))$data[[1]]
   expect_identical(nrow(yd), 4L)
   expect_equal(sort(round(yd$x)), day_counts) # counts stay on x => horizontal
   # Passing both x and y is ambiguous for a count plot.
