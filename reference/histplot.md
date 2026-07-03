@@ -26,10 +26,14 @@ histplot(
   shrink = 1,
   kde = FALSE,
   kde_kws = NULL,
+  thresh = 0,
+  cbar = FALSE,
+  cbar_kws = NULL,
   palette = NULL,
   hue_order = NULL,
   hue_norm = NULL,
   color = NULL,
+  cmap = NULL,
   legend = TRUE,
   .facet_vars = NULL,
   ...
@@ -97,9 +101,25 @@ histplot(
 
   Arguments for the KDE (e.g. `bw_adjust`).
 
+- thresh:
+
+  Bivariate-only. Cells with a value at or below `thresh` are left
+  transparent (default `0`, so empty cells are blank); `NULL` fills
+  every cell.
+
+- cbar, cbar_kws:
+
+  Bivariate-only. Draw a color bar for the counts and, optionally, theme
+  overrides for it.
+
 - palette, hue_order, hue_norm, color:
 
   Color controls.
+
+- cmap:
+
+  Bivariate-only colormap (name, `reaborn_cmap`, or color vector);
+  defaults to a light sequential ramp built from `color`.
 
 - legend:
 

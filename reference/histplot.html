@@ -102,10 +102,14 @@
 <span>  shrink <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  kde <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  kde_kws <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  thresh <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  cbar <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  cbar_kws <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  palette <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  hue_order <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  hue_norm <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  color <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  cmap <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  legend <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  .facet_vars <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">...</span></span>
@@ -174,8 +178,23 @@ horizontal histogram).</p></dd>
 <dd><p>Arguments for the KDE (e.g. <code>bw_adjust</code>).</p></dd>
 
 
+<dt id="arg-thresh">thresh<a class="anchor" aria-label="anchor" href="#arg-thresh"></a></dt>
+<dd><p>Bivariate-only. Cells with a value at or below <code>thresh</code> are left
+transparent (default <code>0</code>, so empty cells are blank); <code>NULL</code> fills every cell.</p></dd>
+
+
+<dt id="arg-cbar-cbar-kws">cbar, cbar_kws<a class="anchor" aria-label="anchor" href="#arg-cbar-cbar-kws"></a></dt>
+<dd><p>Bivariate-only. Draw a color bar for the counts and,
+optionally, theme overrides for it.</p></dd>
+
+
 <dt id="arg-palette-hue-order-hue-norm-color">palette, hue_order, hue_norm, color<a class="anchor" aria-label="anchor" href="#arg-palette-hue-order-hue-norm-color"></a></dt>
 <dd><p>Color controls.</p></dd>
+
+
+<dt id="arg-cmap">cmap<a class="anchor" aria-label="anchor" href="#arg-cmap"></a></dt>
+<dd><p>Bivariate-only colormap (name, <code>reaborn_cmap</code>, or color vector);
+defaults to a light sequential ramp built from <code>color</code>.</p></dd>
 
 
 <dt id="arg-legend">legend<a class="anchor" aria-label="anchor" href="#arg-legend"></a></dt>
