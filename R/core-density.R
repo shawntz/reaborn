@@ -39,6 +39,12 @@ rb_gaussian_kde <- function(
 ) {
   x <- x[!is.na(x)]
   n <- length(x)
+  # scipy.gaussian_kde requires >= 2 points (needs a finite variance); callers
+  # skip empty/singleton groups, but bail out gracefully as a backstop so an
+  # empty subset never reaches seq() with non-finite bounds.
+  if (n < 2) {
+    return(list(x = numeric(0), y = numeric(0), bw = NA_real_))
+  }
   w <- if (is.null(weights)) rep(1 / n, n) else weights / sum(weights)
   # scipy uses the (weighted) sample covariance with bias correction.
   if (is.null(weights)) {

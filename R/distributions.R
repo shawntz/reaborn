@@ -418,7 +418,7 @@ rb_add_kde_overlay <- function(
     rbind,
     lapply(levels, function(lv) {
       gx <- vals[groups == lv]
-      if (length(gx) < 2) {
+      if (sum(!is.na(gx)) < 2) {
         return(NULL)
       }
       est <- rb_gaussian_kde(gx, bw_adjust = kk$bw_adjust %||% 1)
@@ -770,7 +770,7 @@ kdeplot <- function(
         sel <- sel & as.character(work[[fv]]) == as.character(combos[i, fv])
       }
       gx <- work$.val[sel]
-      if (length(gx) < 2) {
+      if (sum(!is.na(gx)) < 2) {
         return(NULL)
       }
       est <- rb_gaussian_kde(
@@ -1345,6 +1345,7 @@ displot <- function(
   facet_kws = NULL,
   ...
 ) {
+  data <- rb_drop_facet_na(data, row, col)
   base_fun <- switch(
     kind,
     hist = histplot,

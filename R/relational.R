@@ -485,6 +485,7 @@ relplot <- function(
   facet_kws = NULL,
   ...
 ) {
+  data <- rb_drop_facet_na(data, row, col)
   common <- list(
     data = data,
     x = x,
@@ -523,6 +524,30 @@ relplot <- function(
   attr(p, "rb_height") <- height
   attr(p, "rb_aspect") <- aspect
   reaborn_plot(p, call = match.call())
+}
+
+# Drop rows whose faceting variable is NA. seaborn's FacetGrid builds its row/col
+# levels from `categorical_order`, which discards NA, so missing facet values are
+# never given a panel. Without this an NA facet level flows downstream as an
+# all-NA group selection (e.g. a per-facet KDE over an empty subset), which errors
+# in `rb_gaussian_kde`, and otherwise paints a spurious "var = NA" panel.
+#' @keywords internal
+rb_drop_facet_na <- function(data, row = NULL, col = NULL) {
+  if (!is.data.frame(data)) {
+    return(data)
+  }
+  vars <- Filter(
+    function(v) is.character(v) && length(v) == 1L && v %in% names(data),
+    list(row, col)
+  )
+  if (!length(vars)) {
+    return(data)
+  }
+  keep <- rep(TRUE, nrow(data))
+  for (v in vars) {
+    keep <- keep & !is.na(data[[v]])
+  }
+  data[keep, , drop = FALSE]
 }
 
 # Add facet_wrap / facet_grid to a plot from string row/col column names, using
