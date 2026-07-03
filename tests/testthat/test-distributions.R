@@ -111,9 +111,10 @@ test_that("bivariate histplot honors cbar, cmap, stat, and thresh", {
   # Every stat builds; default thresh = 0 leaves empty cells transparent while
   # thresh = NULL keeps them all.
   for (s in c("count", "density", "probability", "percent", "frequency")) {
-    expect_no_error(ggplot2::ggplot_build(
-      do.call(histplot, c(args, list(stat = s)))
-    ))
+    expect_no_error(ggplot2::ggplot_build(do.call(
+      histplot,
+      c(args, list(stat = s))
+    )))
   }
   n_blank <- function(p) {
     d <- ggplot2::ggplot_build(p)$data[[1]]
