@@ -253,9 +253,9 @@ test_that("rb_facet_vars resolves the .data[[...]] pronoun syntax", {
     "species"
   )
   expect_setequal(
-    reaborn:::rb_facet_vars(
-      ggplot2::facet_grid(.data[["sex"]] ~ .data[["island"]])
-    ),
+    reaborn:::rb_facet_vars(ggplot2::facet_grid(
+      .data[["sex"]] ~ .data[["island"]]
+    )),
     c("sex", "island")
   )
 })
