@@ -23,20 +23,69 @@ reaborn_plot <- function(plot, call = NULL) {
   plot
 }
 
+# The data-column names a ggplot2 Facet references (facet_wrap or facet_grid),
+# used to re-aggregate a categorical plot per panel before the facet is applied.
+#' @keywords internal
+rb_facet_vars <- function(facet) {
+  quos <- c(
+    facet$params$facets, # facet_wrap()
+    facet$params$rows, # facet_grid(rows =)
+    facet$params$cols # facet_grid(cols =)
+  )
+  if (!length(quos)) {
+    return(character(0))
+  }
+  vars <- unlist(lapply(quos, function(q) {
+    expr <- if (rlang::is_quosure(q)) rlang::quo_get_expr(q) else q
+    all.vars(expr)
+  }))
+  unique(vars)
+}
+
 #' Add to a reaborn plot, preserving its class
 #'
 #' Ensures `reaborn_plot + <ggplot component>` stays a `reaborn_plot` so the
 #' composed object keeps printing through reaborn and remains chainable.
+#'
+#' Categorical plots collapse their data (via `rb_cat_setup()`, and for
+#' bar/point/count an estimator aggregation), so the facet variable is absent
+#' from the plotted data. When such a plot carries a re-aggregation hook and the
+#' user adds a facet, we rebuild it with the facet columns forwarded through
+#' setup + aggregation (the same `.facet_vars` path `catplot()` uses) and then
+#' apply the user's facet -- so each panel shows, and for aggregating kinds
+#' re-estimates, its own subset instead of one shared full-data summary (#73).
 #' @param e1 A reaborn plot.
 #' @param e2 A ggplot component (geom, scale, theme, facet, ...).
 #' @return A reaborn plot.
 #' @keywords internal
 #' @export
 "+.reaborn_plot" <- function(e1, e2) {
+  refacet <- attr(e1, "rb_refacet")
+  if (!is.null(refacet) && inherits(e2, "Facet")) {
+    fvars <- rb_facet_vars(e2)
+    if (length(fvars)) {
+      rebuilt <- refacet(fvars)
+      # The rebuild carries a fresh hook; drop it so replaying components and
+      # applying the user's facet compose as ordinary ggplot additions. Keep the
+      # original seaborn-style call rather than the do.call() the hook used.
+      attr(rebuilt, "rb_refacet") <- NULL
+      attr(rebuilt, "reaborn_call") <- attr(e1, "reaborn_call")
+      for (comp in attr(e1, "rb_pending") %||% list()) {
+        rebuilt <- rebuilt + comp
+      }
+      return(rebuilt + e2)
+    }
+  }
   res <- NextMethod()
   if (inherits(res, "ggplot") && !inherits(res, "reaborn_plot")) {
     class(res) <- c("reaborn_plot", class(res))
     attr(res, "reaborn_call") <- attr(e1, "reaborn_call")
+  }
+  # Carry the hook (and any components added before faceting) forward so
+  # `barplot(...) + scale_*() + facet_wrap(...)` still re-aggregates per panel.
+  if (!is.null(refacet)) {
+    attr(res, "rb_refacet") <- refacet
+    attr(res, "rb_pending") <- c(attr(e1, "rb_pending") %||% list(), list(e2))
   }
   res
 }

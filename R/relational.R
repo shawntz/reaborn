@@ -564,6 +564,10 @@ rb_facet <- function(
   if (is.null(row) && is.null(col)) {
     return(p)
   }
+  # This is the figure-level facet path (catplot/displot/relplot/lmplot/
+  # FacetGrid): facet columns were already forwarded through setup/aggregation,
+  # so disable any manual-facet re-aggregation hook to avoid rebuilding twice.
+  attr(p, "rb_refacet") <- NULL
   if (is.data.frame(data)) {
     # Re-level facet columns so facets appear in seaborn's categorical order.
     relevel <- function(p, var, order) {

@@ -123,6 +123,25 @@ rb_cat_finish <- function(p, setup, legend = "auto") {
   p
 }
 
+# Finish a categorical plot: wrap it as a reaborn_plot and record how to rebuild
+# it with facet columns forwarded through rb_cat_setup() (and any aggregation),
+# so a later `+ facet_wrap()`/`facet_grid()` re-runs per panel instead of drawing
+# the same collapsed summary in every panel (#73). `plotter`/`args` reproduce the
+# originating call with `.facet_vars` injected -- the same path catplot() takes.
+# Capture both at the very top of the plotter (before any locals), so `plotter`
+# is resolved eagerly in its own frame rather than lazily inside the hook:
+#   .args <- c(as.list(environment()), list(...))
+#   .self <- sys.function()
+# See `+.reaborn_plot()`, which consumes the hook.
+rb_cat_plot <- function(p, plotter, args, call) {
+  p <- reaborn_plot(p, call = call)
+  attr(p, "rb_refacet") <- function(facet_vars) {
+    args$.facet_vars <- unique(c(args$.facet_vars, facet_vars))
+    do.call(plotter, args)
+  }
+  p
+}
+
 # Box line color for linecolor="auto" (a mid-dark gray, matching seaborn).
 RB_BOX_LINECOLOR <- "#4C4C4C"
 
@@ -172,6 +191,8 @@ boxplot <- function(
   .facet_vars = NULL,
   ...
 ) {
+  .args <- c(as.list(environment()), list(...))
+  .self <- sys.function()
   s <- rb_cat_setup(data, x, y, hue, order, hue_order, orient, .facet_vars)
   colors <- rb_cat_colors(s, palette, color, saturation)
   lc <- if (identical(linecolor, "auto")) RB_BOX_LINECOLOR else linecolor
@@ -209,7 +230,7 @@ boxplot <- function(
     p <- p + ggplot2::scale_fill_manual(values = colors, name = s$hue_name)
   }
   p <- rb_cat_finish(p, s, legend)
-  reaborn_plot(p, call = match.call())
+  rb_cat_plot(p, .self, .args, match.call())
 }
 
 #' Show value counts as bars
@@ -262,6 +283,8 @@ countplot <- function(
   if (!is.null(x) || !is.null(y)) {
     orient <- if (is.null(x)) "h" else "v"
   }
+  .args <- c(as.list(environment()), list(...))
+  .self <- sys.function()
   s <- rb_cat_setup(data, x, y, hue, order, hue_order, orient, .facet_vars)
   colors <- rb_cat_colors(s, palette, color, saturation)
 
@@ -347,7 +370,7 @@ countplot <- function(
   if (s$has_hue && !isFALSE(legend)) {
     p <- p + rb_legend_right()
   }
-  reaborn_plot(p, call = match.call())
+  rb_cat_plot(p, .self, .args, match.call())
 }
 
 # Aggregate a categorical setup's value by (cat, hue, facets) into est/ymin/ymax.
@@ -416,6 +439,8 @@ barplot <- function(
   .facet_vars = NULL,
   ...
 ) {
+  .args <- c(as.list(environment()), list(...))
+  .self <- sys.function()
   s <- rb_cat_setup(data, x, y, hue, order, hue_order, orient, .facet_vars)
   colors <- rb_cat_colors(s, palette, color, saturation)
   agg <- rb_cat_aggregate(s, estimator, errorbar, n_boot, seed)
@@ -500,7 +525,7 @@ barplot <- function(
   if (s$has_hue && !isFALSE(legend)) {
     p <- p + rb_legend_right()
   }
-  reaborn_plot(p, call = match.call())
+  rb_cat_plot(p, .self, .args, match.call())
 }
 
 #' Draw a categorical scatter with jitter
@@ -543,6 +568,8 @@ stripplot <- function(
   .facet_vars = NULL,
   ...
 ) {
+  .args <- c(as.list(environment()), list(...))
+  .self <- sys.function()
   s <- rb_cat_setup(data, x, y, hue, order, hue_order, orient, .facet_vars)
   vert <- s$orient == "v"
   if (s$has_hue) {
@@ -591,7 +618,7 @@ stripplot <- function(
     p <- p + ggplot2::scale_colour_manual(values = colors, name = s$hue_name)
   }
   p <- rb_cat_finish(p, s, legend)
-  reaborn_plot(p, call = match.call())
+  rb_cat_plot(p, .self, .args, match.call())
 }
 
 #' Show point estimates and errors with markers
@@ -640,6 +667,8 @@ pointplot <- function(
   .facet_vars = NULL,
   ...
 ) {
+  .args <- c(as.list(environment()), list(...))
+  .self <- sys.function()
   s <- rb_cat_setup(data, x, y, hue, order, hue_order, orient, .facet_vars)
   agg <- rb_cat_aggregate(s, estimator, errorbar, n_boot, seed)
   vert <- s$orient == "v"
@@ -702,7 +731,7 @@ pointplot <- function(
     p <- p + ggplot2::scale_colour_manual(values = colors, name = s$hue_name)
   }
   p <- rb_cat_finish(p, s, legend)
-  reaborn_plot(p, call = match.call())
+  rb_cat_plot(p, .self, .args, match.call())
 }
 
 #' Figure-level interface for categorical plots
