@@ -243,7 +243,9 @@ test_that("rb_facet_vars resolves the .data[[...]] pronoun syntax", {
   col <- "species"
   # String index, variable index, and $ variant all resolve to the column.
   expect_identical(
-    reaborn:::rb_facet_vars(ggplot2::facet_wrap(ggplot2::vars(.data[["species"]]))),
+    reaborn:::rb_facet_vars(ggplot2::facet_wrap(ggplot2::vars(.data[[
+      "species"
+    ]]))),
     "species"
   )
   expect_identical(
