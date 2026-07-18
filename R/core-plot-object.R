@@ -35,7 +35,8 @@ rb_facet_quo_var <- function(q) {
     is.call(expr) &&
       length(expr) == 3L &&
       identical(expr[[2]], as.name(".data")) &&
-      (identical(expr[[1]], as.name("[[")) || identical(expr[[1]], as.name("$")))
+      (identical(expr[[1]], as.name("[[")) ||
+        identical(expr[[1]], as.name("$")))
   ) {
     idx <- expr[[3]]
     # `.data$col` takes the field name literally; `.data[[x]]` may index by a
