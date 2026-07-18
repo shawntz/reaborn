@@ -45,7 +45,9 @@ rb_facet_quo_var <- function(q) {
       return(as.character(idx))
     }
     env <- if (is_quo) rlang::quo_get_env(q) else baseenv()
-    return(tryCatch(as.character(eval(idx, env)), error = function(e) character(0)))
+    return(tryCatch(as.character(eval(idx, env)), error = function(e) {
+      character(0)
+    }))
   }
   all.vars(expr)
 }
