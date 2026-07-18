@@ -41,7 +41,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">reaborn</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.0.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.1.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -76,99 +76,87 @@
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.0.1" id="reaborn-v101">reaborn v1.0.1<a class="anchor" aria-label="anchor" href="#reaborn-v101"></a></h2><p class="text-muted">CRAN release: 2026-07-03</p>
+<ul><li>Patch release fixing a critical bug in how <code>NA</code> values were handled.</li>
+</ul><div class="section level3">
+<h3 id="whats-changed-1-0-1">What’s Changed<a class="anchor" aria-label="anchor" href="#whats-changed-1-0-1"></a></h3>
+<ul><li>Update README.md with CRAN badges by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/issues/48" class="external-link">#48</a></li>
+<li>chore(figures): refresh comparison figures by <a href="https://github.com/github-actions" class="external-link">@github-actions</a>[bot] in <a href="https://github.com/shawntz/reaborn/issues/46" class="external-link">#46</a></li>
+<li>chore(figures): refresh hero collage by <a href="https://github.com/github-actions" class="external-link">@github-actions</a>[bot] in <a href="https://github.com/shawntz/reaborn/issues/47" class="external-link">#47</a></li>
+<li>fix(kdeplot): honor cmap and correct contour levels in filled bivariate KDE by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/issues/49" class="external-link">#49</a></li>
+<li>feat(histplot): add bivariate 2-D histogram (count heatmap) mode by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/issues/50" class="external-link">#50</a></li>
+<li>docs: add runnable example plots to every plot reference page by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/issues/51" class="external-link">#51</a></li>
+<li>chore(figures): refresh hero collage by <a href="https://github.com/github-actions" class="external-link">@github-actions</a>[bot] in <a href="https://github.com/shawntz/reaborn/issues/52" class="external-link">#52</a></li>
+<li>chore(figures): refresh comparison figures by <a href="https://github.com/github-actions" class="external-link">@github-actions</a>[bot] in <a href="https://github.com/shawntz/reaborn/issues/53" class="external-link">#53</a></li>
+<li>chore: bump version to 1.0.0.9000 by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/issues/54" class="external-link">#54</a></li>
+<li>Gate bivariate histogram colorbar on legend = FALSE by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/issues/56" class="external-link">#56</a></li>
+<li>chore(figures): refresh comparison figures by <a href="https://github.com/github-actions" class="external-link">@github-actions</a>[bot] in <a href="https://github.com/shawntz/reaborn/issues/55" class="external-link">#55</a></li>
+<li>chore(figures): refresh hero collage by <a href="https://github.com/github-actions" class="external-link">@github-actions</a>[bot] in <a href="https://github.com/shawntz/reaborn/issues/57" class="external-link">#57</a></li>
+<li>Clarify histplot bivariate docs for hue and cbar_kws by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/issues/58" class="external-link">#58</a></li>
+<li>chore(figures): refresh hero collage by <a href="https://github.com/github-actions" class="external-link">@github-actions</a>[bot] in <a href="https://github.com/shawntz/reaborn/issues/59" class="external-link">#59</a></li>
+<li>chore(figures): refresh comparison figures by <a href="https://github.com/github-actions" class="external-link">@github-actions</a>[bot] in <a href="https://github.com/shawntz/reaborn/issues/60" class="external-link">#60</a></li>
+<li>fix(docs): close histplot.Rd block to fix R CMD check by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/issues/61" class="external-link">#61</a></li>
+<li>fix(datasets): read empty CSV fields as NA to match pandas/seaborn by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/issues/62" class="external-link">#62</a></li>
+<li>fix(countplot): draw horizontal bars when the category is assigned to y by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/issues/63" class="external-link">#63</a></li>
+<li>chore(figures): refresh hero collage by <a href="https://github.com/github-actions" class="external-link">@github-actions</a>[bot] in <a href="https://github.com/shawntz/reaborn/issues/64" class="external-link">#64</a></li>
+<li>chore(figures): refresh comparison figures by <a href="https://github.com/github-actions" class="external-link">@github-actions</a>[bot] in <a href="https://github.com/shawntz/reaborn/issues/65" class="external-link">#65</a></li>
+<li>fix(displot): drop NA facet levels to prevent empty-group KDE error by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/issues/66" class="external-link">#66</a></li>
+<li>chore(figures): refresh hero collage by <a href="https://github.com/github-actions" class="external-link">@github-actions</a>[bot] in <a href="https://github.com/shawntz/reaborn/issues/67" class="external-link">#67</a></li>
+<li>chore(figures): refresh comparison figures by <a href="https://github.com/github-actions" class="external-link">@github-actions</a>[bot] in <a href="https://github.com/shawntz/reaborn/issues/68" class="external-link">#68</a></li>
+</ul><p><strong>Full Changelog</strong>: <a href="https://github.com/shawntz/reaborn/compare/v1.0.0" class="external-link uri">https://github.com/shawntz/reaborn/compare/v1.0.0</a>…v1.0.1</p>
+</div>
+</div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.0.0" id="reaborn-v100">reaborn v1.0.0<a class="anchor" aria-label="anchor" href="#reaborn-v100"></a></h2><p class="text-muted">CRAN release: 2026-06-30</p>
 <ul><li>Initial release.</li>
 </ul><div class="section level3">
 <h3 id="whats-changed-1-0-0">What’s Changed<a class="anchor" aria-label="anchor" href="#whats-changed-1-0-0"></a></h3>
-<ul><li>v0.0.0.9000 by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/pull/1" class="external-link uri">https://github.com/shawntz/reaborn/pull/1</a>
-</li>
-<li>Add air format check CI workflow and config by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/pull/12" class="external-link uri">https://github.com/shawntz/reaborn/pull/12</a>
-</li>
-<li>Add air format suggest CI workflow by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/pull/8" class="external-link uri">https://github.com/shawntz/reaborn/pull/8</a>
-</li>
-<li>Add main branch version badge workflow by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/pull/9" class="external-link uri">https://github.com/shawntz/reaborn/pull/9</a>
-</li>
-<li>Remove look-alike sentence from pkgdown homepage figcaption by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/pull/2" class="external-link uri">https://github.com/shawntz/reaborn/pull/2</a>
-</li>
-<li>fix(barplot): match seaborn CI error-bar line thickness by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/pull/3" class="external-link uri">https://github.com/shawntz/reaborn/pull/3</a>
-</li>
-<li>Fix grammar on ‘seaborn defaults, on import’ card by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/pull/4" class="external-link uri">https://github.com/shawntz/reaborn/pull/4</a>
-</li>
-<li>Rework landing-page fidelity card for accuracy by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/pull/5" class="external-link uri">https://github.com/shawntz/reaborn/pull/5</a>
-</li>
-<li>Match seaborn’s colorbar format in heatmap() by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/pull/7" class="external-link uri">https://github.com/shawntz/reaborn/pull/7</a>
-</li>
-<li>Adopt eyeris multi-platform build/check workflow by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/pull/10" class="external-link uri">https://github.com/shawntz/reaborn/pull/10</a>
-</li>
-<li>Match seaborn’s KDE/hue legend styling by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/pull/11" class="external-link uri">https://github.com/shawntz/reaborn/pull/11</a>
-</li>
-<li>ci: regenerate hero collage on merge to main by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/pull/13" class="external-link uri">https://github.com/shawntz/reaborn/pull/13</a>
-</li>
-<li>Add spellcheck CI workflow for R package docs by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/pull/14" class="external-link uri">https://github.com/shawntz/reaborn/pull/14</a>
-</li>
-<li>Match seaborn’s legend background color and inside placement by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/pull/6" class="external-link uri">https://github.com/shawntz/reaborn/pull/6</a>
-</li>
-<li>style: apply air formatting across the codebase by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/pull/15" class="external-link uri">https://github.com/shawntz/reaborn/pull/15</a>
-</li>
-<li>chore(figures): refresh hero collage by <a href="https://github.com/github-actions" class="external-link">@github-actions</a>[bot] in <a href="https://github.com/shawntz/reaborn/pull/17" class="external-link uri">https://github.com/shawntz/reaborn/pull/17</a>
-</li>
-<li>docs: add status badges to README and pkgdown home page by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/pull/18" class="external-link uri">https://github.com/shawntz/reaborn/pull/18</a>
-</li>
-<li>chore: add spelling WORDLIST to pass spellcheck by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/pull/16" class="external-link uri">https://github.com/shawntz/reaborn/pull/16</a>
-</li>
-<li>chore(figures): refresh hero collage by <a href="https://github.com/github-actions" class="external-link">@github-actions</a>[bot] in <a href="https://github.com/shawntz/reaborn/pull/19" class="external-link uri">https://github.com/shawntz/reaborn/pull/19</a>
-</li>
-<li>chore: add Lifecycle and pkgdown to WORDLIST by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/pull/21" class="external-link uri">https://github.com/shawntz/reaborn/pull/21</a>
-</li>
-<li>fix(ci): stop hero-collage workflow from looping refresh PRs by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/pull/22" class="external-link uri">https://github.com/shawntz/reaborn/pull/22</a>
-</li>
-<li>chore: rename pkgdown badge title to “website” by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/pull/23" class="external-link uri">https://github.com/shawntz/reaborn/pull/23</a>
-</li>
-<li>chore: add “dev” to spellcheck wordlist by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/pull/25" class="external-link uri">https://github.com/shawntz/reaborn/pull/25</a>
-</li>
-<li>chore(badge): relabel “main” version badge as “dev version” by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/pull/24" class="external-link uri">https://github.com/shawntz/reaborn/pull/24</a>
-</li>
-<li>chore(figures): refresh hero collage by <a href="https://github.com/github-actions" class="external-link">@github-actions</a>[bot] in <a href="https://github.com/shawntz/reaborn/pull/20" class="external-link uri">https://github.com/shawntz/reaborn/pull/20</a>
-</li>
-<li>ci(figures): auto-regenerate compare-*.png on code changes by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/pull/26" class="external-link uri">https://github.com/shawntz/reaborn/pull/26</a>
-</li>
-<li>chore(figures): refresh comparison figures by <a href="https://github.com/github-actions" class="external-link">@github-actions</a>[bot] in <a href="https://github.com/shawntz/reaborn/pull/27" class="external-link uri">https://github.com/shawntz/reaborn/pull/27</a>
-</li>
-<li>docs(comparison): remove fidelity paragraph from vs Seaborn page by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/pull/28" class="external-link uri">https://github.com/shawntz/reaborn/pull/28</a>
-</li>
-<li>docs(comparison): drop palette-system bullet from vs-seaborn page by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/pull/29" class="external-link uri">https://github.com/shawntz/reaborn/pull/29</a>
-</li>
-<li>docs(comparison): remove statistics bullet from vs seaborn page by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/pull/30" class="external-link uri">https://github.com/shawntz/reaborn/pull/30</a>
-</li>
-<li>docs(comparison): remove “honest framing” sentence from vs seaborn page by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/pull/31" class="external-link uri">https://github.com/shawntz/reaborn/pull/31</a>
-</li>
-<li>docs(comparison): reword “skip the boilerplate” bullet by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/pull/32" class="external-link uri">https://github.com/shawntz/reaborn/pull/32</a>
-</li>
-<li>docs(comparison): remove feature comparison table from vs Seaborn page by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/pull/34" class="external-link uri">https://github.com/shawntz/reaborn/pull/34</a>
-</li>
-<li>docs: add NEWS.md changelog for pkgdown site by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/pull/33" class="external-link uri">https://github.com/shawntz/reaborn/pull/33</a>
-</li>
-<li>feat(logo): hex sticker logo + right-aligned README logo by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/pull/35" class="external-link uri">https://github.com/shawntz/reaborn/pull/35</a>
-</li>
-<li>Update README.md by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/pull/36" class="external-link uri">https://github.com/shawntz/reaborn/pull/36</a>
-</li>
-<li>Set new hex sticker logo as website favicon by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/pull/37" class="external-link uri">https://github.com/shawntz/reaborn/pull/37</a>
-</li>
-<li>feat(website): show hex sticker logo in navbar on every page by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/pull/38" class="external-link uri">https://github.com/shawntz/reaborn/pull/38</a>
-</li>
-<li>fix(website): show navbar hex logo on all pages (root-relative paths) by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/pull/39" class="external-link uri">https://github.com/shawntz/reaborn/pull/39</a>
-</li>
-<li>chore: ignore .air.toml in package build by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/pull/40" class="external-link uri">https://github.com/shawntz/reaborn/pull/40</a>
-</li>
-<li>fix(website): use absolute URL for navbar logo to unblock pkgdown build by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/pull/41" class="external-link uri">https://github.com/shawntz/reaborn/pull/41</a>
-</li>
+<ul><li>v0.0.0.9000 by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/issues/1" class="external-link">#1</a></li>
+<li>Add air format check CI workflow and config by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/issues/12" class="external-link">#12</a></li>
+<li>Add air format suggest CI workflow by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/issues/8" class="external-link">#8</a></li>
+<li>Add main branch version badge workflow by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/issues/9" class="external-link">#9</a></li>
+<li>Remove look-alike sentence from pkgdown homepage figcaption by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/issues/2" class="external-link">#2</a></li>
+<li>fix(barplot): match seaborn CI error-bar line thickness by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/issues/3" class="external-link">#3</a></li>
+<li>Fix grammar on ‘seaborn defaults, on import’ card by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/issues/4" class="external-link">#4</a></li>
+<li>Rework landing-page fidelity card for accuracy by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/issues/5" class="external-link">#5</a></li>
+<li>Match seaborn’s colorbar format in heatmap() by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/issues/7" class="external-link">#7</a></li>
+<li>Adopt eyeris multi-platform build/check workflow by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/issues/10" class="external-link">#10</a></li>
+<li>Match seaborn’s KDE/hue legend styling by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/issues/11" class="external-link">#11</a></li>
+<li>ci: regenerate hero collage on merge to main by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/issues/13" class="external-link">#13</a></li>
+<li>Add spellcheck CI workflow for R package docs by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/issues/14" class="external-link">#14</a></li>
+<li>Match seaborn’s legend background color and inside placement by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/issues/6" class="external-link">#6</a></li>
+<li>style: apply air formatting across the codebase by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/issues/15" class="external-link">#15</a></li>
+<li>chore(figures): refresh hero collage by <a href="https://github.com/github-actions" class="external-link">@github-actions</a>[bot] in <a href="https://github.com/shawntz/reaborn/issues/17" class="external-link">#17</a></li>
+<li>docs: add status badges to README and pkgdown home page by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/issues/18" class="external-link">#18</a></li>
+<li>chore: add spelling WORDLIST to pass spellcheck by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/issues/16" class="external-link">#16</a></li>
+<li>chore(figures): refresh hero collage by <a href="https://github.com/github-actions" class="external-link">@github-actions</a>[bot] in <a href="https://github.com/shawntz/reaborn/issues/19" class="external-link">#19</a></li>
+<li>chore: add Lifecycle and pkgdown to WORDLIST by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/issues/21" class="external-link">#21</a></li>
+<li>fix(ci): stop hero-collage workflow from looping refresh PRs by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/issues/22" class="external-link">#22</a></li>
+<li>chore: rename pkgdown badge title to “website” by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/issues/23" class="external-link">#23</a></li>
+<li>chore: add “dev” to spellcheck wordlist by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/issues/25" class="external-link">#25</a></li>
+<li>chore(badge): relabel “main” version badge as “dev version” by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/issues/24" class="external-link">#24</a></li>
+<li>chore(figures): refresh hero collage by <a href="https://github.com/github-actions" class="external-link">@github-actions</a>[bot] in <a href="https://github.com/shawntz/reaborn/issues/20" class="external-link">#20</a></li>
+<li>ci(figures): auto-regenerate compare-*.png on code changes by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/issues/26" class="external-link">#26</a></li>
+<li>chore(figures): refresh comparison figures by <a href="https://github.com/github-actions" class="external-link">@github-actions</a>[bot] in <a href="https://github.com/shawntz/reaborn/issues/27" class="external-link">#27</a></li>
+<li>docs(comparison): remove fidelity paragraph from vs Seaborn page by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/issues/28" class="external-link">#28</a></li>
+<li>docs(comparison): drop palette-system bullet from vs-seaborn page by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/issues/29" class="external-link">#29</a></li>
+<li>docs(comparison): remove statistics bullet from vs seaborn page by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/issues/30" class="external-link">#30</a></li>
+<li>docs(comparison): remove “honest framing” sentence from vs seaborn page by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/issues/31" class="external-link">#31</a></li>
+<li>docs(comparison): reword “skip the boilerplate” bullet by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/issues/32" class="external-link">#32</a></li>
+<li>docs(comparison): remove feature comparison table from vs Seaborn page by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/issues/34" class="external-link">#34</a></li>
+<li>docs: add NEWS.md changelog for pkgdown site by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/issues/33" class="external-link">#33</a></li>
+<li>feat(logo): hex sticker logo + right-aligned README logo by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/issues/35" class="external-link">#35</a></li>
+<li>Update README.md by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/issues/36" class="external-link">#36</a></li>
+<li>Set new hex sticker logo as website favicon by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/issues/37" class="external-link">#37</a></li>
+<li>feat(website): show hex sticker logo in navbar on every page by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/issues/38" class="external-link">#38</a></li>
+<li>fix(website): show navbar hex logo on all pages (root-relative paths) by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/issues/39" class="external-link">#39</a></li>
+<li>chore: ignore .air.toml in package build by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/issues/40" class="external-link">#40</a></li>
+<li>fix(website): use absolute URL for navbar logo to unblock pkgdown build by <a href="https://github.com/shawntz" class="external-link">@shawntz</a> in <a href="https://github.com/shawntz/reaborn/issues/41" class="external-link">#41</a></li>
 </ul></div>
 <div class="section level3">
 <h3 id="new-contributors-1-0-0">New Contributors<a class="anchor" aria-label="anchor" href="#new-contributors-1-0-0"></a></h3>
-<ul><li>@shawntz made their first contribution in <a href="https://github.com/shawntz/reaborn/pull/1" class="external-link uri">https://github.com/shawntz/reaborn/pull/1</a>
-</li>
-<li>@github-actions[bot] made their first contribution in <a href="https://github.com/shawntz/reaborn/pull/17" class="external-link uri">https://github.com/shawntz/reaborn/pull/17</a>
-</li>
+<ul><li>@shawntz made their first contribution in <a href="https://github.com/shawntz/reaborn/issues/1" class="external-link">#1</a></li>
+<li>@github-actions[bot] made their first contribution in <a href="https://github.com/shawntz/reaborn/issues/17" class="external-link">#17</a></li>
 </ul><p><strong>Full Changelog</strong>: <a href="https://github.com/shawntz/reaborn/commits/v1.0.0" class="external-link uri">https://github.com/shawntz/reaborn/commits/v1.0.0</a></p>
 </div>
 </div>
@@ -181,7 +169,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>
