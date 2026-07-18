@@ -239,6 +239,43 @@ test_that("rb_facet_vars extracts columns from wrap and grid facets", {
   )
 })
 
+test_that("rb_facet_vars resolves the .data[[...]] pronoun syntax", {
+  col <- "species"
+  # String index, variable index, and $ variant all resolve to the column.
+  expect_identical(
+    reaborn:::rb_facet_vars(ggplot2::facet_wrap(ggplot2::vars(.data[["species"]]))),
+    "species"
+  )
+  expect_identical(
+    reaborn:::rb_facet_vars(ggplot2::facet_wrap(ggplot2::vars(.data[[col]]))),
+    "species"
+  )
+  expect_setequal(
+    reaborn:::rb_facet_vars(
+      ggplot2::facet_grid(.data[["sex"]] ~ .data[["island"]])
+    ),
+    c("sex", "island")
+  )
+})
+
+test_that("manual facets re-aggregate with .data[[...]] facet syntax", {
+  penguins <- load_dataset("penguins")
+  col <- "species"
+  # facet_wrap with a variable index carries the resolved column into the
+  # re-aggregated data (one bar per sex x species, not one shared summary).
+  pw <- barplot(data = penguins, x = "sex", y = "body_mass_g") +
+    ggplot2::facet_wrap(ggplot2::vars(.data[[col]]))
+  expect_no_error(ggplot2::ggplot_build(pw))
+  expect_true("species" %in% names(pw$data))
+  expect_identical(nrow(pw$data), 6L)
+
+  # facet_grid with .data[["..."]] on both axes.
+  pg <- barplot(data = penguins, x = "species", y = "body_mass_g") +
+    ggplot2::facet_grid(.data[["sex"]] ~ .data[["island"]])
+  expect_no_error(ggplot2::ggplot_build(pg))
+  expect_true(all(c("sex", "island") %in% names(pg$data)))
+})
+
 test_that("regplot / residplot / lmplot build with bootstrap band", {
   tips <- load_dataset("tips")
   p <- regplot(data = tips, x = "total_bill", y = "tip", seed = 0)

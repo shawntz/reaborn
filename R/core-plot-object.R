@@ -23,6 +23,32 @@ reaborn_plot <- function(plot, call = NULL) {
   plot
 }
 
+# The column name(s) a single facet quosure references. Plain symbols
+# (`~species`, `vars(species)`) come from all.vars(); the tidy-eval pronoun form
+# `.data[["col"]]` / `.data[[var]]` -- for which all.vars() yields the useless
+# ".data" -- is unwrapped by reading its index (evaluating a variable index in
+# the quosure's environment). Also handles the `.data$col` variant.
+rb_facet_quo_var <- function(q) {
+  is_quo <- rlang::is_quosure(q)
+  expr <- if (is_quo) rlang::quo_get_expr(q) else q
+  if (
+    is.call(expr) &&
+      length(expr) == 3L &&
+      identical(expr[[2]], as.name(".data")) &&
+      (identical(expr[[1]], as.name("[[")) || identical(expr[[1]], as.name("$")))
+  ) {
+    idx <- expr[[3]]
+    # `.data$col` takes the field name literally; `.data[[x]]` may index by a
+    # string literal or by a variable resolved in the quosure's environment.
+    if (identical(expr[[1]], as.name("$")) || is.character(idx)) {
+      return(as.character(idx))
+    }
+    env <- if (is_quo) rlang::quo_get_env(q) else baseenv()
+    return(tryCatch(as.character(eval(idx, env)), error = function(e) character(0)))
+  }
+  all.vars(expr)
+}
+
 # The data-column names a ggplot2 Facet references (facet_wrap or facet_grid),
 # used to re-aggregate a categorical plot per panel before the facet is applied.
 #' @keywords internal
@@ -35,11 +61,7 @@ rb_facet_vars <- function(facet) {
   if (!length(quos)) {
     return(character(0))
   }
-  vars <- unlist(lapply(quos, function(q) {
-    expr <- if (rlang::is_quosure(q)) rlang::quo_get_expr(q) else q
-    all.vars(expr)
-  }))
-  unique(vars)
+  unique(unlist(lapply(quos, rb_facet_quo_var)))
 }
 
 #' Add to a reaborn plot, preserving its class
