@@ -107,6 +107,8 @@ violinplot <- function(
   .facet_vars = NULL,
   ...
 ) {
+  .args <- c(as.list(environment()), list(...))
+  .self <- sys.function()
   s <- rb_cat_setup(data, x, y, hue, order, hue_order, orient, .facet_vars)
   vert <- s$orient == "v"
   colors <- rb_cat_colors(s, palette, color, saturation)
@@ -349,7 +351,7 @@ violinplot <- function(
   if (s$has_hue && !isFALSE(legend)) {
     p <- p + rb_legend_right()
   }
-  reaborn_plot(p, call = match.call())
+  rb_cat_plot(p, .self, .args, match.call())
 }
 
 # Number of letter-value boxes (LetterValues._compute_k).
@@ -450,6 +452,8 @@ boxenplot <- function(
   .facet_vars = NULL,
   ...
 ) {
+  .args <- c(as.list(environment()), list(...))
+  .self <- sys.function()
   s <- rb_cat_setup(data, x, y, hue, order, hue_order, orient, .facet_vars)
   vert <- s$orient == "v"
   base_colors <- rb_cat_colors(s, palette, color, 1) # boxen uses light gradient, not desat
@@ -592,7 +596,7 @@ boxenplot <- function(
     legend = if (isFALSE(legend)) FALSE else "auto",
     breaks = FALSE
   )
-  reaborn_plot(p, call = match.call())
+  rb_cat_plot(p, .self, .args, match.call())
 }
 
 #' Draw a categorical scatter with non-overlapping points
@@ -633,6 +637,8 @@ swarmplot <- function(
       "swarmplot() requires the 'ggbeeswarm' package. Install it with install.packages('ggbeeswarm')."
     )
   }
+  .args <- c(as.list(environment()), list(...))
+  .self <- sys.function()
   s <- rb_cat_setup(data, x, y, hue, order, hue_order, orient, .facet_vars)
   vert <- s$orient == "v"
   if (s$has_hue) {
@@ -669,5 +675,5 @@ swarmplot <- function(
     p <- p + ggplot2::scale_colour_manual(values = colors, name = s$hue_name)
   }
   p <- rb_cat_finish(p, s, legend)
-  reaborn_plot(p, call = match.call())
+  rb_cat_plot(p, .self, .args, match.call())
 }

@@ -119,6 +119,165 @@ test_that("pointplot and catplot build (incl. faceting)", {
   )))
 })
 
+test_that("manual `+ facet_wrap()` re-aggregates a barplot per panel (#73)", {
+  penguins <- load_dataset("penguins")
+  p <- barplot(data = penguins, x = "sex", y = "body_mass_g") +
+    ggplot2::facet_wrap(~species)
+  expect_no_error(ggplot2::ggplot_build(p))
+  # The facet column is carried into the (re-aggregated) plot data ...
+  expect_true("species" %in% names(p$data))
+  # ... with one bar per sex x species, not one shared full-data summary.
+  expect_identical(nrow(p$data), 6L)
+  expect_identical(length(unique(round(p$data$estimate))), 6L)
+
+  # Per-panel means match a within-species aggregation done by hand.
+  by_hand <- tapply(
+    penguins$body_mass_g,
+    list(penguins$species, penguins$sex),
+    mean,
+    na.rm = TRUE
+  )
+  for (i in seq_len(nrow(p$data))) {
+    row <- p$data[i, ]
+    expect_equal(
+      row$estimate,
+      by_hand[as.character(row$species), as.character(row$.cat)],
+      tolerance = 1e-9
+    )
+  }
+})
+
+test_that("manual facets re-aggregate to match catplot() estimates", {
+  penguins <- load_dataset("penguins")
+  manual <- barplot(data = penguins, x = "sex", y = "body_mass_g") +
+    ggplot2::facet_wrap(~species)
+  viacat <- catplot(
+    data = penguins,
+    x = "sex",
+    y = "body_mass_g",
+    col = "species",
+    kind = "bar"
+  )
+  key <- function(d) paste(d$species, d$.cat)
+  m <- manual$data[order(key(manual$data)), ]
+  v <- viacat$data[order(key(viacat$data)), ]
+  expect_equal(m$estimate, v$estimate, tolerance = 1e-9)
+})
+
+test_that("manual facets build for every categorical kind", {
+  penguins <- load_dataset("penguins")
+  tips <- load_dataset("tips")
+  expect_no_error(suppressWarnings(ggplot2::ggplot_build(
+    boxplot(data = penguins, x = "sex", y = "body_mass_g") +
+      ggplot2::facet_wrap(~species)
+  )))
+  expect_no_error(ggplot2::ggplot_build(
+    countplot(data = penguins, x = "species") + ggplot2::facet_wrap(~sex)
+  ))
+  expect_no_error(ggplot2::ggplot_build(
+    pointplot(data = tips, x = "day", y = "total_bill") +
+      ggplot2::facet_wrap(~time)
+  ))
+  expect_no_error(ggplot2::ggplot_build(
+    stripplot(data = penguins, x = "sex", y = "body_mass_g") +
+      ggplot2::facet_wrap(~species)
+  ))
+  # facet_grid (two variables) is honored too.
+  expect_no_error(ggplot2::ggplot_build(
+    barplot(data = penguins, x = "species", y = "body_mass_g") +
+      ggplot2::facet_grid(sex ~ island)
+  ))
+})
+
+test_that("components added before a facet survive the re-aggregation", {
+  penguins <- load_dataset("penguins")
+  suppressWarnings({
+    p <- barplot(data = penguins, x = "sex", y = "body_mass_g") +
+      ggplot2::scale_y_continuous(limits = c(0, 9000)) +
+      ggplot2::facet_wrap(~species)
+    b <- ggplot2::ggplot_build(p)
+  })
+  # The user's y limits (not barplot's default scale) drive the panel range.
+  expect_gt(b$layout$panel_params[[1]]$y.range[2], 8000)
+  # The re-aggregation preserves the original seaborn-style call, not do.call().
+  expect_identical(attr(p, "reaborn_call")[[1]], as.name("barplot"))
+})
+
+test_that("faceted countplot normalizes proportion/percent per panel", {
+  penguins <- load_dataset("penguins")
+  # Each panel's proportions should sum to 1 (per-facet total), not the panel's
+  # share of the global total.
+  pp <- countplot(data = penguins, x = "sex", stat = "proportion") +
+    ggplot2::facet_wrap(~species)
+  per_panel <- as.numeric(tapply(pp$data$value, pp$data$species, sum))
+  expect_equal(per_panel, rep(1, length(per_panel)), tolerance = 1e-9)
+
+  # Percent panels sum to 100; matches the catplot() faceting path.
+  pc <- catplot(
+    data = penguins,
+    x = "sex",
+    col = "species",
+    kind = "count",
+    stat = "percent"
+  )
+  pc_panel <- as.numeric(tapply(pc$data$value, pc$data$species, sum))
+  expect_equal(pc_panel, rep(100, length(pc_panel)), tolerance = 1e-9)
+
+  # Non-faceted normalization is unchanged (still a single global total).
+  pn <- countplot(data = penguins, x = "species", stat = "proportion")
+  expect_equal(sum(pn$data$value), 1, tolerance = 1e-9)
+})
+
+test_that("rb_facet_vars extracts columns from wrap and grid facets", {
+  expect_identical(
+    reaborn:::rb_facet_vars(ggplot2::facet_wrap(~species)),
+    "species"
+  )
+  expect_setequal(
+    reaborn:::rb_facet_vars(ggplot2::facet_grid(sex ~ island)),
+    c("sex", "island")
+  )
+})
+
+test_that("rb_facet_vars resolves the .data[[...]] pronoun syntax", {
+  col <- "species"
+  # String index, variable index, and $ variant all resolve to the column.
+  expect_identical(
+    reaborn:::rb_facet_vars(ggplot2::facet_wrap(ggplot2::vars(.data[[
+      "species"
+    ]]))),
+    "species"
+  )
+  expect_identical(
+    reaborn:::rb_facet_vars(ggplot2::facet_wrap(ggplot2::vars(.data[[col]]))),
+    "species"
+  )
+  expect_setequal(
+    reaborn:::rb_facet_vars(ggplot2::facet_grid(
+      .data[["sex"]] ~ .data[["island"]]
+    )),
+    c("sex", "island")
+  )
+})
+
+test_that("manual facets re-aggregate with .data[[...]] facet syntax", {
+  penguins <- load_dataset("penguins")
+  col <- "species"
+  # facet_wrap with a variable index carries the resolved column into the
+  # re-aggregated data (one bar per sex x species, not one shared summary).
+  pw <- barplot(data = penguins, x = "sex", y = "body_mass_g") +
+    ggplot2::facet_wrap(ggplot2::vars(.data[[col]]))
+  expect_no_error(ggplot2::ggplot_build(pw))
+  expect_true("species" %in% names(pw$data))
+  expect_identical(nrow(pw$data), 6L)
+
+  # facet_grid with .data[["..."]] on both axes.
+  pg <- barplot(data = penguins, x = "species", y = "body_mass_g") +
+    ggplot2::facet_grid(.data[["sex"]] ~ .data[["island"]])
+  expect_no_error(ggplot2::ggplot_build(pg))
+  expect_true(all(c("sex", "island") %in% names(pg$data)))
+})
+
 test_that("regplot / residplot / lmplot build with bootstrap band", {
   tips <- load_dataset("tips")
   p <- regplot(data = tips, x = "total_bill", y = "tip", seed = 0)
