@@ -203,6 +203,31 @@ test_that("components added before a facet survive the re-aggregation", {
   expect_identical(attr(p, "reaborn_call")[[1]], as.name("barplot"))
 })
 
+test_that("faceted countplot normalizes proportion/percent per panel", {
+  penguins <- load_dataset("penguins")
+  # Each panel's proportions should sum to 1 (per-facet total), not the panel's
+  # share of the global total.
+  pp <- countplot(data = penguins, x = "sex", stat = "proportion") +
+    ggplot2::facet_wrap(~species)
+  per_panel <- as.numeric(tapply(pp$data$value, pp$data$species, sum))
+  expect_equal(per_panel, rep(1, length(per_panel)), tolerance = 1e-9)
+
+  # Percent panels sum to 100; matches the catplot() faceting path.
+  pc <- catplot(
+    data = penguins,
+    x = "sex",
+    col = "species",
+    kind = "count",
+    stat = "percent"
+  )
+  pc_panel <- as.numeric(tapply(pc$data$value, pc$data$species, sum))
+  expect_equal(pc_panel, rep(100, length(pc_panel)), tolerance = 1e-9)
+
+  # Non-faceted normalization is unchanged (still a single global total).
+  pn <- countplot(data = penguins, x = "species", stat = "proportion")
+  expect_equal(sum(pn$data$value), 1, tolerance = 1e-9)
+})
+
 test_that("rb_facet_vars extracts columns from wrap and grid facets", {
   expect_identical(
     reaborn:::rb_facet_vars(ggplot2::facet_wrap(~species)),

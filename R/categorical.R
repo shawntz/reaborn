@@ -296,7 +296,15 @@ countplot <- function(
   if (s$has_hue) {
     counts$.hue <- factor(counts$.hue, levels = s$hue_levels)
   }
-  total <- sum(counts$Freq)
+  # Normalize proportion/percent within each facet panel (per-facet totals) so a
+  # faceted countplot's bars sum within their own panel, not across the whole
+  # figure. With no facets this reduces to the global total (unchanged).
+  total <- if (length(s$facet_vars)) {
+    fkey <- do.call(paste, c(counts[s$facet_vars], sep = "\r"))
+    stats::ave(counts$Freq, fkey, FUN = sum)
+  } else {
+    sum(counts$Freq)
+  }
   counts$value <- switch(
     stat,
     count = counts$Freq,
