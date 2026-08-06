@@ -1,5 +1,37 @@
 # Changelog
 
+## reaborn v1.0.2
+
+CRAN release: 2026-07-31
+
+### What’s Changed
+
+- chore(figures): refresh comparison figures by
+  [@github-actions](https://github.com/github-actions)\[bot\] in
+  <https://github.com/shawntz/reaborn/pull/71>
+- chore(figures): refresh hero collage by
+  [@github-actions](https://github.com/github-actions)\[bot\] in
+  <https://github.com/shawntz/reaborn/pull/72>
+- fix(categorical): re-aggregate per panel on manual
+  facet_wrap/facet_grid
+  ([\#73](https://github.com/shawntz/reaborn/issues/73)) by
+  [@shawntz](https://github.com/shawntz) in
+  <https://github.com/shawntz/reaborn/pull/74>
+- chore: bump version to 1.0.1.9000 by
+  [@shawntz](https://github.com/shawntz) in
+  <https://github.com/shawntz/reaborn/pull/75>
+- chore(figures): refresh comparison figures by
+  [@github-actions](https://github.com/github-actions)\[bot\] in
+  <https://github.com/shawntz/reaborn/pull/76>
+- chore(figures): refresh hero collage by
+  [@github-actions](https://github.com/github-actions)\[bot\] in
+  <https://github.com/shawntz/reaborn/pull/77>
+- update cran-submission by [@shawntz](https://github.com/shawntz) in
+  <https://github.com/shawntz/reaborn/pull/80>
+
+**Full Changelog**:
+<https://github.com/shawntz/reaborn/compare/v1.0.1>…v1.0.2
+
 ## reaborn v1.0.1
 
 CRAN release: 2026-07-03

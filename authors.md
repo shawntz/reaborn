@@ -8,15 +8,15 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/shawntz/reaborn/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/shawntz/reaborn/blob/v1.0.2/DESCRIPTION)
 
 Schwartz S (2026). *reaborn: Statistical Data Visualization, the
-'seaborn' Way*. R package version 1.0.1, <https://reaborn.org>.
+'seaborn' Way*. R package version 1.0.2, <https://reaborn.org>.
 
     @Manual{,
       title = {reaborn: Statistical Data Visualization, the 'seaborn' Way},
       author = {Shawn Schwartz},
       year = {2026},
-      note = {R package version 1.0.1},
+      note = {R package version 1.0.2},
       url = {https://reaborn.org},
     }
